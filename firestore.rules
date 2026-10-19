@@ -1,0 +1,37 @@
+rules_version = '2';
+// Who may read and write what in the ChicCheckCar database.
+// Paste into Firebase console -> Firestore Database -> Rules -> Publish.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function isOwner() {
+      return signedIn() && request.auth.token.email == 'ankermeir2005@gmail.com';
+    }
+    function isStaff() {
+      let p = /databases/$(database)/documents/approvals/$(request.auth.uid);
+      return signedIn() && exists(p) && get(p).data.status == 'approved';
+    }
+    function isTeam() { return isOwner() || isStaff(); }
+    function self(id) { return signedIn() && request.auth.uid == id; }
+
+    // Leads: the owner and approved staff see and manage all of them.
+    // A visitor can only read and write their own lead (its id is their own anonymous uid).
+    match /leads/{id} {
+      allow read, write: if isTeam();
+      allow get, create, update: if self(id);
+    }
+
+    // Staff accounts: a person creates their own request; only the owner sees the list.
+    match /accounts/{id} {
+      allow read: if isOwner() || self(id);
+      allow create, update: if self(id);
+      allow delete: if isOwner();
+    }
+
+    // Approvals: only the owner decides.
+    match /approvals/{id} {
+      allow read: if isOwner() || self(id);
+      allow write: if isOwner();
+    }
+  }
+}

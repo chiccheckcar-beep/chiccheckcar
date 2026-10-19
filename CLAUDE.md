@@ -24,24 +24,27 @@ After editing index.html (CARS, cccLead, cccDone, okbox styles) always re-run bo
 
 Preview locally: `cd site && python3 -m http.server 8080` then open http://localhost:8080 (use a server, not file://, so CSS masks load).
 
-## Data layer — the main open task
+## Data layer — Firebase
 
-On claude.ai the pages used the artifact runtime `window.claude.use('db' | 'user' | 'downloads')`.
-Outside claude.ai `window.claude` does not exist; every call is wrapped in try/catch, so the site runs, but:
-- `window.cccLead(info)` (index.html, also copied into car.html / me.html) cannot save leads -> customers see the
-  "עוד צעד אחד" dialog with a WhatsApp fallback.
-- The admin area (#adm in index.html; open with index.html#admin or footer "כניסת מנהלים") cannot load leads.
-- Staff accounts (collections `accounts` / `approvals`) and the owner password live in that db too.
+`site/fb.js` (loaded first on every page, also by both generators) provides the old claude.ai runtime calls
+`window.claude.use('db' | 'user' | 'downloads')` on top of Firebase (project `chiccheckcar-8003f`, compat SDK from gstatic):
+- `db` is Firestore. `user.id()` is the Firebase Auth uid; visitors are signed in anonymously on their first request.
+- `user.isOwner()` / `cccFb.isOwnerUser()` = signed in with the owner email (ankermeir2005@gmail.com, set in fb.js and firestore.rules).
+- Admin area (index.html#admin): owner and staff sign in with Firebase email/password (`cccFb.signIn/signUp/signOut`).
+  Staff create an account -> `accounts/<uid>`; the owner approves -> `approvals/<uid>` {status:'approved'}.
+- Access is enforced by `firestore.rules` (repo root). After changing it, paste it in Firebase console -> Firestore -> Rules -> Publish.
+- Firebase console needs: Authentication with Email/Password + Anonymous enabled, the owner user added, Firestore created.
 
-To go live, replace the `claude.use(...)` calls with a real backend (e.g. Firebase Auth + Firestore, or Supabase):
-- `leads/<customerId>` doc: {name, phone, city, status, src, ts, history[], reqs[], loan, profile, unseen, last}.
+Data shapes:
+- `leads/<customerUid>` doc: {name, phone, city, status, src, ts, history[], reqs[], loan, profile, unseen, last}.
   Each customer request is an item in `reqs[]` {rid, ts, src, car, detail, name, phone, city, status, note, unseen, loan?};
   the admin list shows every request as its own row.
 - Statuses: new, work, meet, quote, uw, won, lost, noans, cold (cold = left details at the gate, no request yet).
-- Only the owner and approved staff may read `leads`; a customer may write only their own doc.
-- Customer accounts (auth.js) are currently browser-local (localStorage `ccc_me`, PBKDF2 password hash).
-  With a backend: move them server-side and add real SMS verification for password reset (owner asked for SMS).
-- Licence-plate lookup for trade-in can then use data.gov.il (Ministry of Transport open data) — blocked on claude.ai.
+
+Still open:
+- Customer accounts (auth.js) are browser-local (localStorage `ccc_me`, PBKDF2 password hash). Move them to Firebase Auth
+  and add real SMS verification for password reset (owner asked for SMS).
+- Licence-plate lookup for trade-in via data.gov.il (Ministry of Transport open data).
 
 ## Owner's rules (keep them)
 

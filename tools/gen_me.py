@@ -130,6 +130,7 @@ __OKCSS__
 </main>
 <footer>ChicCheckCar · <a href="index.html#privacy">מדיניות פרטיות</a> · <a href="index.html#settings">הגדרות פרטיות</a> · <a href="index.html#accessibility">הצהרת נגישות</a></footer>
 __OKHTML__
+<script src="fb.js"></script>
 <script>
 const CARS = __CARS__;
 __LEAD__

@@ -195,6 +195,7 @@ footer a{color:#e8c7d4 !important}
 
 <footer><div class="wrap">ChicCheckCar · המחירים לפי המחירון שלנו ועשויים להשתנות. התמונות להמחשה בלבד.<br><a href="index.html#privacy" style="color:inherit">מדיניות פרטיות ועוגיות</a> · <a href="index.html#settings" style="color:inherit">הגדרות פרטיות</a> · <a href="index.html#accessibility" style="color:inherit">הצהרת נגישות</a></div></footer>
 
+<script src="fb.js"></script>
 <script>
 const CARS = __CARS__;
 window.cccLead = async function(info){
