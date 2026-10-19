@@ -72,6 +72,7 @@
 #lnTr{display:flex;flex-direction:column;gap:12px}
 #lnTr[hidden]{display:none}
 .ln-seg button{line-height:1.3}
+.ln-pinfo{font-size:12.5px;color:#6a5a60;margin:-4px 0 0}.ln-pinfo:empty{display:none}.ln-pinfo.ok{color:#18794e;font-weight:600}
 .ln-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}`;
   const st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
 
@@ -128,14 +129,14 @@
       P.innerHTML = head(4, 'יש לכם רכב לטרייד-אין?') + `<div class="ln-box">
         <div class="ln-seg" role="group" aria-label="רכב לטרייד-אין"><button type="button" data-tr="yes" aria-pressed="${d.hasTrade === true}">כן, יש לי רכב למסור</button><button type="button" data-tr="no" aria-pressed="${d.hasTrade === false}">לא, תודה</button></div><p class="ln-err" data-e="hasTrade"></p>
         <div id="lnTr" ${d.hasTrade ? '' : 'hidden'}>
-          <label>מספר הרכב שלכם<span class="ln-plate" dir="ltr"><span class="ln-il" aria-hidden="true"><b>IL</b><small>ישראל</small></span><input id="lnPlate" inputmode="numeric" dir="ltr" autocomplete="off" placeholder="00-000-00" maxlength="10" value="${esc(T.plate || '')}" aria-label="מספר רישוי"></span></label><p class="ln-err" data-e="plate"></p>
+          <label>מספר הרכב שלכם<span class="ln-plate" dir="ltr"><span class="ln-il" aria-hidden="true"><b>IL</b><small>ישראל</small></span><input id="lnPlate" inputmode="numeric" dir="ltr" autocomplete="off" placeholder="00-000-00" maxlength="10" value="${esc(T.plate || '')}" aria-label="מספר רישוי"></span></label><p class="ln-err" data-e="plate"></p><p class="ln-pinfo" id="lnPInfo" role="status" aria-live="polite"></p>
           <label>יצרן ודגם<input id="lnTMod" autocomplete="off" placeholder="לדוגמה: טויוטה קורולה" value="${esc(T.model || '')}"></label><p class="ln-err" data-e="tmod"></p>
           <div class="ln-two"><label>שנת עלייה לכביש<select id="lnTYear"><option value="">בחרו שנה</option>${yrs.map(y => `<option${String(T.year) === String(y) ? ' selected' : ''}>${y}</option>`).join('')}</select></label>
           <label>קילומטראז'<input id="lnTKm" inputmode="numeric" dir="ltr" placeholder="לדוגמה 85,000" value="${T.km ? Number(T.km).toLocaleString('he-IL') : ''}"></label></div><p class="ln-err" data-e="tyear"></p><p class="ln-err" data-e="tkm"></p>
           <p class="ln-note">שווי הרכב לטרייד-אין נקבע על ידי שמאי, אחרי בדיקה של הרכב. נציג יתאם אתכם את הבדיקה.</p>
         </div></div>`;
       root.querySelectorAll('[data-tr]').forEach(b => b.addEventListener('click', () => { d.hasTrade = b.dataset.tr === 'yes'; root.querySelectorAll('[data-tr]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); $('#lnTr').hidden = !d.hasTrade; err('hasTrade',''); if (d.hasTrade) setTimeout(() => $('#lnPlate').focus(), 30); }));
-      const pl = $('#lnPlate'); pl.addEventListener('input', () => { pl.value = fmtPlate(pl.value); });
+      const pl = $('#lnPlate'); pl.addEventListener('input', () => { pl.value = fmtPlate(pl.value); plateLookup(pl.value); });
       $('#lnTKm').addEventListener('input', e => { const v = e.target.value.replace(/\D/g,''); e.target.value = v ? Number(v).toLocaleString('he-IL') : ''; });
     }
     if (step === 5){
@@ -148,6 +149,31 @@
       const ok = $('#lnOk'); const sync = () => { d.agree = ok.checked; $('#lnNext').disabled = !ok.checked; }; ok.addEventListener('change', sync); sync();
     } else $('#lnNext').disabled = false;
     const f = step === 4 ? null : P.querySelector('input:not([type=range]),select,[data-emp]'); if (f && step > 1) setTimeout(() => f.focus(), 50);
+  }
+  // Trade-in: fill make/model and first-registration year from the Ministry of Transport open data (data.gov.il).
+  // Only fills what the registry returns; if the lookup fails the customer simply types the details.
+  const GOV = 'https://data.gov.il/api/3/action/datastore_search?resource_id=053cea08-09bc-40ec-8f7a-156f0677aff3&limit=1&filters=';
+  let plateSeq = 0, autoModel = '';
+  async function plateLookup(v){
+    const num = String(v).replace(/\D/g,''), info = $('#lnPInfo'), seq = ++plateSeq;
+    if (!info) return;
+    if (!/^\d{7,8}$/.test(num)){ info.textContent = ''; info.classList.remove('ok'); return; }
+    info.classList.remove('ok'); info.textContent = 'מחפשים את הרכב במאגר משרד התחבורה…';
+    let rec = null;
+    try {
+      const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), 8000);
+      const r = await fetch(GOV + encodeURIComponent(JSON.stringify({mispar_rechev: +num})), {signal: ctl.signal});
+      clearTimeout(t);
+      const j = await r.json(); rec = j && j.success && j.result && j.result.records && j.result.records[0] || null;
+    } catch(e) { rec = null; }
+    if (seq !== plateSeq) return;
+    if (!rec){ const m = $('#lnTMod'); if (m && autoModel && m.value === autoModel){ m.value = ''; autoModel = ''; } info.textContent = 'לא מצאנו את הרכב במאגר. אפשר למלא את הפרטים ידנית.'; return; }
+    const model = [rec.tozeret_nm, rec.kinuy_mishari || rec.degem_nm].map(x => String(x || '').trim()).filter(Boolean).join(' ');
+    const yr = parseInt(String(rec.moed_aliya_lakvish || '').slice(0,4), 10);
+    const m = $('#lnTMod'), y = $('#lnTYear');
+    if (m && model && (!m.value.trim() || m.value === autoModel)){ m.value = model; autoModel = model; err('tmod',''); }
+    if (y && yr && [...y.options].some(o => o.value === String(yr))){ y.value = String(yr); err('tyear',''); }
+    info.classList.add('ok'); info.textContent = 'מצאנו: ' + model + (yr ? ' · עלייה לכביש ' + yr : '') + '. אפשר לתקן אם צריך.';
   }
   function err(k, m){ const e = root.querySelector('[data-e="' + k + '"]'); if (e) e.textContent = m || ''; const map = {plate:'#lnPlate', tmod:'#lnTMod', tyear:'#lnTYear', tkm:'#lnTKm', name:'#lnName', idn:'#lnId', dob:'#lnDob', phone:'#lnPhone', email:'#lnMail', income:'#lnInc', bank:'#lnBank'}; const i = map[k] && $(map[k]); if (i) i.classList.toggle('bad', !!m); return !m; }
   function validate(){

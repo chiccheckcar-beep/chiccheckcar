@@ -44,7 +44,8 @@ Data shapes:
 Still open:
 - Customer accounts (auth.js) are browser-local (localStorage `ccc_me`, PBKDF2 password hash). Move them to Firebase Auth
   and add real SMS verification for password reset (owner asked for SMS).
-- Licence-plate lookup for trade-in via data.gov.il (Ministry of Transport open data).
+- Licence-plate lookup (loan.js step 4, `plateLookup`) calls data.gov.il resource 053cea08-09bc-40ec-8f7a-156f0677aff3
+  directly from the browser and fills make/model + first-registration year. Not yet verified against the live API from the live site.
 
 ## Owner's rules (keep them)
 
