@@ -1,0 +1,22 @@
+{
+  "excel_row": {"maker": "MG", "model": "MG3 LUXURY 1.5 הייבריד בנזין", "price": 116233, "dealer": "שלמה סיקסט", "used_or_new": "יבוא מקביל"},
+  "year": 2026,
+  "trim": "Luxury",
+  "drive": "הנעה קדמית",
+  "engine": "היברידי (בנזין + חשמלי)",
+  "power_hp": 194,
+  "transmission": "אוטומטית",
+  "fuel_consumption_l_per_100km": null,
+  "consumption_km_per_l_combined": 22.7,
+  "electric_range_km": null,
+  "seats": 5,
+  "trunk_rear_l": 293,
+  "trunk_folded_l": 983,
+  "safety": ["6 כריות אוויר","ISOFIX","בלימה אוטונומית","זיהוי הולכי רגל","זיהוי דו גלגלי","בקרת שיוט אדפטיבית","בקרת סטייה מנתיב אקטיבי","בלימה אוטונומית בנסיעה לאחור","זיהוי תמרורים","התרעה על שטח מת"],
+  "sources": [
+    "https://www.cartube.co.il/מחירון-רכב-חדש/mg/mg3/6037-mg3-היברידית-luxury",
+    "https://www.icar.co.il/סאיק-MG/סאיק-MG_3/סאיק-MG_3_חדש/"
+  ],
+  "images": [],
+  "status": "specs_partial_no_images"
+}

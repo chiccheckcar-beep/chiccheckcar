@@ -1,0 +1,414 @@
+import re, json, sys
+site = sys.argv[1]
+html = open(f'{site}/index.html', encoding='utf-8').read()
+cars = json.loads(re.search(r'const CARS\s*=\s*(\[.*?\]);', html, re.S).group(1))
+cars = [{k: c.get(k,'') for k in ('maker','model','trim','extra','fuel','drive','price','cat','img')} for c in cars]
+atto = [{"n":"448","u":"כ\"ס","l":"הספק מרבי"},{"n":"3.9","u":"שנ'","l":"תאוצה 0–100 קמ\"ש"},{"n":"470","u":"ק\"מ","l":"טווח חשמלי WLTP"},{"n":"17.8","u":"קוט\"ש/100 ק\"מ","l":"צריכת חשמל WLTP"}]
+mg3 = [{"n":"194","u":"כ\"ס","l":"הספק מרבי"},{"n":"22.7","u":"ק\"מ/ל","l":"צריכת דלק משולבת"},{"n":"5","u":"","l":"מושבים"},{"n":"293","u":"ליטר","l":"נפח תא מטען"}]
+stats = {}
+for i,c in enumerate(cars):
+    if c['model']=='ATTO 3 EVO' and c['trim']=='Excellence': stats[i] = atto
+    if c['model']=='MG3' and c['trim']=='Luxury': stats[i] = mg3
+page = r'''<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ChicCheckCar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&family=Unbounded:wght@600;700&display=swap">
+<style>
+:root{--bg:#ffffff;--line:#e8e1d8;--txt:#1d1b19;--mut:#6f675e;color-scheme:light}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--txt);font-family:system-ui,"Segoe UI",Arial,sans-serif;line-height:1.6}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+.wrap{max-width:1100px;margin:0 auto;padding-inline:20px}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:68px}
+header img{height:44px;width:auto;display:block}
+.back{display:inline-flex;align-items:center;gap:8px;background:#1d1b19;color:#fff;text-decoration:none;font-size:17px;font-weight:700;padding:13px 26px;border-radius:999px;box-shadow:0 8px 22px rgba(0,0,0,.18);transition:transform .2s,box-shadow .2s}
+.back:hover,.back:focus-visible{color:#fff;transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,.25)}
+.back:focus-visible{outline:2px solid #1d1b19;outline-offset:3px}
+@media (max-width:600px){.back{font-size:15px;padding:11px 18px}}
+.back{margin-top:18px;margin-inline-start:auto}
+@media (max-width:600px){.back{margin-top:12px}}
+/* ---- Car page: showroom layout ---- */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:40px;align-items:center;padding-block:28px 44px}
+.stage{order:2;position:relative;margin:0;padding:24px 0 10px;background:radial-gradient(ellipse 60% 22% at 50% 88%,rgba(29,27,25,.12),transparent 70%)}
+.stage img{width:100%;height:auto;display:block}
+.stage figcaption{font-size:11px;color:var(--mut);text-align:center;margin-top:4px}
+.info{order:1;display:flex;flex-direction:column;gap:10px}
+.eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--mut)}
+h1{font-size:clamp(30px,4.6vw,52px);font-weight:800;margin:0;line-height:1.05;letter-spacing:-.01em;text-wrap:balance}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:3px 12px;color:var(--txt);background:#fff}
+.chip.dark{background:var(--txt);color:#fff;border-color:var(--txt)}
+.extraline{font-size:14px;color:var(--mut)}
+.pricebox{margin-top:8px;padding:18px 20px;border:1px solid var(--line);border-radius:16px;background:#faf9f7}
+.pricebox .from{font-size:13px;color:var(--mut)}
+.pricebox .big{font-family:"Unbounded",system-ui,"Segoe UI",Arial,sans-serif;font-size:30px;font-weight:700;line-height:1.2;font-variant-numeric:tabular-nums}
+.pricebox .mon{font-size:15px;color:var(--mut);margin-top:2px}
+.pricebox .mon b{color:var(--txt);font-size:17px}
+.plan-note{font-size:11.5px;color:var(--mut);margin:8px 0 0}
+.btn{display:inline-block;background:#ffffff;color:var(--txt);border:1px solid var(--txt);border-radius:10px;padding:12px 22px;font-weight:700;text-decoration:none;cursor:pointer;font-size:15px;font-family:inherit;transition:background .15s,color .15s;text-align:center}
+.btn:hover{background:var(--txt);color:#fff}
+.btn.solid{background:var(--txt);color:#fff}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}
+.actions .btn.solid{grid-column:1 / -1}
+.actions .cartbtn{grid-column:1 / -1;display:flex;align-items:center;justify-content:center;gap:8px}
+.actions .cartbtn[aria-pressed="true"]{background:#7a2a4a;border-color:#7a2a4a;color:#fff}
+.mycart{grid-column:1 / -1;text-align:center;font-size:14px;color:var(--mut);text-decoration:underline}
+.mycart[hidden]{display:none}
+/* stats band */
+.band{background:#0d0d0d;color:#fff;border-radius:22px;padding:34px 18px;margin-bottom:36px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;text-align:center}
+.band .n{font-family:"Unbounded",system-ui,"Segoe UI",Arial,sans-serif;font-size:clamp(24px,3.4vw,40px);font-weight:700;line-height:1.1;direction:ltr;white-space:nowrap;font-variant-numeric:tabular-nums}
+.band .n small{font-size:.42em;font-weight:600;margin-inline-start:4px}
+.band .l{font-size:11px;letter-spacing:.14em;color:#a8a29a;margin-top:8px}
+.band > div + div{border-inline-start:1px solid #2a2826}
+/* spec sheet */
+.sheet-title{font-size:22px;margin:0 0 14px}
+.sheet{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:28px}
+.group{border:1px solid var(--line);border-radius:16px;padding:18px 18px 8px;background:#fff}
+.group h3{font-size:12px;letter-spacing:.16em;color:var(--mut);margin:0 0 6px;font-weight:600}
+.group dl{margin:0}
+.group .r{display:flex;justify-content:space-between;gap:14px;padding:11px 0;border-top:1px solid #f0ebe4}
+.group .r:first-child{border-top:0}
+.group dt{color:var(--mut);font-size:14px;flex:0 0 auto}
+.group dd{margin:0;font-weight:700;font-size:14.5px;text-align:left;min-width:0}
+@media (max-width:900px){.hero{grid-template-columns:1fr;gap:10px}.stage{order:1}.info{order:2}.sheet{grid-template-columns:1fr}}
+@media (max-width:600px){.band{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:26px;padding:26px 10px}.band > div:nth-child(3){border-inline-start:0}.actions{grid-template-columns:1fr}.pricebox .big{font-size:26px}}
+.srcs{max-width:560px;margin:-20px auto 36px;font-size:12px;color:var(--mut);text-align:center;line-height:1.7}
+.srcs a{color:var(--mut)}
+.approx{max-width:560px;margin:-20px auto 28px;font-size:13px;color:#8a5a00;background:#fff7e6;border:1px solid #f0d9a8;border-radius:10px;padding:10px 14px;text-align:center}
+#offer{border-top:1px solid var(--line);padding-block:36px 60px}
+#finance{border-top:1px solid var(--line);padding-block:36px 40px}
+#finance h2{text-align:center;font-size:24px;margin:0 0 6px}
+#finance p.lead{text-align:center;color:var(--mut);margin:0 0 20px}
+.fin{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:24px;align-items:start;max-width:900px;margin:0 auto}
+.fin-in{display:flex;flex-direction:column;gap:6px;padding:22px;border:1px solid var(--line);border-radius:18px;background:#fff}
+.fin-in label{font-size:14px;color:var(--mut);margin:0}
+.fin-row{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-top:6px}
+.fin-row output{font-weight:700;font-size:16px;font-variant-numeric:tabular-nums}
+.fin-in input[type=range]{width:100%;accent-color:#1d1b19;margin:4px 0 8px;height:28px;padding:0;border:0}
+.fin-out{padding:26px 22px;border-radius:18px;background:#1d1b19;color:#fff;display:flex;flex-direction:column;gap:12px}
+.fin-label{font-size:13px;opacity:.75}
+.fin-big{font-size:38px;font-weight:800;line-height:1.1;direction:ltr;text-align:right;font-variant-numeric:tabular-nums}
+.fin-dl{display:grid;grid-template-columns:1fr auto;gap:8px 16px;margin:6px 0 4px;padding-top:12px;border-top:1px solid rgba(255,255,255,.18);font-size:14px}
+.fin-dl dt{opacity:.75}.fin-dl dd{margin:0;font-weight:700;direction:ltr;text-align:left;font-variant-numeric:tabular-nums}
+.btn.solid-w{background:#fff;color:#1d1b19;border-color:#fff;text-align:center}
+.btn.ghost-w{background:transparent;color:#fff;border-color:rgba(255,255,255,.5);text-align:center}
+.btn.ghost-w:not([href]){display:none}
+.fin-note{font-size:11.5px;opacity:.75;margin:4px 0 0;line-height:1.6}
+@media (max-width:760px){.fin{grid-template-columns:1fr}.fin-big{font-size:32px}}
+#offer h2{text-align:center;font-size:24px;margin:0 0 6px}
+#offer p.lead{text-align:center;color:var(--mut);margin:0 0 20px}
+form{max-width:420px;margin:0 auto;display:flex;flex-direction:column;gap:6px}
+label{font-size:14px;color:var(--mut);margin-top:8px}
+input{background:#fff;color:var(--txt);border:1px solid var(--line);border-radius:10px;padding:11px 14px;font-size:15px;font-family:inherit;width:100%}
+form .btn{margin-top:16px;text-align:center;width:100%}
+.note{font-size:13px;color:var(--mut);text-align:center}
+.missing{text-align:center;padding-block:80px}
+footer{border-top:1px solid var(--line);padding-block:24px;color:var(--mut);font-size:13px;text-align:center}
+@media (max-width:600px){.wrap{padding-inline:16px}header .wrap{height:60px}header img{height:36px}.stat .n{font-size:30px}.price{font-size:15px}}
+
+/* ===== Studio theme (matches the catalog page) ===== */
+[hidden]{display:none !important}
+:root{--bg:#efe9e8;--line:rgba(31,21,25,.1);--txt:#1f1519;--mut:#6a5a60;--acc:#7a2a4a;--acc2:#5e1f39;--card:#fbf9f8;--pink:#e8c7d4}
+html,body{background:radial-gradient(120% 80% at 50% 0,#efe9e8 0,#d9d0cf 100%) fixed,#d9d0cf;font-family:"Heebo",system-ui,"Segoe UI",Arial,sans-serif;color:var(--txt)}
+.back{background:var(--txt)}
+.back:hover,.back:focus-visible{background:var(--acc)}
+.hero{gap:44px;padding-block:24px 48px}
+.stage{padding:34px 26px 18px;border-radius:30px;background:radial-gradient(90% 80% at 50% 30%,#ffffff 0,#ebe4e3 70%,#ddd4d3 100%);box-shadow:0 30px 60px -40px rgba(31,21,25,.45)}
+.stage img{filter:drop-shadow(0 22px 18px rgba(31,21,25,.22))}
+.eyebrow{color:var(--acc);font-weight:700;letter-spacing:.24em}
+h1{font-family:"Heebo",system-ui,sans-serif;font-weight:800;letter-spacing:-.025em}
+.chip{background:rgba(255,255,255,.7);border-color:var(--line);font-weight:600}
+.chip.dark{background:var(--acc);border-color:var(--acc)}
+.pricebox{background:var(--card);border-color:var(--line);border-radius:22px;padding:20px 22px;box-shadow:0 14px 34px -26px rgba(31,21,25,.4)}
+.pricebox .big{color:var(--txt);font-size:34px}
+.pricebox .mon b{color:var(--acc)}
+.btn{border-radius:14px;border-color:rgba(31,21,25,.18);background:rgba(255,255,255,.85);padding:13px 20px}
+.btn:hover{background:var(--txt);border-color:var(--txt);color:#fff}
+.btn.solid{background:var(--txt);border-color:var(--txt)}
+.btn.solid:hover{background:var(--acc);border-color:var(--acc)}
+.actions .cartbtn[aria-pressed="true"]{background:var(--acc);border-color:var(--acc)}
+.mycart{color:var(--acc);font-weight:600}
+.band{background:var(--txt);border-radius:26px;box-shadow:0 30px 60px -36px rgba(31,21,25,.6)}
+.band .l{color:var(--pink);opacity:.85}
+.band > div + div{border-inline-start-color:rgba(232,199,212,.18)}
+.sheet-title,#finance h2,#offer h2{font-family:"Unbounded",system-ui,"Segoe UI",Arial,sans-serif;font-weight:700;letter-spacing:-.02em}
+.sheet-title::before,#finance h2::before,#offer h2::before{content:"";display:block;width:36px;height:2px;background:var(--acc);margin:0 0 12px}
+#finance h2::before,#offer h2::before{margin-inline:auto}
+.group{background:var(--card);border-color:var(--line);border-radius:22px}
+.group h3{color:var(--acc)}
+.group .r{border-top-color:var(--line)}
+.approx{border-radius:14px}
+#offer,#finance{border-top-color:var(--line)}
+.fin-in{background:var(--card);border-color:var(--line);border-radius:22px}
+.fin-in input[type=range]{accent-color:var(--acc)}
+.fin-out{background:var(--txt);border-radius:22px;box-shadow:0 30px 60px -36px rgba(31,21,25,.6)}
+.fin-label{color:var(--pink);opacity:1}
+.btn.solid-w{background:#fff;color:var(--txt);border-color:#fff}
+.btn.solid-w:hover{background:var(--pink);border-color:var(--pink);color:var(--txt)}
+.btn.ghost-w{border-color:rgba(232,199,212,.45)}
+.btn.ghost-w:hover{background:rgba(255,255,255,.08);color:#fff}
+#offer form{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:22px 22px 26px;box-shadow:0 20px 44px -34px rgba(31,21,25,.5)}
+input{background:#fff;border-color:var(--line);border-radius:12px;padding:12px 14px}
+input:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px rgba(122,42,74,.12)}
+footer{background:#140d10;color:#d9d0cf;border-top:0;padding-block:28px;margin-top:20px}
+footer a{color:#e8c7d4 !important}
+@media (max-width:600px){.stage{padding:22px 12px 10px;border-radius:24px}.pricebox .big{font-size:28px}#offer form{padding:16px}}
+.okbox{position:fixed;inset:0;z-index:400;display:grid;place-items:center;padding:16px}
+.okbox[hidden]{display:none}
+.okbox-bg{position:absolute;inset:0;background:rgba(20,12,16,.5);backdrop-filter:blur(4px);animation:meFade .2s ease}
+.okbox-card{position:relative;width:min(400px,100%);background:#fff;color:#1f1519;border-radius:24px;padding:30px 24px 22px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px;box-shadow:0 30px 70px -20px rgba(0,0,0,.5);animation:okIn .35s cubic-bezier(.2,.9,.3,1.2);font-family:"Heebo",system-ui,"Segoe UI",Arial,sans-serif}
+@keyframes okIn{from{transform:translateY(16px) scale(.96);opacity:0}}
+@media (prefers-reduced-motion:reduce){.okbox-card,.okbox-bg{animation:none}}
+.okbox-ic{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;background:#e7f6ee;color:#18965a;margin-bottom:4px}
+.okbox-ic.warn{background:#fff3df;color:#c77700}
+.okbox h3{margin:0;font-size:26px;font-weight:800;font-family:inherit}
+.okbox h3::before{display:none}
+.okbox p{margin:0;font-size:15.5px;line-height:1.55;color:#6a5a60}
+.okbox-wa{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:8px;padding:14px;border-radius:14px;background:#25d366;color:#fff;font-weight:700;font-size:15.5px;text-decoration:none}
+.okbox-wa.soft{background:#fff;color:#128c4a;border:1.5px solid #25d366;padding:11px}
+.okbox-wa[hidden]{display:none}
+.okbox-close{margin-top:4px;border:0;background:none;color:#6a5a60;font:inherit;font-size:14px;text-decoration:underline;cursor:pointer;padding:6px}
+@keyframes meFade{from{opacity:0}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <a class="back" href="index.html#catalog">← חזרה לקטלוג</a>
+</div></header>
+
+<main class="wrap" id="page"></main>
+<div class="okbox" id="okBox" hidden role="dialog" aria-modal="true" aria-labelledby="okT">
+  <div class="okbox-bg" data-ok-close></div>
+  <div class="okbox-card">
+    <div class="okbox-ic" id="okIc" aria-hidden="true"></div>
+    <h3 id="okT"></h3>
+    <p id="okP"></p>
+    <a class="okbox-wa" id="okWa" target="_blank" rel="noopener" hidden></a>
+    <button type="button" class="okbox-close" data-ok-close>סגירה</button>
+  </div>
+</div>
+
+<footer><div class="wrap">ChicCheckCar · המחירים לפי המחירון שלנו ועשויים להשתנות. התמונות להמחשה בלבד.<br><a href="index.html#privacy" style="color:inherit">מדיניות פרטיות ועוגיות</a> · <a href="index.html#settings" style="color:inherit">הגדרות פרטיות</a> · <a href="index.html#accessibility" style="color:inherit">הצהרת נגישות</a></div></footer>
+
+<script>
+const CARS = __CARS__;
+window.cccLead = async function(info){
+  // every request the customer sends also goes to "הפניות שלי" in this browser, even if it can't reach the leads center
+  const rid = info.req ? Date.now().toString(36) + Math.random().toString(36).slice(2,6) : null;
+  if (info.req){ try { const L = JSON.parse(localStorage.getItem('ccc_reqs') || '[]'); L.push({rid, ts: new Date().toISOString(), src: info.src, cars: info.cars || (info.car ? String(info.car).split(', ') : []), amount: info.loan ? info.loan.amount : 0, trade: !!(info.loan && info.loan.trade)}); localStorage.setItem('ccc_reqs', JSON.stringify(L.slice(-30))); } catch(e) {} }
+  try {
+    const [db, user] = await Promise.all([claude.use('db'), claude.use('user')]); if (!db || !user) return false;
+    const id = await user.id(); if (!id) return false;
+    const ref = db.collection('leads').doc(id), ex = await ref.get(), cur = ex.exists ? (ex.data() || {}) : {};
+    let saved = {}; try { saved = JSON.parse(localStorage.getItem('ccc_me') || '{}') || {}; } catch(e) {}
+    let sn = '', sp = ''; try { sn = sessionStorage.getItem('ccc_name') || ''; sp = sessionStorage.getItem('ccc_phone') || ''; } catch(e) {}
+    const name = String(info.name || cur.name || saved.name || sn || '').slice(0,60);
+    const phone = String(info.phone || cur.phone || saved.phone || sp || '').replace(/\D/g,'').replace(/^972/,'0');
+    const city = String(info.city || cur.city || saved.city || '').slice(0,40);
+    if (!ex.exists && !name && !phone) return false;
+    const now = new Date().toISOString();
+    const history = (Array.isArray(cur.history) ? cur.history : []).concat([{ts: now, src: info.src, car: String(info.car || '').slice(0,300), detail: String(info.detail || '').slice(0,300)}]).slice(-40);
+    const data = {name, phone, city, src: info.src, ts: now, history, last: String(info.detail || '').slice(0,300)};
+    if (info.car) data.car = String(info.car).slice(0,500);
+    if (info.loan) data.loan = info.loan;
+    if (info.profile) data.profile = info.profile;
+    if (info.req){
+      // every request is its own lead in the leads center, even from the same person
+      const rq = {rid, ts: now, src: info.src, car: String(info.car || '').slice(0,500), detail: String(info.detail || '').slice(0,300), name, phone, city, status: 'new', note: '', unseen: true};
+      if (info.loan) rq.loan = info.loan;
+      data.reqs = (Array.isArray(cur.reqs) ? cur.reqs : []).concat([rq]).slice(-60);
+      data.unseen = true; if (ex.exists && (!cur.status || ['cold','lost','noans'].includes(cur.status))) data.status = 'new';
+    }
+    if (ex.exists) await ref.update(data); else await ref.set(Object.assign({status: info.req ? 'new' : 'cold', car: ''}, data));
+    return true;
+  } catch(e) { return false; }
+};
+// Confirmation after a request: "received" only when it really reached the leads center; otherwise ask to finish in WhatsApp.
+window.cccDone = function({ok, phone, wa, title, text}){
+  const box = document.getElementById('okBox'); if (!box) return;
+  const ic = document.getElementById('okIc'), w = document.getElementById('okWa');
+  const icOk = '<svg viewBox="0 0 24 24" width="38" height="38"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const icWa = '<svg viewBox="0 0 24 24" width="34" height="34"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Z"/></svg>';
+  ic.innerHTML = ok ? icOk : icWa; ic.classList.toggle('warn', !ok);
+  document.getElementById('okT').textContent = title || (ok ? 'פנייתכם התקבלה' : 'עוד צעד אחד');
+  document.getElementById('okP').textContent = text || (ok
+    ? 'תודה! נציג של ChicCheckCar יחזור אליכם בהקדם' + (phone ? ' למספר ' + phone : '') + '.'
+    : 'כדי שהפנייה תגיע אלינו, לחצו על הכפתור ושלחו את ההודעה בוואטסאפ. ההודעה כבר מוכנה עם הפרטים שלכם.');
+  w.hidden = !wa; if (wa){ w.href = wa; w.textContent = ok ? 'רוצים מענה מהיר? שלחו גם בוואטסאפ' : 'שליחת הפנייה בוואטסאפ'; w.classList.toggle('soft', ok); }
+  box.hidden = false; (ok ? box.querySelector('.okbox-close') : w).focus();
+};
+document.addEventListener('click', e => { if (e.target.closest('[data-ok-close]')) document.getElementById('okBox').hidden = true; if (e.target.closest('#okWa')) setTimeout(() => { document.getElementById('okT').textContent = 'פנייתכם נשלחה'; document.getElementById('okP').textContent = 'אם שלחתם את ההודעה בוואטסאפ, נציג יחזור אליכם בהקדם.'; }, 400); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { const b = document.getElementById('okBox'); if (b && !b.hidden) b.hidden = true; } });
+
+const STATS = __STATS__;
+const SPECS = __SPECS__;
+const fmt = n => '₪' + Math.round(n).toLocaleString('he-IL');
+const monthlyOf = price => { const r = 3.9/100/12, n = 60, B = price*0.5; return (price - B/Math.pow(1+r,n)) * r / (1 - Math.pow(1+r,-n)); };
+const fmtM = n => '₪' + Math.ceil(n).toLocaleString('he-IL');
+const esc = s => String(s).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+function show(){
+  const m = /^#car(\d+)$/.exec(location.hash);
+  const i = m ? +m[1] : -1;
+  const c = CARS[i];
+  const page = document.getElementById('page');
+  if (!c) {
+    document.title = 'ChicCheckCar';
+    page.innerHTML = '<div class="missing"><h1>הרכב לא נמצא</h1><p><a class="btn" href="index.html#catalog">חזרה לקטלוג</a></p></div>';
+    return;
+  }
+  const full = [c.maker, c.model, c.trim].filter(Boolean).join(' ');
+  document.title = full + ' · ChicCheckCar';
+  const st = STATS[i];
+  const sp = SPECS[i] || {};
+  const grp = (title, rows) => { const rr = rows.filter(r => r[1]); return rr.length ? `<div class="group"><h3>${title}</h3><dl>${rr.map(([k,v]) => `<div class="r"><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl></div>` : ''; };
+  const ap = v => '';
+  const band = [];
+  const cons = sp.consumption || '';
+  const rg = /טווח/.test(cons) ? /(כ-)?(\d+) ק"מ/.exec(cons) : null;
+  const L = /(\d\.\d)/.exec(sp.engine || '') || /(\d\.\d)/.exec(c.extra || '');
+  if (rg) band.push({n:rg[2], u:'ק״מ', l: c.fuel==='חשמלי' ? 'טווח נסיעה' : 'טווח חשמלי'});
+  else if (L) band.push({n:ap(sp.engine)+L[1], u:'ל׳', l:'נפח מנוע'});
+  if (sp.accel) band.push({n:sp.accel.split(' ')[0], u:'שנ׳', l:'0-100 קמ״ש'});
+  const pw = /(\d+(?:–\d+)?)/.exec(sp.power || '');
+  if (pw) band.push({n:ap(sp.power)+ap(sp.engine)+pw[1], u:'כ״ס', l: /מנוע חשמלי/.test(sp.power) ? 'הספק חשמלי' : 'הספק'});
+  if (sp.seats) band.push({n:sp.seats, u:'', l:'מושבים'});
+  page.innerHTML = `
+  <section class="hero">
+    <figure class="stage"><img src="${c.img || 'car-sample.png'}" alt="${esc(full)}"><figcaption>תמונה להמחשה בלבד</figcaption></figure>
+    <div class="info">
+      <div class="eyebrow">${esc(c.maker)}</div>
+      <h1>${esc(c.model)}</h1>
+      <div class="chips">${c.trim ? `<span class="chip dark">${esc(c.trim)}</span>` : ''}${c.fuel ? `<span class="chip">${esc(c.fuel)}</span>` : ''}${c.cat ? `<span class="chip">${esc(c.cat)}</span>` : ''}<span class="chip">0 ק"מ</span></div>
+      ${c.extra ? `<div class="extraline">${esc(c.extra)}</div>` : ''}
+      <div class="pricebox">
+        <div class="from">החל מ-</div>
+        <div class="big">${fmt(c.price)}</div>
+        <div class="mon">ובתשלום חודשי <b>${fmtM(monthlyOf(c.price))}</b></div>
+        <p class="plan-note">לדוגמה: מימון מלא, 60 תשלומים, ריבית שנתית 3.9% ובלון 50% בסוף התקופה. תלוי BDI.</p>
+      </div>
+      <div class="actions"><a class="btn solid" href="#offer" id="toOffer">לרכישה זריזה</a><button type="button" class="btn cartbtn" id="cartBtn" aria-pressed="false"></button><a class="mycart" id="myCart" href="index.html#me" hidden></a><a class="btn" id="waTop" target="_blank" rel="noopener">שליחה בוואטסאפ</a><a class="btn" href="#finance" id="toFin">מחשבון מימון</a></div>
+    </div>
+  </section>
+  ${band.length ? `<div class="band">${band.map(b=>`<div><div class="n">${esc(b.n)}${b.u?`<small>${esc(b.u)}</small>`:''}</div><div class="l">${esc(b.l)}</div></div>`).join('')}</div>` : ''}
+  <h2 class="sheet-title">מפרט טכני</h2>
+  <div class="sheet">
+    ${grp('זהות הרכב', [['חברה',c.maker],['דגם',c.model],['רמת גימור',c.trim],['פרטים נוספים',c.extra],['קילומטראז׳','0']])}
+    ${grp('מנוע וביצועים', [['סוג מנוע', sp.engine || c.fuel],['הספק',sp.power],['תאוצה 0-100 קמ"ש',sp.accel],['תיבת הילוכים',sp.gearbox],['סוג הנעה', sp.drive || (c.drive ? c.drive.toUpperCase() : '')]])}
+    ${grp('שימוש יומיומי', [[/טווח|קוט/.test(sp.consumption||'') ? 'טווח / צריכה' : 'צריכת דלק', sp.consumption],['מספר מושבים',sp.seats],['נפח תא מטען',sp.trunk]])}
+  </div>
+  ${sp.note ? `<p class="approx">${esc(sp.note)}</p>` : ''}
+  ${sp.sources ? `<p class="srcs">מקורות המפרט: ${sp.sources.map(x=>`<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.name)}</a>`).join(' · ')}</p>` : ''}
+  <section id="finance">
+    <h2>מחשבון מימון</h2>
+    <p class="lead">בדקו בכמה יעלה ההחזר החודשי על הרכב הזה. התוצאה היא הערכה בלבד.</p>
+    <div class="fin">
+      <div class="fin-in">
+        <div class="fin-row"><label for="finPrice">מחיר הרכב</label><output id="finPriceOut"></output></div>
+        <input type="number" id="finPrice" min="10000" max="1000000" step="1" inputmode="numeric">
+        <div class="fin-row"><label for="finDown">מקדמה</label><output id="finDownOut"></output></div>
+        <input type="range" id="finDown" min="0" max="100" step="1" value="0">
+        <div class="fin-row"><label for="finMonths">מספר תשלומים</label><output id="finMonthsOut"></output></div>
+        <input type="range" id="finMonths" min="12" max="100" step="1" value="60">
+        <div class="fin-row"><label for="finRate">ריבית שנתית</label><output id="finRateOut"></output></div>
+        <input type="range" id="finRate" min="0" max="15" step="0.1" value="3.9">
+        <div class="fin-row"><label for="finBalloon">תשלום בלון בסוף התקופה</label><output id="finBalloonOut"></output></div>
+        <input type="range" id="finBalloon" min="0" max="50" step="1" value="50">
+      </div>
+      <div class="fin-out" aria-live="polite">
+        <div class="fin-label">החזר חודשי משוער</div>
+        <div class="fin-big" id="finMonthly">—</div>
+        <dl class="fin-dl">
+          <dt>סכום ההלוואה</dt><dd id="finLoan">—</dd>
+          <dt>תשלום בלון בסוף</dt><dd id="finBal">—</dd>
+          <dt>סך כל התשלומים</dt><dd id="finTotal">—</dd>
+          <dt>סך הריבית</dt><dd id="finInterest">—</dd>
+        </dl>
+        <a class="btn solid-w" href="#offer" id="finCta">לקבלת הצעת מימון</a>
+        <a class="btn ghost-w" id="finWa" target="_blank" rel="noopener">שליחת החישוב בוואטסאפ</a>
+        <p class="fin-note">החישוב לפי לוח סילוקין שפיצר. ברירת המחדל (60 תשלומים, ריבית 3.9%, בלון 50%) היא לדוגמה בלבד, תלוי BDI.</p>
+      </div>
+    </div>
+  </section>
+  <section id="offer">
+    <h2>מצאתם רכב שמעניין אתכם?</h2>
+    <p class="lead">השאירו שם וטלפון, ונחזור אליכם עם כל המידע על הרכב.</p>
+    <form id="leadForm">
+      <label for="fName">שם מלא</label><input id="fName" required autocomplete="name">
+      <label for="fPhone">טלפון</label><input id="fPhone" type="tel" required autocomplete="tel">
+      <button class="btn solid" type="submit">שליחה</button>
+      <a id="waLink" class="btn" target="_blank" rel="noopener" hidden>שליחת הפרטים בוואטסאפ ←</a>
+    </form>
+  </section>`;
+  document.getElementById('toFin').addEventListener('click', e => { e.preventDefault(); document.getElementById('finance').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); });
+  const openLoan = amt => { if (!window.cccLoan) return false; const im = document.querySelector('.stage img'); window.cccLoan.open({car: full, price: c.price, img: im ? im.src : ''}); window.cccLead({src:'loan', car: full, detail: 'פתח בדיקת זכאות למימון על ' + carTxt}); return true; };
+  document.getElementById('toOffer').addEventListener('click', e => { e.preventDefault(); if (openLoan()) return; document.getElementById('offer').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); document.getElementById('fName').focus({preventScroll:true}); });
+  const carTxt = `${full} (החל מ-${fmt(c.price)})`;
+  document.getElementById('waTop').href = 'https://wa.me/972545762802?text=' + encodeURIComponent(`שלום, אני מתעניין/ת ב-${carTxt}. אשמח לקבל הצעה.`);
+  { const key = [c.maker, c.model, c.trim, c.price].join('|'), b = document.getElementById('cartBtn'), my = document.getElementById('myCart');
+    const rd = () => { try { return JSON.parse(localStorage.getItem('ccc_cart') || '[]'); } catch(_) { return []; } };
+    const wr = v => { try { localStorage.setItem('ccc_cart', JSON.stringify(v)); } catch(_) {} };
+    const ic = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="9.5" cy="19.5" r="1.5" fill="currentColor"/><circle cx="17" cy="19.5" r="1.5" fill="currentColor"/><path d="M2.5 3.5h2.2l2.4 11.1a1.5 1.5 0 0 0 1.5 1.2h8.7a1.5 1.5 0 0 0 1.5-1.1L21 7.5H5.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    const upd = () => { const cart = rd().filter(k => CARS.some(x => [x.maker, x.model, x.trim, x.price].join('|') === k)), on = cart.includes(key);
+      b.innerHTML = ic + (on ? 'בסל ✓' : 'הוספה לסל'); b.setAttribute('aria-pressed', String(on));
+      my.hidden = !cart.length; my.textContent = 'לסל שלי (' + cart.length + ') ←'; };
+    b.onclick = () => { const cart = rd(), at = cart.indexOf(key); if (at < 0 && window.cccAuth && !(window.cccAuth.hasAccount() && window.cccAuth.unlocked())){ window.cccAuth.require('כדי לשמור את ' + full + ' בסל, השאירו פרטים פעם אחת.', () => b.onclick()); return; } if (at >= 0) cart.splice(at, 1); else { cart.push(key); window.cccLead({src:'cart', car: full, detail: 'הוסיף לסל מעמוד הרכב: ' + carTxt}); } wr(cart); upd(); };
+    upd(); }
+  document.getElementById('waTop').onclick = () => window.cccLead({src:'wa', car: full, detail: 'פנה בוואטסאפ מעמוד הרכב על ' + carTxt});
+  document.getElementById('finWa').onclick = e => { let t = ''; try { t = decodeURIComponent(e.currentTarget.href.split('text=')[1] || ''); } catch(_) {} window.cccLead({src:'finance', car: full, detail: t.replace(/^שלום, /, '') || 'שלח חישוב מימון על ' + carTxt}); };
+  document.getElementById('leadForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const okP = window.cccLead({src:'car', req: true, name: document.getElementById('fName').value.trim(), phone: document.getElementById('fPhone').value.trim(), car: full, detail: 'השאיר פרטים בעמוד הרכב על ' + carTxt});
+    const msg = `שלום, אני ${document.getElementById('fName').value.trim()}. טלפון: ${document.getElementById('fPhone').value.trim()}. רכב שמעניין אותי: ${carTxt}.`;
+    const a = document.getElementById('waLink');
+    a.href = 'https://wa.me/972545762802?text=' + encodeURIComponent(msg);
+    const ok = await okP; a.hidden = ok;
+    window.cccDone({ok, phone: document.getElementById('fPhone').value.trim(), wa: a.href});
+  });
+  // finance calculator
+  const nis = n => '₪' + Math.round(n).toLocaleString('he-IL');
+  const el = id => document.getElementById(id);
+  el('finPrice').value = c.price;
+  function calc(){
+    const price = Math.max(0, +el('finPrice').value || 0);
+    const downPct = +el('finDown').value, months = +el('finMonths').value, rate = +el('finRate').value, balPct = +el('finBalloon').value;
+    const down = price*downPct/100, loan = Math.max(0, price-down), bal = Math.min(loan, price*balPct/100), r = rate/100/12;
+    let pay = 0; if (loan > 0) pay = r === 0 ? (loan-bal)/months : (loan - bal/Math.pow(1+r,months)) * r / (1 - Math.pow(1+r,-months));
+    const total = pay*months + bal;
+    el('finPriceOut').textContent = nis(price);
+    el('finDownOut').textContent = downPct + '% · ' + nis(down);
+    el('finMonthsOut').textContent = months + ' חודשים';
+    el('finRateOut').textContent = rate.toFixed(1) + '%';
+    el('finBalloonOut').textContent = balPct ? balPct + '% · ' + nis(bal) : 'ללא';
+    el('finMonthly').textContent = loan > 0 ? nis(Math.ceil(pay)) : '—';
+    el('finLoan').textContent = nis(loan); el('finBal').textContent = bal ? nis(bal) : 'ללא';
+    el('finTotal').textContent = nis(total); el('finInterest').textContent = nis(Math.max(0,total-loan));
+    el('finWa').href = 'https://wa.me/972545762802?text=' + encodeURIComponent(`שלום, אשמח להצעת מימון ל-${full}. מחיר: ${nis(price)}, מקדמה: ${nis(down)}, ${months} תשלומים, בלון: ${bal ? nis(bal) : 'ללא'}. החזר חודשי משוער: ${nis(Math.ceil(pay))}.`);
+  }
+  ['finPrice','finDown','finMonths','finRate','finBalloon'].forEach(id => el(id).addEventListener('input', calc));
+  el('finCta').addEventListener('click', e => { e.preventDefault(); if (openLoan()) return; el('offer').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); el('fName').focus({preventScroll:true}); });
+  calc();
+  window.scrollTo(0,0);
+}
+window.addEventListener('hashchange', () => { if (/^#car\d+$/.test(location.hash)) show(); });
+show();
+</script>
+<script src="auth.js"></script>
+<script src="loan.js"></script>
+</body>
+</html>
+'''
+import os
+spec = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'specs', 'specs.json'), encoding='utf-8'))
+SPECS = {}
+for g in spec['groups']:
+    for r in g['rows']:
+        SPECS[str(r)] = {k: g[k] for k in ('drive','engine','power','accel','gearbox','consumption','seats','trunk','sources','note') if k in g}
+page = page.replace('__SPECS__', json.dumps(SPECS, ensure_ascii=False))
+page = page.replace('__CARS__', json.dumps(cars, ensure_ascii=False)).replace('__STATS__', json.dumps({str(k):v for k,v in stats.items()}, ensure_ascii=False))
+open(f'{site}/car.html','w',encoding='utf-8').write(page)
+print(len(cars), sorted(stats))
