@@ -59,7 +59,7 @@ Still open:
 ## Car photos (owner approved this style)
 
 - One photo per model (same maker + model share it), saved as `site/cars/<maker>-<model>.webp` and set in the car's `img` field in CARS.
-- Style: car only, side view, transparent background (no scenery), trimmed to the car, 1000px wide, WebP quality ~82.
+- Style: car only (side or front 3/4 view), transparent background (no scenery), trimmed to the car, 1000px wide, WebP quality ~82.
   Must look like `site/cars/toyota-yaris.webp` so the whole catalog is uniform. Re-run both generators after changing CARS.
 - Same model and generation as sold in Israel is enough; the trim may differ (owner approved). The page already says "תמונה להמחשה בלבד".
 - Preferred source: the Israeli importer's own configurator images (e.g. toyota.co.il -> img-optimize.toyota-europe.com
