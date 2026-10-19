@@ -153,7 +153,21 @@
   // Trade-in: fill make/model and first-registration year from the Ministry of Transport open data (data.gov.il).
   // Only fills what the registry returns; if the lookup fails the customer simply types the details.
   const GOV = 'https://data.gov.il/api/3/action/datastore_search?resource_id=053cea08-09bc-40ec-8f7a-156f0677aff3&limit=1&filters=';
-  let plateSeq = 0, autoModel = '';
+  let plateSeq = 0, autoModel = '', autoYear = '';
+  // The registry stores the maker with its country, often cut off: "קיה ד. קוריאה", "מרצדס בנץ גרמנ", "אלפא רומיאו_אי".
+  // Drop the country part so the customer sees just the maker.
+  const COUNTRIES = ['גרמניה','סלובקיה','ספרד','פולין','תאילנד','ארהב','הולנד','סין','רומניה','יפן','אנגליה','הודו','טורקיה','תורכיה','צרפת','קוריאה','ד.קוריאה','צ\'כיה','מקסיקו','קנדה','איטליה','הונגריה','פורטוגל','בלגיה','שבדיה','ברזיל','ארגנטינה','אוסטריה','אוסטרליה','סלובניה','רוסיה','אינדונזיה','מלזיה','פינלנד','מרוקו','טייוואן','וייטנאם','ישראל','דרום'];
+  function makerName(s){
+    let out = String(s || '').replace(/["']+$/,'').trim();
+    for (let k = 0; k < 2; k++){
+      const m = out.match(/^(.+?)[\s_\-]+([^\s_\-]+)$/); if (!m) break;
+      const t = m[2].replace(/["']/g,'');
+      const hit = t === 'אי' || t === 'ד.' || (t.length >= 3 && COUNTRIES.some(c => c.replace(/'/g,'').startsWith(t.replace(/'/g,''))));
+      if (!hit) break;
+      out = m[1].trim();
+    }
+    return out || String(s || '').trim();
+  }
   async function plateLookup(v){
     const num = String(v).replace(/\D/g,''), info = $('#lnPInfo'), seq = ++plateSeq;
     if (!info) return;
@@ -167,12 +181,12 @@
       const j = await r.json(); rec = j && j.success && j.result && j.result.records && j.result.records[0] || null;
     } catch(e) { rec = null; }
     if (seq !== plateSeq) return;
-    if (!rec){ const m = $('#lnTMod'); if (m && autoModel && m.value === autoModel){ m.value = ''; autoModel = ''; } info.textContent = 'לא מצאנו את הרכב במאגר. אפשר למלא את הפרטים ידנית.'; return; }
-    const model = [rec.tozeret_nm, rec.kinuy_mishari || rec.degem_nm].map(x => String(x || '').trim()).filter(Boolean).join(' ');
+    if (!rec){ const m = $('#lnTMod'), y = $('#lnTYear'); if (m && autoModel && m.value === autoModel){ m.value = ''; autoModel = ''; } if (y && autoYear && y.value === autoYear){ y.value = ''; autoYear = ''; } info.textContent = 'לא מצאנו את הרכב במאגר. אפשר למלא את הפרטים ידנית.'; return; }
+    const model = [makerName(rec.tozeret_nm), rec.kinuy_mishari || rec.degem_nm].map(x => String(x || '').trim()).filter(Boolean).join(' ');
     const yr = parseInt(String(rec.moed_aliya_lakvish || '').slice(0,4), 10);
     const m = $('#lnTMod'), y = $('#lnTYear');
     if (m && model && (!m.value.trim() || m.value === autoModel)){ m.value = model; autoModel = model; err('tmod',''); }
-    if (y && yr && [...y.options].some(o => o.value === String(yr))){ y.value = String(yr); err('tyear',''); }
+    if (y && yr && [...y.options].some(o => o.value === String(yr)) && (!y.value || y.value === autoYear)){ y.value = String(yr); autoYear = y.value; err('tyear',''); }
     info.classList.add('ok'); info.textContent = 'מצאנו: ' + model + (yr ? ' · עלייה לכביש ' + yr : '') + '. אפשר לתקן אם צריך.';
   }
   function err(k, m){ const e = root.querySelector('[data-e="' + k + '"]'); if (e) e.textContent = m || ''; const map = {plate:'#lnPlate', tmod:'#lnTMod', tyear:'#lnTYear', tkm:'#lnTKm', name:'#lnName', idn:'#lnId', dob:'#lnDob', phone:'#lnPhone', email:'#lnMail', income:'#lnInc', bank:'#lnBank'}; const i = map[k] && $(map[k]); if (i) i.classList.toggle('bad', !!m); return !m; }

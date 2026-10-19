@@ -2,7 +2,7 @@ import re, json, sys
 site = sys.argv[1]
 html = open(f'{site}/index.html', encoding='utf-8').read()
 cars = json.loads(re.search(r'const CARS\s*=\s*(\[.*?\]);', html, re.S).group(1))
-cars = [{k: c.get(k,'') for k in ('maker','model','trim','extra','fuel','drive','price','cat','img')} for c in cars]
+cars = [{k: c.get(k,'') for k in ('maker','model','trim','extra','fuel','drive','price','cat','img','imgBy','imgLic','imgSrc')} for c in cars]
 atto = [{"n":"448","u":"כ\"ס","l":"הספק מרבי"},{"n":"3.9","u":"שנ'","l":"תאוצה 0–100 קמ\"ש"},{"n":"470","u":"ק\"מ","l":"טווח חשמלי WLTP"},{"n":"17.8","u":"קוט\"ש/100 ק\"מ","l":"צריכת חשמל WLTP"}]
 mg3 = [{"n":"194","u":"כ\"ס","l":"הספק מרבי"},{"n":"22.7","u":"ק\"מ/ל","l":"צריכת דלק משולבת"},{"n":"5","u":"","l":"מושבים"},{"n":"293","u":"ליטר","l":"נפח תא מטען"}]
 stats = {}
@@ -37,6 +37,7 @@ header img{height:44px;width:auto;display:block}
 .stage{order:2;position:relative;margin:0;padding:24px 0 10px;background:radial-gradient(ellipse 60% 22% at 50% 88%,rgba(29,27,25,.12),transparent 70%)}
 .stage img{width:100%;height:auto;display:block}
 .stage figcaption{font-size:11px;color:var(--mut);text-align:center;margin-top:4px}
+.stage figcaption a{color:inherit}
 .info{order:1;display:flex;flex-direction:column;gap:10px}
 .eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--mut)}
 h1{font-size:clamp(30px,4.6vw,52px);font-weight:800;margin:0;line-height:1.05;letter-spacing:-.01em;text-wrap:balance}
@@ -280,7 +281,7 @@ function show(){
   if (sp.seats) band.push({n:sp.seats, u:'', l:'מושבים'});
   page.innerHTML = `
   <section class="hero">
-    <figure class="stage"><img src="${c.img || 'car-sample.png'}" alt="${esc(full)}"><figcaption>תמונה להמחשה בלבד</figcaption></figure>
+    <figure class="stage"><img src="${c.img || 'car-sample.png'}" alt="${esc(full)}"><figcaption>תמונה להמחשה בלבד${c.imgSrc ? ` · <a href="${esc(c.imgSrc)}" target="_blank" rel="noopener">צילום: ${esc(c.imgBy || 'Wikimedia Commons')}${c.imgLic ? ' · ' + esc(c.imgLic) : ''}</a>` : ''}</figcaption></figure>
     <div class="info">
       <div class="eyebrow">${esc(c.maker)}</div>
       <h1>${esc(c.model)}</h1>
