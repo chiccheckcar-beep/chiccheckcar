@@ -53,7 +53,10 @@ Still open:
   Prices are shown exactly as in the Excel (no rounding).
   Update 2026-10-20 (owner request): prices for model-year 2026 cars were replaced with the verified importer list price on iCar,
   only where model, trim, engine and drive match exactly; others keep the Excel price. See docs/price-report-icar-2026.md.
-- "אל תשנה, תמחק או תאחד דגמים מהאקסל בלי אישור שלי" — 7 duplicate model names exist; ask before merging.
+- "אל תשנה, תמחק או תאחד דגמים מהאקסל בלי אישור שלי". 2026-10-20 the owner approved removing exact duplicates
+  (same car and same price); 6 were removed, keeping the first copy. Near-duplicates with different prices still need the owner's choice.
+- "אל תשנה עיצוב בחיים" (2026-10-20): never change the site's design, layout, card order/sorting, colours, fonts or animations.
+  Data changes (prices, cars, photos) only.
 - "אין להמציא ביקורות, נתוני מלאי, מחירים, הנחות או מבצעים שלא סיפקתי"
 - "לא להמציא שום נתון. אם לא ניתן לאמת נתון בוודאות, אל תציג את השורה בכלל באתר. אסור להציג ללקוח 'ממתין לאימות', 'לא ידוע' או placeholder אחר."
 - No images with watermarks, other agencies' logos, or of a different version of the car.
