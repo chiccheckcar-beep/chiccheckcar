@@ -51,6 +51,8 @@ Still open:
 
 - "המחיר, המלאי והפרטים העסקיים נלקחים רק מהאקסל שלי. מידע טכני בלבד מותר להשלים מהאינטרנט."
   Prices are shown exactly as in the Excel (no rounding).
+  Update 2026-10-20 (owner request): prices for model-year 2026 cars were replaced with the verified importer list price on iCar,
+  only where model, trim, engine and drive match exactly; others keep the Excel price. See docs/price-report-icar-2026.md.
 - "אל תשנה, תמחק או תאחד דגמים מהאקסל בלי אישור שלי" — 7 duplicate model names exist; ask before merging.
 - "אין להמציא ביקורות, נתוני מלאי, מחירים, הנחות או מבצעים שלא סיפקתי"
 - "לא להמציא שום נתון. אם לא ניתן לאמת נתון בוודאות, אל תציג את השורה בכלל באתר. אסור להציג ללקוח 'ממתין לאימות', 'לא ידוע' או placeholder אחר."
