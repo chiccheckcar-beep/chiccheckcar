@@ -674,8 +674,7 @@
   },
   {
    "rows": [
-    27,
-    29
+    27
    ],
    "car": "Toyota Yaris Cross 1.5 Hybrid (Style)",
    "drive": "הנעה קדמית",
@@ -731,7 +730,7 @@
   },
   {
    "rows": [
-    30
+    29
    ],
    "car": "Audi A3 Sportback 35 TFSI S line",
    "drive": "הנעה קדמית",
@@ -755,7 +754,7 @@
   },
   {
    "rows": [
-    31
+    30
    ],
    "car": "Audi A3 Sedan 35 TFSI S line",
    "drive": "הנעה קדמית",
@@ -779,7 +778,7 @@
   },
   {
    "rows": [
-    32
+    31
    ],
    "car": "Audi A5 Sedan 40 TFSI",
    "drive": "הנעה קדמית",
@@ -803,7 +802,7 @@
   },
   {
    "rows": [
-    33
+    32
    ],
    "car": "Audi Q3 Sportback 35 TFSI",
    "drive": "הנעה קדמית",
@@ -827,7 +826,7 @@
   },
   {
    "rows": [
-    34
+    33
    ],
    "car": "Audi Q5 Sportback 40 TFSI quattro Luxury",
    "drive": "הנעה כפולה (4X4, quattro)",
@@ -855,7 +854,7 @@
   },
   {
    "rows": [
-    35
+    34
    ],
    "car": "Chery FX EV Sense",
    "drive": "הנעה קדמית",
@@ -879,7 +878,7 @@
   },
   {
    "rows": [
-    36
+    35
    ],
    "car": "Chery Tiggo 7 Pro PHEV Luxury",
    "drive": "הנעה קדמית",
@@ -903,7 +902,7 @@
   },
   {
    "rows": [
-    37
+    36
    ],
    "car": "Chery Tiggo 8 Pro 1.6T Comfort 7 seats",
    "drive": "הנעה קדמית",
@@ -932,7 +931,7 @@
   },
   {
    "rows": [
-    38
+    37
    ],
    "car": "Chery Tiggo 8 Pro 1.6T Noble 7 seats",
    "drive": "הנעה קדמית",
@@ -961,9 +960,9 @@
   },
   {
    "rows": [
+    38,
     39,
-    40,
-    41
+    40
    ],
    "car": "Chery Tiggo 8 Pro PHEV (Comfort / Noble / Ultimate)",
    "drive": "הנעה קדמית",
@@ -987,8 +986,7 @@
   },
   {
    "rows": [
-    42,
-    47
+    41
    ],
    "car": "Chery Tiggo 9 PHEV Luxury",
    "engine": "פלאג-אין הייבריד",
@@ -1012,7 +1010,7 @@
   },
   {
    "rows": [
-    43
+    42
    ],
    "car": "Chery Tiggo 9 PHEV Noble 4x4",
    "drive": "הנעה כפולה (4X4)",
@@ -1036,7 +1034,7 @@
   },
   {
    "rows": [
-    44
+    43
    ],
    "car": "Chery Tiggo 4 Pro HEV Comfort",
    "drive": "הנעה קדמית",
@@ -1060,7 +1058,7 @@
   },
   {
    "rows": [
-    45
+    44
    ],
    "car": "Chery Tiggo 4 Pro HEV Luxury",
    "drive": "הנעה קדמית",
@@ -1084,7 +1082,7 @@
   },
   {
    "rows": [
-    46
+    45
    ],
    "car": "Chery Tiggo 7 Luxury (approx = Tiggo 7 Pro PHEV Luxury)",
    "drive": "ככל הנראה הנעה קדמית",
@@ -1109,7 +1107,7 @@
   },
   {
    "rows": [
-    48
+    46
    ],
    "car": "Chery Arrizo 8 PHEV Comfort",
    "drive": "הנעה קדמית",
@@ -1137,7 +1135,7 @@
   },
   {
    "rows": [
-    49
+    47
    ],
    "car": "Chery FX HEV Comfort",
    "drive": "הנעה קדמית",
@@ -1165,7 +1163,7 @@
   },
   {
    "rows": [
-    50
+    48
    ],
    "car": "Hyundai Venue 1.6 (Prime Plus)",
    "drive": "הנעה קדמית",
@@ -1193,7 +1191,7 @@
   },
   {
    "rows": [
-    51
+    49
    ],
    "car": "Hyundai Kona Hybrid Premium",
    "drive": "הנעה קדמית",
@@ -1217,9 +1215,8 @@
   },
   {
    "rows": [
-    52,
-    55,
-    56
+    50,
+    53
    ],
    "car": "Hyundai Tucson 1.6T Panoramic",
    "drive": "הנעה קדמית",
@@ -1244,8 +1241,7 @@
   },
   {
    "rows": [
-    53,
-    57
+    51
    ],
    "car": "Hyundai Sonata Hybrid 2.0 Luxury",
    "drive": "הנעה קדמית",
@@ -1269,7 +1265,7 @@
   },
   {
    "rows": [
-    54
+    52
    ],
    "car": "Hyundai Sonata Hybrid 2.0 Limited",
    "drive": "הנעה קדמית",
@@ -1293,7 +1289,7 @@
   },
   {
    "rows": [
-    58
+    54
    ],
    "car": "Skoda Octavia 1.5 150hp Selection",
    "drive": "הנעה קדמית",
@@ -1317,7 +1313,7 @@
   },
   {
    "rows": [
-    59
+    55
    ],
    "car": "Skoda Superb 1.5T Style",
    "drive": "הנעה קדמית",
@@ -1341,8 +1337,7 @@
   },
   {
    "rows": [
-    60,
-    64
+    56
    ],
    "car": "Skoda Superb 2.0T 4x4 L&K",
    "drive": "הנעה כפולה (4X4)",
@@ -1370,8 +1365,7 @@
   },
   {
    "rows": [
-    61,
-    66
+    57
    ],
    "car": "Skoda Superb 2.0T Sportline 4x4",
    "drive": "הנעה כפולה (4X4)",
@@ -1395,7 +1389,7 @@
   },
   {
    "rows": [
-    62
+    58
    ],
    "car": "Skoda Kodiaq 2.0T Sportline 4x4",
    "drive": "הנעה כפולה (4X4)",
@@ -1419,7 +1413,7 @@
   },
   {
    "rows": [
-    63
+    59
    ],
    "car": "Skoda Octavia 1.5 150hp Ambition",
    "drive": "הנעה קדמית",
@@ -1443,7 +1437,7 @@
   },
   {
    "rows": [
-    65
+    60
    ],
    "car": "Skoda Superb TSI200 Style (approx = 2.0T Style 204hp)",
    "drive": "ככל הנראה הנעה קדמית",
@@ -1463,7 +1457,7 @@
   },
   {
    "rows": [
-    67
+    61
    ],
    "car": "Jaecoo 7 1.6T Titanium 2WD",
    "drive": "הנעה קדמית",
@@ -1487,7 +1481,7 @@
   },
   {
    "rows": [
-    68
+    62
    ],
    "car": "Jaecoo 7 PHEV Premium",
    "drive": "הנעה קדמית",
@@ -1511,8 +1505,8 @@
   },
   {
    "rows": [
-    69,
-    73
+    63,
+    67
    ],
    "car": "Jaecoo 7 PHEV Luxury",
    "drive": "הנעה קדמית",
@@ -1536,7 +1530,7 @@
   },
   {
    "rows": [
-    70
+    64
    ],
    "car": "Jaecoo 8 PHEV Luxury",
    "drive": "הנעה כפולה (4X4)",
@@ -1560,7 +1554,7 @@
   },
   {
    "rows": [
-    71
+    65
    ],
    "car": "Jaecoo 5 Hybrid Premium",
    "drive": "הנעה קדמית",
@@ -1585,7 +1579,7 @@
   },
   {
    "rows": [
-    72
+    66
    ],
    "car": "Jaecoo 8 PHEV Limited",
    "drive": "הנעה כפולה (4X4)",
@@ -1609,7 +1603,7 @@
   },
   {
    "rows": [
-    74
+    68
    ],
    "car": "Jaecoo 7 PHEV Elegance",
    "drive": "הנעה קדמית",
@@ -1633,7 +1627,7 @@
   },
   {
    "rows": [
-    75
+    69
    ],
    "car": "Jaecoo 5 Hybrid Luxury",
    "drive": "הנעה קדמית",
@@ -1658,7 +1652,7 @@
   },
   {
    "rows": [
-    76
+    70
    ],
    "car": "BYD ATTO 2 PHEV Boost",
    "drive": "הנעה קדמית",
@@ -1686,7 +1680,7 @@
   },
   {
    "rows": [
-    77
+    71
    ],
    "car": "BYD Sealion 5 DM-i Comfort",
    "drive": "הנעה קדמית",
@@ -1714,7 +1708,7 @@
   },
   {
    "rows": [
-    78
+    72
    ],
    "car": "BYD Sealion 5 DM-i Design",
    "drive": "הנעה קדמית",
@@ -1742,7 +1736,7 @@
   },
   {
    "rows": [
-    79
+    73
    ],
    "car": "BYD SEAL 5 DM-i Comfort",
    "drive": "הנעה קדמית",
@@ -1771,7 +1765,7 @@
   },
   {
    "rows": [
-    80
+    74
    ],
    "car": "BYD SEAL U DM-i Boost",
    "drive": "הנעה קדמית",
@@ -1795,7 +1789,7 @@
   },
   {
    "rows": [
-    81
+    75
    ],
    "car": "BYD SEAL U DM-i Comfort",
    "drive": "הנעה קדמית",
@@ -1819,7 +1813,7 @@
   },
   {
    "rows": [
-    82
+    76
    ],
    "car": "BYD SEAL U EV Comfort",
    "drive": "הנעה קדמית",
@@ -1843,7 +1837,7 @@
   },
   {
    "rows": [
-    83
+    77
    ],
    "car": "BYD SEAL Excellence 4x4",
    "drive": "הנעה כפולה (4X4), שני מנועים",

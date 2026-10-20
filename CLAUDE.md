@@ -21,6 +21,9 @@ tools/
 ```
 
 After editing index.html (CARS, cccLead, cccDone, okbox styles) always re-run both generators.
+WARNING: card figures (VERIFIED_HP / VERIFIED_RANGE / VERIFIED_0100 / VERIFIED_L in index.html) and specs.json "rows" are keyed by the
+car's INDEX in CARS. Append new cars at the end. If you ever remove or reorder cars, remap those keys (see commit "Fix card figures
+after duplicate removal").
 
 Preview locally: `cd site && python3 -m http.server 8080` then open http://localhost:8080 (use a server, not file://, so CSS masks load).
 
