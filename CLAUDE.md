@@ -58,6 +58,12 @@ Still open:
 - "לא להמציא שום נתון. אם לא ניתן לאמת נתון בוודאות, אל תציג את השורה בכלל באתר. אסור להציג ללקוח 'ממתין לאימות', 'לא ידוע' או placeholder אחר."
 - No images with watermarks, other agencies' logos, or of a different version of the car.
 
+## Owner-supplied material
+
+- Owner instruction (2026-10-20): "כול מה שאני שולח לך תוסיף לטבלה" — every price, car or photo the owner sends is added to the
+  catalog (CARS in index.html) and logged in docs/price-report-icar-2026.md (prices) with the date and "נמסר ע"י הבעלים" as source.
+  Re-run both generators after any CARS change.
+
 ## Car photos (owner approved this style)
 
 - One photo per model (same maker + model share it), saved as `site/cars/<maker>-<model>.webp` and set in the car's `img` field in CARS.
