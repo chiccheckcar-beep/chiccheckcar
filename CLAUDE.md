@@ -73,8 +73,10 @@ Still open:
 ## Car photos (owner approved this style)
 
 - One photo per model (same maker + model share it), saved as `site/cars/<maker>-<model>.webp` and set in the car's `img` field in CARS.
-- Style: car only (side or front 3/4 view), transparent background (no scenery), trimmed to the car, 1000px wide, WebP quality ~82.
-  Must look like `site/cars/toyota-yaris.webp` so the whole catalog is uniform. Re-run both generators after changing CARS.
+- Style (owner, 2026-10-20): WHITE car, FRONT 3/4 view (front-left corner toward the viewer), transparent background, trimmed,
+  1000px wide, WebP ~82, saved as `site/cars/<slug>-34.webp`. Must look like `site/cars/toyota-yaris-34.webp`.
+  Good sources: toyota-europe image server (`day-exterior-33_040.png`), hyundai.com/contents/vr360/<code>/exterior/<colour>/001.png,
+  kia.com configurator frames, byd.com/eu gallery "Front View" white, mg.co.uk configurator front/arctic-white, omodajaecoo.com.au. Re-run both generators after changing CARS.
 - Same model and generation as sold in Israel is enough; the trim may differ (owner approved). The page already says "תמונה להמחשה בלבד".
 - Preferred source: the Israeli importer's own configurator images (e.g. toyota.co.il -> img-optimize.toyota-europe.com
   `visual-for-model-selector` PNG, change width/height in the URL for a larger size).
