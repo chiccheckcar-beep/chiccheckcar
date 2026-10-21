@@ -3161,6 +3161,606 @@
     }
    ],
    "internal": "תאוצה \"כ-5.0 שניות\" לפי auto.co.il (CarTube: 4.5). הספק לא נמצא במקור אמין — לא הוצג (הכרטיס מציג 299). נפח תא מטען חלוקים (536 / 420 ליטר) — לא הוצג."
+  },
+  {
+   "rows": [
+    78
+   ],
+   "car": "Toyota Aygo X 1.5 Hybrid Pure",
+   "drive": "הנעה קדמית",
+   "engine": "היברידי בנזין, 1.5 ליטר (1,490 סמ\"ק)",
+   "power": "116 כ\"ס (משולב)",
+   "accel": "9.2 שניות",
+   "gearbox": "אוטומטית רציפה (CVT)",
+   "consumption": "27 ק\"מ/ל' (משולב)",
+   "seats": "4",
+   "trunk": "231 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — טויוטה אייגו X הייבריד Pure 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/36-טויוטה/207-טויוטה-אייגו-x/2116-הייבריד-pure-2026"
+    },
+    {
+     "name": "טויוטה ישראל (יבואן) — מפרט טכני אייגו X",
+     "url": "https://www.toyota.co.il/new-cars/aygo-x/specifications"
+    }
+   ]
+  },
+  {
+   "rows": [
+    79
+   ],
+   "car": "Toyota Aygo X 1.5 Hybrid Pulse",
+   "drive": "הנעה קדמית",
+   "engine": "היברידי בנזין, 1.5 ליטר (1,490 סמ\"ק)",
+   "power": "116 כ\"ס (משולב)",
+   "accel": "9.2 שניות",
+   "gearbox": "אוטומטית רציפה (CVT)",
+   "consumption": "25.6 ק\"מ/ל' (משולב)",
+   "seats": "4",
+   "trunk": "231 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — טויוטה אייגו X הייבריד Pulse 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/36-טויוטה/207-טויוטה-אייגו-x/2117-הייבריד-pluse-2026"
+    },
+    {
+     "name": "טויוטה ישראל (יבואן) — מפרט טכני אייגו X",
+     "url": "https://www.toyota.co.il/new-cars/aygo-x/specifications"
+    }
+   ]
+  },
+  {
+   "rows": [
+    80
+   ],
+   "car": "Toyota Aygo X 1.5 Hybrid Peak",
+   "drive": "הנעה קדמית",
+   "engine": "היברידי בנזין, 1.5 ליטר (1,490 סמ\"ק)",
+   "power": "116 כ\"ס (משולב)",
+   "accel": "9.2 שניות",
+   "gearbox": "אוטומטית רציפה (CVT)",
+   "consumption": "26.3 ק\"מ/ל' (משולב)",
+   "seats": "4",
+   "trunk": "231 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — טויוטה אייגו X הייבריד Peak 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/36-טויוטה/207-טויוטה-אייגו-x/2118-הייבריד-peak-2026"
+    },
+    {
+     "name": "טויוטה ישראל (יבואן) — מפרט טכני אייגו X",
+     "url": "https://www.toyota.co.il/new-cars/aygo-x/specifications"
+    }
+   ]
+  },
+  {
+   "rows": [
+    81
+   ],
+   "car": "Toyota Corolla 1.8 Hybrid sedan",
+   "drive": "הנעה קדמית",
+   "engine": "היברידי בנזין, 1.8 ליטר (1,798 סמ\"ק)",
+   "power": "138 כ\"ס (משולב)",
+   "accel": "10 שניות",
+   "gearbox": "אוטומטית רציפה (CVT)",
+   "consumption": "21.3 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "371 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — טויוטה קורולה 1.8 היברידי 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/36-טויוטה/199-טויוטה-קורולה/2073-1-8-היברידי-2026"
+    },
+    {
+     "name": "auto.co.il — טויוטה קורולה 2026 (תאוצה 0-100: 10 שניות)",
+     "url": "https://www.auto.co.il/cars/toyota/corolla/2026"
+    }
+   ],
+   "internal": "auto.co.il מציין 137–138 כ\"ס (תקן אמריקאי) ו-140 כ\"ס בתקן האירופי; מוצג הנתון שבמחירון CarTube."
+  },
+  {
+   "rows": [
+    82
+   ],
+   "car": "Toyota C-HR+ FWD Motion 57.7 kWh",
+   "drive": "הנעה קדמית",
+   "engine": "חשמלי, סוללה 57.7 קוט\"ש",
+   "power": "167 כ\"ס",
+   "accel": "8.4 שניות",
+   "gearbox": "תיבה חד-הילוכית",
+   "consumption": "טווח 458 ק\"מ (WLTP), 13.4 קוט\"ש/100 ק\"מ",
+   "seats": "5",
+   "trunk": "416 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — טויוטה C-HR פלוס FWD Motion 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/36-טויוטה/212-טויוטה-c-hr-פלוס/2122-fwd-motion-2026"
+    },
+    {
+     "name": "טויוטה ישראל (יבואן) — מפרט טכני +C-HR (167 כ\"ס, 8.4 שניות, 134 וואט-שעה/ק\"מ)",
+     "url": "https://www.toyota.co.il/new-cars/toyota-c-hr-plus/specifications"
+    }
+   ]
+  },
+  {
+   "rows": [
+    83
+   ],
+   "car": "Toyota C-HR+ FWD Vision 77 kWh",
+   "drive": "הנעה קדמית",
+   "engine": "חשמלי, סוללה 77 קוט\"ש",
+   "power": "224 כ\"ס",
+   "accel": "7.3 שניות",
+   "gearbox": "תיבה חד-הילוכית",
+   "consumption": "טווח 607 ק\"מ (WLTP), 13.4 קוט\"ש/100 ק\"מ",
+   "seats": "5",
+   "trunk": "416 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — טויוטה C-HR פלוס FWD Vision 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/36-טויוטה/212-טויוטה-c-hr-פלוס/2123-fwd-vision-2026"
+    },
+    {
+     "name": "טויוטה ישראל — +C-HR: רכב חשמלי עם טווח נסיעה עד 607 ק\"מ",
+     "url": "https://www.toyota.co.il/new-cars/toyota-c-hr-plus"
+    }
+   ]
+  },
+  {
+   "rows": [
+    84
+   ],
+   "car": "Toyota C-HR+ AWD Exclusive 77 kWh",
+   "drive": "הנעה כפולה (4x4)",
+   "engine": "חשמלי, סוללה 77 קוט\"ש, שני מנועים",
+   "power": "343 כ\"ס",
+   "accel": "5.2 שניות",
+   "gearbox": "תיבה חד-הילוכית",
+   "consumption": "טווח 502 ק\"מ (WLTP), 15.7 קוט\"ש/100 ק\"מ",
+   "seats": "5",
+   "trunk": "416 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — טויוטה C-HR פלוס AWD Exclusive 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/36-טויוטה/212-טויוטה-c-hr-פלוס/2121-awd-exclusive-2026"
+    },
+    {
+     "name": "EVKX — Toyota C-HR+ 77 kWh AWD specifications (0-100 ב-5.2 שניות, 343 כ\"ס)",
+     "url": "https://evkx.net/models/toyota/c-hrplus/c-hrplus_77_kwh_awd/specifications"
+    }
+   ],
+   "internal": "בכרטיס הרכב באתר מוצג כיום 0-100 של 5.5 שניות; שני המקורות מציינים 5.2 שניות."
+  },
+  {
+   "rows": [
+    85
+   ],
+   "car": "Toyota Highlander 2.5 Hybrid AWD E-Motion",
+   "drive": "הנעה כפולה (4x4)",
+   "engine": "היברידי: בנזין 2.5 ליטר (2,487 סמ\"ק) + מנועים חשמליים",
+   "power": "248 כ\"ס (משולב)",
+   "accel": "8.3 שניות",
+   "gearbox": "אוטומטית רציפה (CVT)",
+   "consumption": "15.2 ק\"מ/ל' (משולב)",
+   "seats": "7",
+   "sources": [
+    {
+     "name": "CarTube — טויוטה היילנדר 2.5 E-Motion 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/36-טויוטה/208-טויוטה-היילנדר/1979-2-5-e-motion-2026"
+    },
+    {
+     "name": "auto.co.il — טויוטה היילנדר 2026 2.5 היברידי E-Motion 4x4",
+     "url": "https://www.auto.co.il/cars/toyota/highlander/2026/580459/"
+    }
+   ],
+   "internal": "נפח תא המטען לא מוצג: CarTube מציין 241 ליטר ו-auto.co.il 305 ליטר."
+  },
+  {
+   "rows": [
+    86
+   ],
+   "car": "Toyota Highlander 2.5 Hybrid AWD E-Xclusive",
+   "drive": "הנעה כפולה (4x4)",
+   "engine": "היברידי: בנזין 2.5 ליטר (2,487 סמ\"ק) + מנועים חשמליים",
+   "power": "248 כ\"ס (משולב)",
+   "accel": "8.3 שניות",
+   "gearbox": "אוטומטית רציפה (CVT)",
+   "consumption": "14.1 ק\"מ/ל' (משולב)",
+   "seats": "7",
+   "sources": [
+    {
+     "name": "CarTube — טויוטה היילנדר 2.5 E-Xclusive 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/36-טויוטה/208-טויוטה-היילנדר/1980-2-5-e-xclusive-2026"
+    },
+    {
+     "name": "auto.co.il — טויוטה היילנדר 2026 (צריכה 14.1–15.2 ק\"מ/ל', 0-100 ב-8.3 שניות)",
+     "url": "https://www.auto.co.il/cars/toyota/highlander/2026"
+    }
+   ],
+   "internal": "נפח תא המטען לא מוצג: המקורות סותרים (241 / 305 ליטר)."
+  },
+  {
+   "rows": [
+    87
+   ],
+   "car": "Toyota Proace City 1.5 diesel auto short 5 seats",
+   "drive": "הנעה קדמית",
+   "engine": "טורבו דיזל, 1.5 ליטר (1,499 סמ\"ק)",
+   "power": "130 כ\"ס",
+   "accel": "11 שניות",
+   "gearbox": "אוטומטית, 8 הילוכים",
+   "consumption": "17.5 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "983 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — טויוטה סיטי 1.5 טורבו-דיזל קצר 5 מושבים 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/36-טויוטה/203-טויוטה-סיטי/1944-1-5-טורבו-דיזל-קצר-5-מושבים-2026"
+    },
+    {
+     "name": "טויוטה ישראל (יבואן) — מפרט טכני פרואייס סיטי ורסו (130 כ\"ס, 1,499 סמ\"ק)",
+     "url": "https://www.toyota.co.il/new-cars/proace-city-verso/specifications"
+    }
+   ],
+   "internal": "הספק: היבואן מציין 130 כ\"ס, CarTube מציין 131 כ\"ס (גם בכרטיס הרכב באתר מוצג 131)."
+  },
+  {
+   "rows": [
+    88
+   ],
+   "car": "Toyota Proace City 1.5 diesel auto long",
+   "drive": "הנעה קדמית",
+   "engine": "טורבו דיזל, 1.5 ליטר (1,499 סמ\"ק)",
+   "power": "130 כ\"ס",
+   "accel": "11.5 שניות",
+   "gearbox": "אוטומטית, 8 הילוכים",
+   "consumption": "17.2 ק\"מ/ל' (משולב)",
+   "trunk": "1,538 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — טויוטה סיטי 1.5 טורבו-דיזל ארוך 7 מושבים 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/36-טויוטה/203-טויוטה-סיטי/1945-1-5-טורבו-דיזל-ארוך-7-מושבים-2026"
+    },
+    {
+     "name": "טויוטה ישראל (יבואן) — מפרט טכני פרואייס סיטי ורסו (130 כ\"ס, 1,499 סמ\"ק)",
+     "url": "https://www.toyota.co.il/new-cars/proace-city-verso/specifications"
+    }
+   ],
+   "internal": "מספר מושבים לא מוצג: שם הגרסה ב-CarTube הוא '7 מושבים' אך שדה מספר המושבים באותו עמוד מציין 5. תאוצה 11.5 שנ' בעמוד CarTube (בכרטיס מוצג 11). הספק 130 לפי היבואן, 131 לפי CarTube."
+  },
+  {
+   "rows": [
+    89
+   ],
+   "car": "Toyota Proace 2.0 diesel auto Medium (van)",
+   "drive": "הנעה קדמית",
+   "engine": "טורבו דיזל, 2.0 ליטר (1,997 סמ\"ק)",
+   "power": "177 כ\"ס",
+   "accel": "8.5 שניות",
+   "gearbox": "אוטומטית, 8 הילוכים",
+   "consumption": "13.9 ק\"מ/ל' (משולב)",
+   "seats": "3",
+   "trunk": "5.8 מ\"ק (נפח הטענה)",
+   "sources": [
+    {
+     "name": "CarTube — טויוטה פרואייס 2.0 דיזל Medium 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/36-טויוטה/210-טויוטה-פרואייס/1933-2-0-דיזל-medium-2026"
+    },
+    {
+     "name": "טויוטה ישראל (יבואן) — מפרט טכני פרואייס (177 כ\"ס, 8.5 שניות, 8 הילוכים)",
+     "url": "https://www.toyota.co.il/new-cars/proace/specifications"
+    }
+   ],
+   "internal": "auto.co.il מציין תיבה בת 6 הילוכים; היבואן ו-CarTube מציינים 8."
+  },
+  {
+   "rows": [
+    90
+   ],
+   "car": "Toyota Proace Verso 2.2 diesel auto 8 seats",
+   "drive": "הנעה קדמית",
+   "engine": "טורבו דיזל, 2.2 ליטר (2,184 סמ\"ק)",
+   "power": "180 כ\"ס",
+   "accel": "9.1 שניות",
+   "gearbox": "אוטומטית, 8 הילוכים",
+   "consumption": "14.3 ק\"מ/ל' (משולב)",
+   "seats": "8",
+   "sources": [
+    {
+     "name": "טויוטה ישראל (יבואן) — מפרט טכני פרואייס ורסו (2,184 סמ\"ק, 180 כ\"ס, 8 מושבים)",
+     "url": "https://www.toyota.co.il/new-cars/proace-verso/specifications"
+    },
+    {
+     "name": "auto.co.il — טויוטה פרואייס 2026 ורסו 2.2 דיזל 8 מושבים",
+     "url": "https://www.auto.co.il/cars/toyota/proace/2026/verso-8-seats/"
+    },
+    {
+     "name": "auto.co.il — טויוטה פרואייס 2026 (ורסו 2.2: 0-100 ב-9.1 שניות)",
+     "url": "https://www.auto.co.il/cars/toyota/proace/2026"
+    }
+   ],
+   "internal": "CarTube מציג את הוורסו כ-2.0 (1,997 סמ\"ק); היבואן ו-auto.co.il מציינים 2.2 ליטר (2,184 סמ\"ק). נפח תא מטען לא מוצג: המקורות סותרים (912 / 1,237 ליטר)."
+  },
+  {
+   "rows": [
+    91
+   ],
+   "car": "Toyota Proace Verso 2.2 diesel auto 9 seats",
+   "drive": "הנעה קדמית",
+   "engine": "טורבו דיזל, 2.2 ליטר (2,184 סמ\"ק)",
+   "power": "180 כ\"ס",
+   "accel": "9.1 שניות",
+   "gearbox": "אוטומטית, 8 הילוכים",
+   "consumption": "14.3 ק\"מ/ל' (משולב)",
+   "seats": "9",
+   "sources": [
+    {
+     "name": "auto.co.il — טויוטה פרואייס 2026 ורסו 2.2 דיזל 9 מושבים",
+     "url": "https://www.auto.co.il/cars/toyota/proace/2026/verso-9-seats/"
+    },
+    {
+     "name": "CarTube — טויוטה פרואייס ורסו 9 מושבים 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/36-טויוטה/210-טויוטה-פרואייס/1934-ורסו-2-0-דיזל-9-מושבים-2026"
+    },
+    {
+     "name": "טויוטה ישראל (יבואן) — מפרט טכני פרואייס ורסו (2,184 סמ\"ק, 180 כ\"ס)",
+     "url": "https://www.toyota.co.il/new-cars/proace-verso/specifications"
+    }
+   ],
+   "internal": "CarTube מציג את הוורסו כ-2.0 (1,997 סמ\"ק); היבואן ו-auto.co.il מציינים 2.2 ליטר (2,184 סמ\"ק). נפח תא מטען לא מוצג (מקורות סותרים)."
+  },
+  {
+   "rows": [
+    92
+   ],
+   "car": "Toyota Hilux 2.8 diesel MHEV auto 4x4 Active Pro",
+   "drive": "הנעה כפולה (4x4)",
+   "engine": "טורבו דיזל, 2.8 ליטר (2,755 סמ\"ק) עם תגבור היברידי מתון",
+   "power": "204 כ\"ס",
+   "accel": "10.7 שניות",
+   "gearbox": "אוטומטית, 6 הילוכים",
+   "consumption": "10.1 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "sources": [
+    {
+     "name": "CarTube — טויוטה היילקס 2.8 אוטו' 4X4 Active Pro 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/36-טויוטה/205-טויוטה-היילקס/1925-2-8-אוטו-4x4-active-pro-2026"
+    },
+    {
+     "name": "auto.co.il — טויוטה היילקס 2026 (דור חדש) 2.8 דיזל היברידי-מתון Active Pro 4x4",
+     "url": "https://www.auto.co.il/cars/toyota/hilux/2026/active-pro-4x4/"
+    },
+    {
+     "name": "auto.co.il — טויוטה היילקס 2026 (2.8: 0-100 ב-10.7 שניות)",
+     "url": "https://www.auto.co.il/cars/toyota/hilux/2026"
+    },
+    {
+     "name": "טויוטה ישראל (יבואן) — מפרט טכני היילקס (2,755 סמ\"ק, 204 כ\"ס)",
+     "url": "https://www.toyota.co.il/new-cars/hilux/specifications"
+    }
+   ]
+  },
+  {
+   "rows": [
+    93
+   ],
+   "car": "Toyota Hilux 2.8 diesel MHEV auto 4x4 Adventure",
+   "drive": "הנעה כפולה (4x4)",
+   "engine": "טורבו דיזל, 2.8 ליטר (2,755 סמ\"ק) עם תגבור היברידי מתון",
+   "power": "204 כ\"ס",
+   "accel": "10.7 שניות",
+   "gearbox": "אוטומטית, 6 הילוכים",
+   "consumption": "10.2 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "sources": [
+    {
+     "name": "CarTube — טויוטה היילקס 2.8 אוטו' 4X4 Adventure 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/36-טויוטה/205-טויוטה-היילקס/1924-2-8-אוטו-4x4-adventure-2026"
+    },
+    {
+     "name": "auto.co.il — טויוטה היילקס 2026 (דור חדש) 2.8 דיזל היברידי-מתון Adventure 4x4",
+     "url": "https://www.auto.co.il/cars/toyota/hilux/2026/adventure-4x4/"
+    },
+    {
+     "name": "auto.co.il — טויוטה היילקס 2026 (2.8: 0-100 ב-10.7 שניות)",
+     "url": "https://www.auto.co.il/cars/toyota/hilux/2026"
+    },
+    {
+     "name": "טויוטה ישראל (יבואן) — מפרט טכני היילקס (2,755 סמ\"ק, 204 כ\"ס)",
+     "url": "https://www.toyota.co.il/new-cars/hilux/specifications"
+    }
+   ]
+  },
+  {
+   "rows": [
+    94
+   ],
+   "car": "Toyota Hilux 2.8 diesel MHEV auto 4x4 Sahara",
+   "drive": "הנעה כפולה (4x4)",
+   "engine": "טורבו דיזל, 2.8 ליטר (2,755 סמ\"ק) עם תגבור היברידי מתון",
+   "power": "204 כ\"ס",
+   "accel": "10.7 שניות",
+   "gearbox": "אוטומטית, 6 הילוכים",
+   "consumption": "10.0 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "sources": [
+    {
+     "name": "CarTube — טויוטה היילקס 2.8 אוטו' 4X4 Sahara 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/36-טויוטה/205-טויוטה-היילקס/1926-2-8-אוטו-4x4-sahara-2026"
+    },
+    {
+     "name": "auto.co.il — טויוטה היילקס 2026 (דור חדש) 2.8 דיזל היברידי-מתון Sahara 4x4",
+     "url": "https://www.auto.co.il/cars/toyota/hilux/2026/sahara-4x4/"
+    },
+    {
+     "name": "auto.co.il — טויוטה היילקס 2026 (2.8: 0-100 ב-10.7 שניות)",
+     "url": "https://www.auto.co.il/cars/toyota/hilux/2026"
+    },
+    {
+     "name": "טויוטה ישראל (יבואן) — מפרט טכני היילקס (2,755 סמ\"ק, 204 כ\"ס)",
+     "url": "https://www.toyota.co.il/new-cars/hilux/specifications"
+    }
+   ]
+  },
+  {
+   "rows": [
+    153
+   ],
+   "car": "Toyota Corolla Cross 1.8 Hybrid Active",
+   "drive": "הנעה קדמית",
+   "engine": "היברידי בנזין, 1.8 ליטר (1,798 סמ\"ק)",
+   "power": "140 כ\"ס (משולב)",
+   "accel": "9.9 שניות",
+   "gearbox": "אוטומטית רציפה (CVT)",
+   "consumption": "20 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "403 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — טויוטה קורולה קרוס 1.8 היברידי Active 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/36-טויוטה/201-טויוטה-קורולה-קרוס/2041-1-8-היברידי-active-2026"
+    },
+    {
+     "name": "טויוטה ישראל (יבואן) — מפרט טכני קורולה קרוס (140 כ\"ס, 9.9 שניות)",
+     "url": "https://www.toyota.co.il/new-cars/corolla-cross/specifications"
+    }
+   ]
+  },
+  {
+   "rows": [
+    154
+   ],
+   "car": "Toyota Corolla Cross 1.8 Hybrid Adventure",
+   "drive": "הנעה קדמית",
+   "engine": "היברידי בנזין, 1.8 ליטר (1,798 סמ\"ק)",
+   "power": "140 כ\"ס (משולב)",
+   "accel": "10 שניות",
+   "gearbox": "אוטומטית רציפה (CVT)",
+   "consumption": "20 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "436 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — טויוטה קורולה קרוס 1.8 היברידי Adventure 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/36-טויוטה/201-טויוטה-קורולה-קרוס/2039-1-8-היברידי-adventure-2026"
+    },
+    {
+     "name": "טויוטה ישראל (יבואן) — מפרט טכני קורולה קרוס (436 ליטר)",
+     "url": "https://www.toyota.co.il/new-cars/corolla-cross/specifications"
+    }
+   ]
+  },
+  {
+   "rows": [
+    155
+   ],
+   "car": "Toyota Yaris Cross 1.5 Hybrid Eco",
+   "drive": "הנעה קדמית",
+   "engine": "היברידי בנזין, 1.5 ליטר (1,490 סמ\"ק)",
+   "power": "116 כ\"ס (משולב)",
+   "accel": "11.2 שניות",
+   "gearbox": "אוטומטית רציפה (CVT)",
+   "consumption": "22.7 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "397 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — טויוטה יאריס קרוס הייבריד Eco 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/36-טויוטה/198-טויוטה-יאריס-קרוס/5816-הייבריד-eco"
+    },
+    {
+     "name": "טויוטה ישראל (יבואן) — מפרט טכני יאריס קרוס (116 כ\"ס, 11.2 שניות, 397 ליטר)",
+     "url": "https://www.toyota.co.il/new-cars/yaris-cross/specifications"
+    }
+   ]
+  },
+  {
+   "rows": [
+    156
+   ],
+   "car": "Toyota Camry 2.5 Hybrid XLE",
+   "drive": "הנעה קדמית",
+   "engine": "היברידי: בנזין 2.5 ליטר (2,487 סמ\"ק) + מנוע חשמלי",
+   "power": "227 כ\"ס (משולב)",
+   "accel": "7.2 שניות",
+   "gearbox": "אוטומטית רציפה (CVT)",
+   "consumption": "20.4 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "493 ליטר",
+   "sources": [
+    {
+     "name": "auto.co.il — טויוטה קאמרי 2026 2.5 היברידי XLE (227 כ\"ס, 20.4 ק\"מ/ל')",
+     "url": "https://www.auto.co.il/cars/toyota/camry/2026/581002/"
+    },
+    {
+     "name": "CarTube — טויוטה קאמרי היברידית XLE 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/36-טויוטה/202-טויוטה-קאמרי/1988-היברידית-xle-2026"
+    },
+    {
+     "name": "טויוטה ישראל (יבואן) — מפרט טכני קאמרי (2,487 סמ\"ק, 7.2 שניות, 493 ליטר)",
+     "url": "https://www.toyota.co.il/new-cars/camry/specifications"
+    }
+   ],
+   "internal": "הספק: auto.co.il מציין 227 כ\"ס ל-XLE ו-230 כ\"ס ל-LE; CarTube ומפרט היבואן (גרסה לא מצוינת) מציינים 230 כ\"ס."
+  },
+  {
+   "rows": [
+    157
+   ],
+   "car": "Lexus ES 350e Kiwami (EV)",
+   "drive": "הנעה קדמית",
+   "engine": "חשמלי, סוללה 77 קוט\"ש",
+   "power": "224 כ\"ס",
+   "accel": "8 שניות",
+   "gearbox": "תיבה חד-הילוכית",
+   "consumption": "טווח 525 ק\"מ (WLTP), 16.2 קוט\"ש/100 ק\"מ",
+   "seats": "5",
+   "trunk": "517 ליטר",
+   "sources": [
+    {
+     "name": "auto.co.il — לקסוס ES 2026 350e חשמלי Kiwami",
+     "url": "https://www.auto.co.il/cars/lexus/es/2026/350e-electric-kiwami/"
+    },
+    {
+     "name": "CarTube — לקסוס ES 350e Kiwami 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/43-לקסוס/259-לקסוס-es/2801-350e-kiwami-2026"
+    },
+    {
+     "name": "EV Database — Lexus ES 350e (MY26)",
+     "url": "https://ev-database.org/car/3492/Lexus-ES-350e"
+    }
+   ],
+   "internal": "הספק: auto.co.il ו-EV Database מציינים 224 כ\"ס (165 קו\"ט); CarTube מציין 227 כ\"ס (וזה גם הנתון בכרטיס הרכב באתר)."
+  },
+  {
+   "rows": [
+    158
+   ],
+   "car": "Lexus NX 450h+ PHEV F-Sport AWD",
+   "drive": "הנעה כפולה (4x4)",
+   "engine": "פלאג-אין היברידי: בנזין 2.5 ליטר (2,487 סמ\"ק) + מנועים חשמליים, סוללה 18.1 קוט\"ש",
+   "power": "309 כ\"ס (משולב)",
+   "accel": "6.3 שניות",
+   "gearbox": "אוטומטית רציפה (CVT)",
+   "consumption": "טווח חשמלי 69–70 ק\"מ (WLTP); 90.9 ק\"מ/ל' (משולב, WLTP)",
+   "seats": "5",
+   "trunk": "549 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — לקסוס NX 2.5 פלאג-אין 450h+ F-Sport 4X4 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/43-לקסוס/257-לקסוס-nx/2759-2-5-פלאג-אין-450h-plus-f-sport-4x4-2026"
+    },
+    {
+     "name": "auto.co.il — לקסוס NX 2026 450h+ פלאג אין F-Sport P+ 4x4",
+     "url": "https://www.auto.co.il/cars/lexus/nx/2026/580614/"
+    },
+    {
+     "name": "auto.co.il — לקסוס NX 2026 (450h+: 309 כ\"ס, 0-100 ב-6.3 שניות)",
+     "url": "https://www.auto.co.il/cars/lexus/nx/2026"
+    }
+   ],
+   "internal": "טווח חשמלי: CarTube מציין 70 ק\"מ, auto.co.il מציין 69 ק\"מ לרמת F-Sport. auto.co.il מסווג את ההנעה בעמוד הגרסה כקדמית, אך שם הגרסה בשני המקורות הוא 4x4."
   }
  ],
  "pending": []
