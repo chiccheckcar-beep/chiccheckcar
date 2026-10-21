@@ -3761,6 +3761,827 @@
     }
    ],
    "internal": "טווח חשמלי: CarTube מציין 70 ק\"מ, auto.co.il מציין 69 ק\"מ לרמת F-Sport. auto.co.il מסווג את ההנעה בעמוד הגרסה כקדמית, אך שם הגרסה בשני המקורות הוא 4x4."
+  },
+  {
+   "rows": [
+    115
+   ],
+   "car": "Hyundai Venue 1.6 Prime",
+   "drive": "הנעה קדמית",
+   "engine": "בנזין, 1.6 ליטר (1,598 סמ\"ק)",
+   "power": "121 כ\"ס",
+   "accel": "11.2 שניות",
+   "gearbox": "אוטומטית רציפה (CVT)",
+   "consumption": "13.3 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "355 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — יונדאי וניו 1.6 Prime 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/39-יונדאי/226-יונדאי-וניו/2259-1-6-prime-2026"
+    },
+    {
+     "name": "auto.co.il — יונדאי וניו 2026 1.6 Pure (מכניקה זהה בכל הגרסאות)",
+     "url": "https://www.auto.co.il/cars/hyundai/venue/2026/pure/"
+    }
+   ],
+   "internal": "הספק: auto.co.il מציין 121 כ\"ס, CarTube מציין 123 כ\"ס."
+  },
+  {
+   "rows": [
+    116
+   ],
+   "car": "Hyundai Kona Electric Pure 65.4 kWh",
+   "drive": "הנעה קדמית",
+   "engine": "חשמלי, סוללה 65.4 קוט\"ש",
+   "power": "214 כ\"ס",
+   "accel": "7.8 שניות",
+   "gearbox": "תיבה חד-הילוכית",
+   "consumption": "טווח 506 ק\"מ, 14.9 קוט\"ש/100 ק\"מ",
+   "seats": "5",
+   "trunk": "466 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — יונדאי קונה EV Pure 2026 (צריכת חשמל 149 Wh/km = 14.9 קוט\"ש/100 ק\"מ)",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/39-יונדאי/233-יונדאי-קונה/2337-ev-pure-2026-2"
+    },
+    {
+     "name": "auto.co.il — יונדאי קונה חשמלי 2026 Pure",
+     "url": "https://www.auto.co.il/cars/hyundai/kona-ev/2026/pure/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    118
+   ],
+   "car": "Hyundai Kona Electric Ultimate 65.4 kWh",
+   "drive": "הנעה קדמית",
+   "engine": "חשמלי, סוללה 65.4 קוט\"ש",
+   "power": "214 כ\"ס",
+   "accel": "8.1 שניות",
+   "gearbox": "תיבה חד-הילוכית",
+   "consumption": "טווח 466 ק\"מ, 16.2 קוט\"ש/100 ק\"מ",
+   "seats": "5",
+   "trunk": "466 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — יונדאי קונה EV Ultimate 2026 (צריכת חשמל 162 Wh/km = 16.2 קוט\"ש/100 ק\"מ)",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/39-יונדאי/233-יונדאי-קונה/2336-ev-ultimate-2026-2"
+    },
+    {
+     "name": "auto.co.il — יונדאי קונה חשמלי 2026 Ultimate",
+     "url": "https://www.auto.co.il/cars/hyundai/kona-ev/2026/ultimate/"
+    }
+   ],
+   "internal": "תאוצה: auto.co.il מציין 8.1 שניות, CarTube מציין 7.8 שניות."
+  },
+  {
+   "rows": [
+    117,
+    119
+   ],
+   "car": "Hyundai Kona Hybrid 1.6 (138 hp) Pure / Ultimate",
+   "drive": "הנעה קדמית",
+   "engine": "היברידי: בנזין 1.6 ליטר (1,580 סמ\"ק) + מנוע חשמלי",
+   "power": "138 כ\"ס (משולב)",
+   "accel": "11 שניות",
+   "gearbox": "רובוטית כפולת מצמדים, 6 הילוכים",
+   "consumption": "21.3 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "sources": [
+    {
+     "name": "CarTube — יונדאי קונה 1.6 היברידי 138 כ\"ס Pure 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/39-יונדאי/233-יונדאי-קונה/2340-1-6-היברידי-138-כ-ס-pure-2026"
+    },
+    {
+     "name": "CarTube — יונדאי קונה 1.6 היברידי 138 כ\"ס Ultimate 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/39-יונדאי/233-יונדאי-קונה/2339-1-6-היברידי-138-כ-ס-ultimate-2026"
+    },
+    {
+     "name": "auto.co.il — יונדאי קונה 2026 1.6 היברידי (138 כ\"ס) Pure",
+     "url": "https://www.auto.co.il/cars/hyundai/kona/2026/138-pure/"
+    },
+    {
+     "name": "auto.co.il — יונדאי קונה 2026 1.6 היברידי (138 כ\"ס) Ultimate",
+     "url": "https://www.auto.co.il/cars/hyundai/kona/2026/ultimate-138/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    120
+   ],
+   "car": "Hyundai Kona Hybrid 1.6 (138 hp) N-Line",
+   "drive": "הנעה קדמית",
+   "engine": "היברידי: בנזין 1.6 ליטר (1,580 סמ\"ק) + מנוע חשמלי",
+   "power": "138 כ\"ס (משולב)",
+   "accel": "11 שניות",
+   "gearbox": "רובוטית כפולת מצמדים, 6 הילוכים",
+   "consumption": "20.8 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "sources": [
+    {
+     "name": "CarTube — יונדאי קונה 1.6 היברידי 138 כ\"ס N ליין 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/39-יונדאי/233-יונדאי-קונה/2338-1-6-היברידי-138-כ-ס-n-ליין-2026"
+    },
+    {
+     "name": "auto.co.il — יונדאי קונה 2026 1.6 היברידי (138 כ\"ס) N-Line",
+     "url": "https://www.auto.co.il/cars/hyundai/kona/2026/n-line-138/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    121
+   ],
+   "car": "Hyundai Elantra Hybrid 1.6 Prime",
+   "drive": "הנעה קדמית",
+   "engine": "היברידי: בנזין 1.6 ליטר (1,580 סמ\"ק) + מנוע חשמלי",
+   "power": "139 כ\"ס (משולב)",
+   "accel": "10.5 שניות",
+   "gearbox": "רובוטית כפולת מצמדים, 6 הילוכים",
+   "consumption": "22.7 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "474 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — יונדאי אלנטרה 1.6 היברידי Prime 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/39-יונדאי/230-יונדאי-אלנטרה/2356-1-6-היברידי-prime-2026"
+    },
+    {
+     "name": "auto.co.il — יונדאי אלנטרה היברידית 2026 Prime",
+     "url": "https://www.auto.co.il/cars/hyundai/elantra-hybrid/2026/580175/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    122
+   ],
+   "car": "Hyundai Elantra Hybrid 1.6 Premium",
+   "drive": "הנעה קדמית",
+   "engine": "היברידי: בנזין 1.6 ליטר (1,580 סמ\"ק) + מנוע חשמלי",
+   "power": "139 כ\"ס (משולב)",
+   "accel": "10.5 שניות",
+   "gearbox": "רובוטית כפולת מצמדים, 6 הילוכים",
+   "consumption": "22.7 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "474 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — יונדאי אלנטרה 1.6 היברידי Premium 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/39-יונדאי/230-יונדאי-אלנטרה/2357-1-6-היברידי-premium-2026"
+    },
+    {
+     "name": "auto.co.il — יונדאי אלנטרה היברידית 2026 Premium",
+     "url": "https://www.auto.co.il/cars/hyundai/elantra-hybrid/2026/580172/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    123
+   ],
+   "car": "Hyundai Elantra N 2.0T manual",
+   "drive": "הנעה קדמית",
+   "engine": "טורבו בנזין, 2.0 ליטר (1,998 סמ\"ק)",
+   "power": "280 כ\"ס",
+   "accel": "5.8 שניות",
+   "gearbox": "ידנית, 6 הילוכים",
+   "consumption": "10.3 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "402 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — יונדאי אלנטרה N ידנית 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/39-יונדאי/240-יונדאי-אלנטרה-n/2496-ידנית-2026"
+    },
+    {
+     "name": "auto.co.il — יונדאי אלנטרה N 2026 ידני",
+     "url": "https://www.auto.co.il/cars/hyundai/elantra-n/2026/579615/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    124
+   ],
+   "car": "Hyundai Elantra N 2.0T DCT",
+   "drive": "הנעה קדמית",
+   "engine": "טורבו בנזין, 2.0 ליטר (1,998 סמ\"ק)",
+   "power": "280 כ\"ס",
+   "accel": "5.3 שניות",
+   "gearbox": "רובוטית כפולת מצמדים, 8 הילוכים",
+   "consumption": "9.6 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "402 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — יונדאי אלנטרה N אוטו' 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/39-יונדאי/240-יונדאי-אלנטרה-n/2497-אוטו-2026"
+    },
+    {
+     "name": "auto.co.il — יונדאי אלנטרה N 2026 אוט'",
+     "url": "https://www.auto.co.il/cars/hyundai/elantra-n/2026/579614/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    125
+   ],
+   "car": "Hyundai Tucson 1.6T Premium",
+   "drive": "הנעה קדמית",
+   "engine": "טורבו בנזין, 1.6 ליטר (1,598 סמ\"ק)",
+   "power": "160 כ\"ס",
+   "accel": "9.9 שניות",
+   "gearbox": "רובוטית כפולת מצמדים, 7 הילוכים",
+   "consumption": "14.5 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "515 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — יונדאי טוסון 1.6 טורבו Premium 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/39-יונדאי/229-יונדאי-טוסון/2384-1-6-טורבו-premium-2026"
+    },
+    {
+     "name": "auto.co.il — יונדאי טוסון 2026 1.6 טורבו Premium 2x4",
+     "url": "https://www.auto.co.il/cars/hyundai/tucson/2026/580811/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    126
+   ],
+   "car": "Hyundai Tucson 1.6T Hybrid One 2WD",
+   "drive": "הנעה קדמית",
+   "engine": "היברידי: טורבו בנזין 1.6 ליטר (1,598 סמ\"ק) + מנוע חשמלי",
+   "power": "230 כ\"ס (משולב)",
+   "accel": "8.8 שניות",
+   "gearbox": "אוטומטית, 6 הילוכים",
+   "consumption": "17.8 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "616 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — יונדאי טוסון 1.6 טורבו היברידי One 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/39-יונדאי/229-יונדאי-טוסון/2392-1-6-טורבו-היברידי-one-2026"
+    },
+    {
+     "name": "auto.co.il — יונדאי טוסון 2026 טורבו היברידי One 2x4",
+     "url": "https://www.auto.co.il/cars/hyundai/tucson/2026/one-2x4/"
+    }
+   ],
+   "internal": "תאוצה: auto.co.il מציין 8.8 שניות, CarTube מציין 8.2 שניות."
+  },
+  {
+   "rows": [
+    129,
+    131
+   ],
+   "car": "Hyundai Tucson 1.6T Hybrid Pro / Icon 2WD",
+   "drive": "הנעה קדמית",
+   "engine": "היברידי: טורבו בנזין 1.6 ליטר (1,598 סמ\"ק) + מנוע חשמלי",
+   "power": "230 כ\"ס (משולב)",
+   "accel": "8.8 שניות",
+   "gearbox": "אוטומטית, 6 הילוכים",
+   "consumption": "17.2 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "616 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — יונדאי טוסון 1.6 טורבו היברידי Pro 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/39-יונדאי/229-יונדאי-טוסון/2394-1-6-טורבו-היברידי-pro-2026"
+    },
+    {
+     "name": "CarTube — יונדאי טוסון 1.6 טורבו היברידי Icon 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/39-יונדאי/229-יונדאי-טוסון/2393-1-6-טורבו-היברידי-icon-2026"
+    },
+    {
+     "name": "auto.co.il — יונדאי טוסון 2026 טורבו היברידי Pro 2x4",
+     "url": "https://www.auto.co.il/cars/hyundai/tucson/2026/pro-2x4/"
+    },
+    {
+     "name": "auto.co.il — יונדאי טוסון 2026 טורבו היברידי Icon 2x4",
+     "url": "https://www.auto.co.il/cars/hyundai/tucson/2026/icon-2x4/"
+    }
+   ],
+   "internal": "תאוצה: auto.co.il מציין 8.8 שניות, CarTube מציין 8.2 שניות."
+  },
+  {
+   "rows": [
+    127,
+    130,
+    132,
+    134
+   ],
+   "car": "Hyundai Tucson Long 1.6T Hybrid AWD (Pure / Executive / Ultimate / Excellence)",
+   "drive": "הנעה כפולה (4x4)",
+   "engine": "היברידי: טורבו בנזין 1.6 ליטר (1,598 סמ\"ק) + מנוע חשמלי",
+   "power": "230 כ\"ס (משולב)",
+   "accel": "8.4 שניות",
+   "gearbox": "אוטומטית, 6 הילוכים",
+   "consumption": "14.9 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "610 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — יונדאי טוסון 1.6 טורבו היברידי ארוך AWD Pure 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/39-יונדאי/229-יונדאי-טוסון/2395-1-6-טורבו-היברידי-ארוך-awd-pure-2026-2"
+    },
+    {
+     "name": "CarTube — יונדאי טוסון 1.6 טורבו היברידי ארוך AWD Executive 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/39-יונדאי/229-יונדאי-טוסון/2396-1-6-טורבו-היברידי-ארוך-awd-executive-2026-2"
+    },
+    {
+     "name": "CarTube — יונדאי טוסון 1.6 טורבו היברידי ארוך AWD Ultimate 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/39-יונדאי/229-יונדאי-טוסון/2397-1-6-טורבו-היברידי-ארוך-awd-ultimate-2026-2"
+    },
+    {
+     "name": "CarTube — יונדאי טוסון 1.6 טורבו היברידי ארוך AWD Excellence 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/39-יונדאי/229-יונדאי-טוסון/2398-1-6-טורבו-היברידי-ארוך-awd-excellence-2026-2"
+    },
+    {
+     "name": "auto.co.il — יונדאי טוסון 2026 Long טורבו היברידי Pure 4x4",
+     "url": "https://www.auto.co.il/cars/hyundai/tucson/2026/580815/"
+    },
+    {
+     "name": "auto.co.il — יונדאי טוסון 2026 Long טורבו היברידי Executive 4x4",
+     "url": "https://www.auto.co.il/cars/hyundai/tucson/2026/580816/"
+    },
+    {
+     "name": "auto.co.il — יונדאי טוסון 2026 Long טורבו היברידי Ultimate 4x4",
+     "url": "https://www.auto.co.il/cars/hyundai/tucson/2026/580817/"
+    },
+    {
+     "name": "auto.co.il — יונדאי טוסון 2026 Long טורבו היברידי Excellence 4x4",
+     "url": "https://www.auto.co.il/cars/hyundai/tucson/2026/580818/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    128
+   ],
+   "car": "Hyundai Tucson 1.6T Plug-in Hybrid One",
+   "drive": "הנעה קדמית",
+   "engine": "פלאג-אין היברידי: טורבו בנזין 1.6 ליטר (1,598 סמ\"ק) + מנוע חשמלי, סוללה 13.8 קוט\"ש",
+   "power": "284 כ\"ס (משולב)",
+   "accel": "7.9 שניות",
+   "gearbox": "אוטומטית, 6 הילוכים",
+   "consumption": "37 ק\"מ/ל' (משולב), טווח חשמלי 71 ק\"מ",
+   "seats": "5",
+   "trunk": "558 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — יונדאי טוסון 1.6 טורבו פלאג-אין One 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/39-יונדאי/229-יונדאי-טוסון/2399-1-6-טורבו-פלאג-אין-one-2026"
+    },
+    {
+     "name": "auto.co.il — יונדאי טוסון 2026 טורבו פלאג-אין One 2x4",
+     "url": "https://www.auto.co.il/cars/hyundai/tucson/2026/plug-in-one-2x4/"
+    }
+   ],
+   "internal": "הספק ותאוצה: auto.co.il מציין 284 כ\"ס ו-7.9 שניות, CarTube מציין 283 כ\"ס ו-7.5 שניות."
+  },
+  {
+   "rows": [
+    133
+   ],
+   "car": "Hyundai Tucson 1.6T Plug-in Hybrid Icon",
+   "drive": "הנעה קדמית",
+   "engine": "פלאג-אין היברידי: טורבו בנזין 1.6 ליטר (1,598 סמ\"ק) + מנוע חשמלי, סוללה 13.8 קוט\"ש",
+   "power": "284 כ\"ס (משולב)",
+   "accel": "7.9 שניות",
+   "gearbox": "אוטומטית, 6 הילוכים",
+   "consumption": "34.5 ק\"מ/ל' (משולב), טווח חשמלי 68 ק\"מ",
+   "seats": "5",
+   "trunk": "558 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — יונדאי טוסון 1.6 טורבו פלאג-אין Icon 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/39-יונדאי/229-יונדאי-טוסון/2400-1-6-טורבו-פלאג-אין-icon-2026"
+    },
+    {
+     "name": "auto.co.il — יונדאי טוסון 2026 טורבו פלאג-אין Icon 2x4",
+     "url": "https://www.auto.co.il/cars/hyundai/tucson/2026/plug-in-icon-2x4/"
+    }
+   ],
+   "internal": "הספק ותאוצה: auto.co.il מציין 284 כ\"ס ו-7.9 שניות, CarTube מציין 283 כ\"ס ו-7.5 שניות. צריכה משולבת: auto.co.il מציין 34.5 ק\"מ/ל', CarTube מציין 37 ק\"מ/ל'. טווח חשמלי: auto.co.il 68 ק\"מ, CarTube 69 ק\"מ."
+  },
+  {
+   "rows": [
+    135,
+    136,
+    137
+   ],
+   "car": "Hyundai Ioniq 5 84 kWh RWD (Pure / Ultra / Excellence)",
+   "drive": "הנעה אחורית",
+   "engine": "חשמלי, סוללה 84 קוט\"ש",
+   "power": "229 כ\"ס",
+   "accel": "7.5 שניות",
+   "gearbox": "תיבה חד-הילוכית",
+   "consumption": "טווח 570 ק\"מ, 16.0 קוט\"ש/100 ק\"מ",
+   "seats": "5",
+   "trunk": "520 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — יונדאי איוניק 5 Pure 2026 (צריכת חשמל 160 Wh/km = 16.0 קוט\"ש/100 ק\"מ)",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/39-יונדאי/222-יונדאי-איוניק-5/2436-pure-2026"
+    },
+    {
+     "name": "CarTube — יונדאי איוניק 5 Ultra 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/39-יונדאי/222-יונדאי-איוניק-5/2438-ultra-2026"
+    },
+    {
+     "name": "CarTube — יונדאי איוניק 5 Excellence 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/39-יונדאי/222-יונדאי-איוניק-5/2437-excellence-2026"
+    },
+    {
+     "name": "auto.co.il — יונדאי איוניק 5 2026 Pure 2x4",
+     "url": "https://www.auto.co.il/cars/hyundai/ionic-5/2026/pure-2x4/"
+    },
+    {
+     "name": "auto.co.il — יונדאי איוניק 5 2026 Ultra 2x4",
+     "url": "https://www.auto.co.il/cars/hyundai/ionic-5/2026/ultra-2x4/"
+    },
+    {
+     "name": "auto.co.il — יונדאי איוניק 5 2026 Excellence 2x4",
+     "url": "https://www.auto.co.il/cars/hyundai/ionic-5/2026/excellence-2x4/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    138
+   ],
+   "car": "Hyundai Ioniq 5 N",
+   "drive": "הנעה כפולה (4x4)",
+   "engine": "חשמלי, סוללה 84 קוט\"ש",
+   "power": "641 כ\"ס",
+   "accel": "3.4 שניות",
+   "gearbox": "תיבה חד-הילוכית",
+   "consumption": "טווח 448 ק\"מ, 21.2 קוט\"ש/100 ק\"מ",
+   "seats": "5",
+   "trunk": "480 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — יונדאי איוניק 5N 2026 (צריכת חשמל 212 Wh/km = 21.2 קוט\"ש/100 ק\"מ)",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/39-יונדאי/237-יונדאי-איוניק-5n/2493-יונדאי-איוניק-5n-2026"
+    },
+    {
+     "name": "auto.co.il — יונדאי איוניק 5 2026 N 4x4",
+     "url": "https://www.auto.co.il/cars/hyundai/ionic-5/2026/n-4x4/"
+    }
+   ],
+   "internal": "תאוצה: CarTube מציין 3.4 שניות, auto.co.il מציין 3.5 שניות."
+  },
+  {
+   "rows": [
+    139
+   ],
+   "car": "Hyundai Ioniq 6 84 kWh RWD Ultra",
+   "drive": "הנעה אחורית",
+   "engine": "חשמלי, סוללה 84 קוט\"ש",
+   "power": "228 כ\"ס",
+   "accel": "7.4 שניות",
+   "gearbox": "תיבה חד-הילוכית",
+   "consumption": "טווח 680 ק\"מ, 13.5 קוט\"ש/100 ק\"מ",
+   "seats": "5",
+   "trunk": "401 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — יונדאי איוניק 6 Ultra 2026 (צריכת חשמל 135 Wh/km = 13.5 קוט\"ש/100 ק\"מ)",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/39-יונדאי/221-יונדאי-איוניק-6/2216-ultra-2026"
+    },
+    {
+     "name": "auto.co.il — יונדאי איוניק 6 2026 Ultra 2x4",
+     "url": "https://www.auto.co.il/cars/hyundai/ioniq-6/2026/ultra-2x4/"
+    }
+   ],
+   "internal": "הספק: CarTube מציין 228 כ\"ס, auto.co.il מציין 229 כ\"ס."
+  },
+  {
+   "rows": [
+    140
+   ],
+   "car": "Hyundai Ioniq 6 84 kWh RWD Excellence",
+   "drive": "הנעה אחורית",
+   "engine": "חשמלי, סוללה 84 קוט\"ש",
+   "power": "228 כ\"ס",
+   "accel": "7.4 שניות",
+   "gearbox": "תיבה חד-הילוכית",
+   "consumption": "טווח 624 ק\"מ",
+   "seats": "5",
+   "trunk": "401 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — יונדאי איוניק 6 Excellence 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/39-יונדאי/221-יונדאי-איוניק-6/2217-excellence-2026"
+    },
+    {
+     "name": "auto.co.il — יונדאי איוניק 6 2026 Excellence 2x4",
+     "url": "https://www.auto.co.il/cars/hyundai/ioniq-6/2026/excellence-2x4/"
+    }
+   ],
+   "internal": "הספק: CarTube מציין 228 כ\"ס, auto.co.il מציין 229 כ\"ס."
+  },
+  {
+   "rows": [
+    141
+   ],
+   "car": "Hyundai Ioniq 6 N",
+   "drive": "הנעה כפולה (4x4)",
+   "engine": "חשמלי, סוללה 84 קוט\"ש",
+   "power": "641 כ\"ס",
+   "accel": "3.3 שניות",
+   "gearbox": "תיבה חד-הילוכית",
+   "consumption": "טווח 487 ק\"מ, 18.7 קוט\"ש/100 ק\"מ",
+   "seats": "5",
+   "trunk": "371 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — יונדאי איוניק 6N 2026 (צריכת חשמל 187 Wh/km = 18.7 קוט\"ש/100 ק\"מ)",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/39-יונדאי/239-יונדאי-איוניק-6n/2500-יונדאי-איוניק-6n-2026"
+    },
+    {
+     "name": "auto.co.il — יונדאי איוניק 6 2026 N 4x4",
+     "url": "https://www.auto.co.il/cars/hyundai/ioniq-6/2026/n-4x4/"
+    }
+   ],
+   "internal": "תאוצה: auto.co.il מציין 3.3 שניות, CarTube מציין 3.2 שניות."
+  },
+  {
+   "rows": [
+    142
+   ],
+   "car": "Hyundai Santa Fe 1.6T Hybrid 2WD Ultimate",
+   "drive": "הנעה קדמית",
+   "engine": "היברידי: טורבו בנזין 1.6 ליטר (1,598 סמ\"ק) + מנוע חשמלי",
+   "power": "238 כ\"ס (משולב)",
+   "accel": "9 שניות",
+   "gearbox": "אוטומטית, 6 הילוכים",
+   "consumption": "14.7 ק\"מ/ל' (משולב)",
+   "seats": "7",
+   "trunk": "628 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — יונדאי סנטה פה היברידי 2X4 Ultimate 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/39-יונדאי/227-יונדאי-סנטה-פה/2471-היברידי-2x4-ultimate-2026"
+    },
+    {
+     "name": "auto.co.il — יונדאי סנטה פה 2026 היברידי (238 כ\"ס) Ultimate 2x4",
+     "url": "https://www.auto.co.il/cars/hyundai/santa-fe/2026/ultimate-2x4/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    143
+   ],
+   "car": "Hyundai Santa Fe 1.6T Hybrid 2WD Excellence",
+   "drive": "הנעה קדמית",
+   "engine": "היברידי: טורבו בנזין 1.6 ליטר (1,598 סמ\"ק) + מנוע חשמלי",
+   "power": "238 כ\"ס (משולב)",
+   "accel": "9 שניות",
+   "gearbox": "אוטומטית, 6 הילוכים",
+   "consumption": "14.7 ק\"מ/ל' (משולב)",
+   "seats": "7",
+   "trunk": "628 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — יונדאי סנטה פה היברידי 2X4 Excellence 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/39-יונדאי/227-יונדאי-סנטה-פה/2470-היברידי-2x4-excellence-2026"
+    },
+    {
+     "name": "auto.co.il — יונדאי סנטה פה 2026 היברידי (238 כ\"ס) Excellence 2x4",
+     "url": "https://www.auto.co.il/cars/hyundai/santa-fe/2026/excellence-2x4/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    144
+   ],
+   "car": "Hyundai Palisade 2.5T Hybrid 2WD Excellence 8-seat",
+   "drive": "הנעה קדמית",
+   "engine": "היברידי: טורבו בנזין 2.5 ליטר (2,497 סמ\"ק) + מנוע חשמלי",
+   "power": "329 כ\"ס (משולב)",
+   "accel": "7.3 שניות",
+   "gearbox": "אוטומטית, 6 הילוכים",
+   "consumption": "13.1 ק\"מ/ל' (משולב)",
+   "seats": "8",
+   "trunk": "300 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — יונדאי פליסייד הייבריד 8 מושבים 2X4 Excellence 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/39-יונדאי/228-יונדאי-פליסייד/2479-הייבריד-8-מושבים-2x4-excellence-2026"
+    },
+    {
+     "name": "auto.co.il — יונדאי פליסייד 2026 היברידי 8 מק' Excellence 2x4",
+     "url": "https://www.auto.co.il/cars/hyundai/palisade/2026/excellence-8s-2x4/"
+    }
+   ],
+   "internal": "צריכה: auto.co.il מציין 13.1 ק\"מ/ל', CarTube מציין 13.2 ק\"מ/ל'."
+  },
+  {
+   "rows": [
+    145
+   ],
+   "car": "Hyundai Palisade 2.5T Hybrid 2WD Excellence 7-seat",
+   "drive": "הנעה קדמית",
+   "engine": "היברידי: טורבו בנזין 2.5 ליטר (2,497 סמ\"ק) + מנוע חשמלי",
+   "power": "329 כ\"ס (משולב)",
+   "accel": "7.3 שניות",
+   "gearbox": "אוטומטית, 6 הילוכים",
+   "consumption": "13.1 ק\"מ/ל' (משולב)",
+   "seats": "7",
+   "trunk": "300 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — יונדאי פליסייד הייבריד 7 מושבים 2X4 Excellence 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/39-יונדאי/228-יונדאי-פליסייד/2481-הייבריד-7-מושבים-2x4-excellence-2026"
+    },
+    {
+     "name": "auto.co.il — יונדאי פליסייד 2026 היברידי 7 מק' Excellence 2x4",
+     "url": "https://www.auto.co.il/cars/hyundai/palisade/2026/excellence-7s-2x4/"
+    }
+   ],
+   "internal": "צריכה: auto.co.il מציין 13.1 ק\"מ/ל', CarTube מציין 13.2 ק\"מ/ל'."
+  },
+  {
+   "rows": [
+    146
+   ],
+   "car": "Hyundai Palisade 2.5T Hybrid 2WD Calligraphy 7-seat",
+   "drive": "הנעה קדמית",
+   "engine": "היברידי: טורבו בנזין 2.5 ליטר (2,497 סמ\"ק) + מנוע חשמלי",
+   "power": "329 כ\"ס (משולב)",
+   "accel": "7.3 שניות",
+   "gearbox": "אוטומטית, 6 הילוכים",
+   "consumption": "13.1 ק\"מ/ל' (משולב)",
+   "seats": "7",
+   "trunk": "300 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — יונדאי פליסייד הייבריד 7 מושבים 2X4 Calligraphy 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/39-יונדאי/228-יונדאי-פליסייד/2482-הייבריד-7-מושבים-2x4-calligraphy-2026"
+    },
+    {
+     "name": "auto.co.il — יונדאי פליסייד 2026 היברידי 7 מק' Calligraphy 2x4",
+     "url": "https://www.auto.co.il/cars/hyundai/palisade/2026/calligraphy-7s-2x4/"
+    }
+   ],
+   "internal": "צריכה: auto.co.il מציין 13.1 ק\"מ/ל', CarTube מציין 13.2 ק\"מ/ל'."
+  },
+  {
+   "rows": [
+    147
+   ],
+   "car": "Hyundai Palisade 2.5T Hybrid AWD Calligraphy 7-seat",
+   "drive": "הנעה כפולה (4x4)",
+   "engine": "היברידי: טורבו בנזין 2.5 ליטר (2,497 סמ\"ק) + מנוע חשמלי",
+   "power": "329 כ\"ס (משולב)",
+   "accel": "7.4 שניות",
+   "gearbox": "אוטומטית, 6 הילוכים",
+   "consumption": "12.3 ק\"מ/ל' (משולב)",
+   "seats": "7",
+   "trunk": "300 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — יונדאי פליסייד הייבריד 7 מושבים 4X4 Calligraphy 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/39-יונדאי/228-יונדאי-פליסייד/2480-הייבריד-7-מושבים-4x4-calligraphy-2026"
+    },
+    {
+     "name": "auto.co.il — יונדאי פליסייד 2026 היברידי 7 מק' Calligraphy 4x4",
+     "url": "https://www.auto.co.il/cars/hyundai/palisade/2026/calligraphy-7s-4x4/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    148
+   ],
+   "car": "Hyundai Ioniq 9 110.3 kWh RWD Excellence 7-seat",
+   "drive": "הנעה אחורית",
+   "engine": "חשמלי, סוללה 110.3 קוט\"ש",
+   "power": "214 כ\"ס",
+   "accel": "9.4 שניות",
+   "gearbox": "תיבה חד-הילוכית",
+   "consumption": "טווח 620 ק\"מ, 19.9 קוט\"ש/100 ק\"מ",
+   "seats": "7",
+   "trunk": "338 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — יונדאי איוניק 9 שבעה מושבים 2X4 Excellence 2026 (צריכת חשמל 199 Wh/km = 19.9 קוט\"ש/100 ק\"מ)",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/39-יונדאי/238-יונדאי-איוניק-9/2499-שבעה-מושבים-2x4-excellence-2026"
+    },
+    {
+     "name": "auto.co.il — יונדאי איוניק 9 2026 Excellence 2x4",
+     "url": "https://www.auto.co.il/cars/hyundai/ioniq-9/2026/excellence-2x4/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    149
+   ],
+   "car": "Hyundai Ioniq 9 110.3 kWh AWD Calligraphy 6-seat",
+   "drive": "הנעה כפולה (4x4)",
+   "engine": "חשמלי, סוללה 110.3 קוט\"ש",
+   "power": "422 כ\"ס",
+   "accel": "5.2 שניות",
+   "gearbox": "תיבה חד-הילוכית",
+   "consumption": "טווח 600 ק\"מ, 20.6 קוט\"ש/100 ק\"מ",
+   "seats": "6",
+   "trunk": "338 ליטר",
+   "sources": [
+    {
+     "name": "auto.co.il — יונדאי איוניק 9 2026 Calligraphy 4x4 (הנעה כפולה)",
+     "url": "https://www.auto.co.il/cars/hyundai/ioniq-9/2026/calligraphy-4x4/"
+    },
+    {
+     "name": "CarTube — יונדאי איוניק 9 שישה מושבים 4X4 Calligraphy 2026 (צריכת חשמל 206 Wh/km = 20.6 קוט\"ש/100 ק\"מ)",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/39-יונדאי/238-יונדאי-איוניק-9/2498-שישה-מושבים-4x4-calligraphy-2026"
+    }
+   ]
+  },
+  {
+   "rows": [
+    150
+   ],
+   "car": "Hyundai Staria 1.6T Hybrid commercial van, 3 seats",
+   "drive": "הנעה קדמית",
+   "engine": "היברידי: טורבו בנזין 1.6 ליטר (1,598 סמ\"ק) + מנוע חשמלי",
+   "power": "225 כ\"ס (משולב)",
+   "accel": "10.2 שניות",
+   "gearbox": "אוטומטית, 6 הילוכים",
+   "consumption": "13.1 ק\"מ/ל' (משולב)",
+   "seats": "3",
+   "trunk": "4,935 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — יונדאי סטאריה היברידי מסחרי סגור 3 מושבים 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/39-יונדאי/232-יונדאי-סטאריה/2453-היברידי-מסחרי-סגור-3-מושבים-2026"
+    },
+    {
+     "name": "auto.co.il — יונדאי סטאריה 2026 מסחרי סגור 1.6 טורבו היברידי 1+2",
+     "url": "https://www.auto.co.il/cars/hyundai/staria/2026/580205/"
+    }
+   ],
+   "internal": "צריכה: auto.co.il מציין 13.1 ק\"מ/ל', CarTube מציין 13.2 ק\"מ/ל'."
+  },
+  {
+   "rows": [
+    151
+   ],
+   "car": "Hyundai Staria 1.6T Hybrid 9-seat Premium",
+   "drive": "הנעה קדמית",
+   "engine": "היברידי: טורבו בנזין 1.6 ליטר (1,598 סמ\"ק) + מנוע חשמלי",
+   "power": "225 כ\"ס (משולב)",
+   "accel": "10.2 שניות",
+   "gearbox": "אוטומטית, 6 הילוכים",
+   "consumption": "13.1 ק\"מ/ל' (משולב)",
+   "seats": "9",
+   "trunk": "1,303 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — יונדאי סטאריה היברידי 9 מושבים Premium 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/39-יונדאי/232-יונדאי-סטאריה/2454-היברידי-9-מושבים-premium-2026"
+    },
+    {
+     "name": "auto.co.il — יונדאי סטאריה 2026 הובלת נוסעים היברידי Premium 1+8",
+     "url": "https://www.auto.co.il/cars/hyundai/staria/2026/580206/"
+    }
+   ],
+   "internal": "צריכה: auto.co.il מציין 13.1 ק\"מ/ל', CarTube מציין 13.2 ק\"מ/ל'."
+  },
+  {
+   "rows": [
+    152
+   ],
+   "car": "Hyundai Staria 1.6T Hybrid 9-seat Luxury",
+   "drive": "הנעה קדמית",
+   "engine": "היברידי: טורבו בנזין 1.6 ליטר (1,598 סמ\"ק) + מנוע חשמלי",
+   "power": "225 כ\"ס (משולב)",
+   "accel": "10.2 שניות",
+   "gearbox": "אוטומטית, 6 הילוכים",
+   "consumption": "13.1 ק\"מ/ל' (משולב)",
+   "seats": "9",
+   "trunk": "1,303 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — יונדאי סטאריה היברידי 9 מושבים Luxury 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/39-יונדאי/232-יונדאי-סטאריה/2455-היברידי-9-מושבים-luxury-2026"
+    },
+    {
+     "name": "auto.co.il — יונדאי סטאריה 2026 הובלת נוסעים היברידי Luxury 1+8",
+     "url": "https://www.auto.co.il/cars/hyundai/staria/2026/580207/"
+    }
+   ],
+   "internal": "צריכה: auto.co.il מציין 13.1 ק\"מ/ל', CarTube מציין 13.2 ק\"מ/ל'."
   }
  ],
  "pending": []
