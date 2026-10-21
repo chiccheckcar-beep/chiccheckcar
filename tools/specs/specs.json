@@ -1858,6 +1858,524 @@
    ],
    "accel": "3.8 שניות",
    "gearbox": "תמסורת ישירה"
+  },
+  {
+   "rows": [
+    169
+   ],
+   "car": "VW T-Cross 1.0 TSI R-Line",
+   "drive": "הנעה קדמית",
+   "engine": "טורבו בנזין, 1.0 ליטר (999 סמ\"ק)",
+   "power": "115 כ\"ס",
+   "accel": "10 שניות",
+   "gearbox": "רובוטית כפולת מצמדים, 7 הילוכים",
+   "consumption": "16.7 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "385 ליטר",
+   "sources": [
+    {
+     "name": "auto.co.il — פולקסווגן טי קרוס 2026 1.0 ל' טורבו, R-Line",
+     "url": "https://www.auto.co.il/cars/volkswagen/t-cross/2026/580382/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    170
+   ],
+   "car": "VW Golf 1.5 eTSI Life (mild hybrid)",
+   "drive": "הנעה קדמית",
+   "engine": "טורבו בנזין היברידי-מתון, 1.5 ליטר (1,498 סמ\"ק)",
+   "power": "116 כ\"ס",
+   "accel": "9.9 שניות",
+   "gearbox": "רובוטית כפולת מצמדים, 7 הילוכים",
+   "consumption": "19.2 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "381 ליטר",
+   "sources": [
+    {
+     "name": "auto.co.il — פולקסווגן גולף 2026 (מ. פנים) 1.5 ל' טורבו היברידי מתון, Life",
+     "url": "https://www.auto.co.il/cars/volkswagen/golf/2026/581132/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    171
+   ],
+   "car": "VW Tiguan 2.0 TSI Elegance 4x4",
+   "drive": "הנעה כפולה (4x4)",
+   "engine": "טורבו בנזין, 2.0 ליטר (1,984 סמ\"ק)",
+   "power": "204 כ\"ס",
+   "accel": "7.1 שניות",
+   "gearbox": "רובוטית כפולת מצמדים, 7 הילוכים",
+   "consumption": "12.9 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "652 ליטר",
+   "sources": [
+    {
+     "name": "auto.co.il — פולקסווגן טיגואן 2026 2.0 ל' טורבו, Elegance 4x4",
+     "url": "https://www.auto.co.il/cars/volkswagen/tiguan/2026/elegance-20-4x4/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    172
+   ],
+   "car": "Skoda Octavia 1.5 e-TSI 150hp Style (mild hybrid)",
+   "drive": "הנעה קדמית",
+   "engine": "טורבו בנזין היברידי-מתון, 1.5 ליטר (1,498 סמ\"ק)",
+   "power": "150 כ\"ס",
+   "accel": "8.5 שניות",
+   "gearbox": "רובוטית כפולת מצמדים, 7 הילוכים",
+   "consumption": "19.6 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "553 ליטר",
+   "sources": [
+    {
+     "name": "auto.co.il — סקודה אוקטביה 2026 1.5 ל' טורבו (150 כ\"ס), היברידי מתון, Style",
+     "url": "https://www.auto.co.il/cars/skoda/octavia/2026/581174/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    173
+   ],
+   "car": "Skoda Kodiaq 2.0 TSI Style 4x4 (7 seats)",
+   "drive": "הנעה כפולה (4x4)",
+   "engine": "טורבו בנזין, 2.0 ליטר (1,984 סמ\"ק)",
+   "power": "204 כ\"ס",
+   "accel": "7.5 שניות",
+   "gearbox": "רובוטית כפולת מצמדים, 7 הילוכים",
+   "consumption": "13 ק\"מ/ל' (משולב)",
+   "seats": "7",
+   "trunk": "289 ליטר (7 מושבים)",
+   "sources": [
+    {
+     "name": "auto.co.il — סקודה קודיאק 2026 2.0 ל' טורבו, 7 מק', Style 4x4",
+     "url": "https://www.auto.co.il/cars/skoda/kodiaq/2026/680549/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    174
+   ],
+   "car": "Seat Ibiza 1.0 TSI FR (facelift)",
+   "drive": "הנעה קדמית",
+   "engine": "טורבו בנזין, 1.0 ליטר (999 סמ\"ק)",
+   "power": "115 כ\"ס",
+   "accel": "9.9 שניות",
+   "gearbox": "רובוטית כפולת מצמדים, 7 הילוכים",
+   "consumption": "18.2 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "355 ליטר",
+   "sources": [
+    {
+     "name": "auto.co.il — סיאט איביזה 2026 (גרסה מעודכנת) 1.0 ל' טורבו, FR",
+     "url": "https://www.auto.co.il/cars/seat/ibiza/2026/fr-10-fl/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    175
+   ],
+   "car": "Audi Q5 40 TFSI quattro (new generation, mild hybrid)",
+   "drive": "הנעה כפולה (4x4)",
+   "engine": "טורבו בנזין היברידי-מתון, 2.0 ליטר (1,984 סמ\"ק)",
+   "power": "204 כ\"ס",
+   "accel": "7.2 שניות",
+   "gearbox": "רובוטית כפולת מצמדים, 7 הילוכים",
+   "consumption": "14.1 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "540 ליטר",
+   "sources": [
+    {
+     "name": "auto.co.il — אודי Q5 2026 40 TFSI (דור חדש), 2.0 ל' טורבו, היברידי מתון, 4x4",
+     "url": "https://www.auto.co.il/cars/audi/q5/2026/580837/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    176
+   ],
+   "car": "BMW iX xDrive50 Superior",
+   "drive": "הנעה כפולה (4x4)",
+   "engine": "חשמלי, סוללה 111.5 קוט\"ש",
+   "power": "523 כ\"ס",
+   "accel": "4.6 שניות",
+   "gearbox": "תיבה חד-הילוכית",
+   "consumption": "טווח 598 ק\"מ (WLTP), 20.7 קוט\"ש/100 ק\"מ",
+   "seats": "5",
+   "trunk": "500 ליטר",
+   "note": "צריכת החשמל באתר המקור: 207 וואט לק\"מ (= 20.7 קוט\"ש/100 ק\"מ, המרת יחידות בלבד).",
+   "sources": [
+    {
+     "name": "auto.co.il — ב.מ.וו iX 2026 xDrive50 חשמלי, Superior, 4x4",
+     "url": "https://www.auto.co.il/cars/bmw/ix/2026/580267/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    177
+   ],
+   "car": "BMW iX xDrive50 Spirit",
+   "drive": "הנעה כפולה (4x4)",
+   "engine": "חשמלי, סוללה 111.5 קוט\"ש",
+   "power": "523 כ\"ס",
+   "accel": "4.6 שניות",
+   "gearbox": "תיבה חד-הילוכית",
+   "consumption": "טווח 606 ק\"מ (WLTP), 20.5 קוט\"ש/100 ק\"מ",
+   "seats": "5",
+   "trunk": "500 ליטר",
+   "note": "צריכת החשמל באתר המקור: 205 וואט לק\"מ (= 20.5 קוט\"ש/100 ק\"מ, המרת יחידות בלבד).",
+   "sources": [
+    {
+     "name": "auto.co.il — ב.מ.וו iX 2026 xDrive50 חשמלי, Spirit, 4x4",
+     "url": "https://www.auto.co.il/cars/bmw/ix/2026/580265/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    178
+   ],
+   "car": "BMW 330e M-Shadow (PHEV)",
+   "drive": "הנעה אחורית",
+   "engine": "פלאג-אין היברידי: טורבו בנזין 2.0 ליטר (1,998 סמ\"ק) + מנוע חשמלי, סוללה 22.3 קוט\"ש",
+   "power": "292 כ\"ס (משולב)",
+   "accel": "5.9 שניות",
+   "gearbox": "אוטומטית, 8 הילוכים",
+   "consumption": "טווח חשמלי 95 ק\"מ (WLTP)",
+   "seats": "5",
+   "trunk": "375 ליטר",
+   "sources": [
+    {
+     "name": "auto.co.il — ב.מ.וו סדרה 3 2026 330e, 2.0 ל' טורבו, פלאג-אין הייבריד, M-Shadow",
+     "url": "https://www.auto.co.il/cars/bmw/3-series/2026/phev-m-shadow/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    179
+   ],
+   "car": "Mercedes-AMG A 45 S 4MATIC+ Edition",
+   "drive": "הנעה כפולה (4x4)",
+   "engine": "טורבו בנזין היברידי-מתון, 2.0 ליטר (1,991 סמ\"ק)",
+   "power": "421 כ\"ס",
+   "accel": "3.9 שניות",
+   "gearbox": "רובוטית כפולת מצמדים, 8 הילוכים",
+   "consumption": "10.9 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "370 ליטר",
+   "sources": [
+    {
+     "name": "auto.co.il — מרצדס A קלאס 2026 AMG A 45 S, 2.0 ל' טורבו, היברידי מתון, Edition 4x4",
+     "url": "https://www.auto.co.il/cars/mercedes/a-class/2026/580912/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    180
+   ],
+   "car": "Mercedes-AMG GLC 53 4MATIC+ Racing",
+   "drive": "הנעה כפולה (4x4)",
+   "engine": "טורבו בנזין היברידי-מתון, 3.0 ליטר (2,999 סמ\"ק)",
+   "power": "449 כ\"ס",
+   "accel": "4.2 שניות",
+   "gearbox": "אוטומטית, 9 הילוכים",
+   "consumption": "8.5 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "620 ליטר",
+   "sources": [
+    {
+     "name": "auto.co.il — מרצדס GLC 2026 AMG 53, 3.0 ל' טורבו, היברידי מתון, Racing 4x4",
+     "url": "https://www.auto.co.il/cars/mercedes/glc-class/2026/amg-53-racing/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    181
+   ],
+   "car": "Mercedes GLC 300 4MATIC Elite (mild hybrid)",
+   "drive": "הנעה כפולה (4x4)",
+   "engine": "טורבו בנזין היברידי-מתון, 2.0 ליטר (1,999 סמ\"ק)",
+   "power": "258 כ\"ס",
+   "accel": "6.2 שניות",
+   "gearbox": "אוטומטית, 9 הילוכים",
+   "consumption": "12.8 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "620 ליטר",
+   "sources": [
+    {
+     "name": "auto.co.il — מרצדס GLC 2026 300, 2.0 ל' טורבו, היברידי מתון, Elite 4x4",
+     "url": "https://www.auto.co.il/cars/mercedes/glc-class/2026/300-elite/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    182
+   ],
+   "car": "Peugeot 3008 1.2 Hybrid 145 GT (new generation)",
+   "drive": "הנעה קדמית",
+   "engine": "טורבו בנזין היברידי-מתון, 1.2 ליטר (1,199 סמ\"ק)",
+   "power": "145 כ\"ס",
+   "accel": "10.2 שניות",
+   "gearbox": "רובוטית כפולת מצמדים, 6 הילוכים",
+   "consumption": "17.8 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "520 ליטר",
+   "sources": [
+    {
+     "name": "auto.co.il — פיג'ו 3008 2026 (דור חדש), 1.2 ל' טורבו היברידי-מתון, GT",
+     "url": "https://www.auto.co.il/cars/peugeot/3008/2026/580833/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    183
+   ],
+   "car": "Citroen C3 Aircross 1.2 Hybrid 145 MAX 7 seats",
+   "drive": "הנעה קדמית",
+   "engine": "טורבו בנזין היברידי-מתון, 1.2 ליטר (1,199 סמ\"ק)",
+   "power": "145 כ\"ס",
+   "accel": "8.8 שניות",
+   "gearbox": "רובוטית כפולת מצמדים, 6 הילוכים",
+   "consumption": "18.2 ק\"מ/ל' (משולב)",
+   "seats": "7",
+   "note": "מושבים: 7 לפי שם הגרסה (auto.co.il מציג בטבלה 5 בטעות). תא מטען הושמט: שני המקורות מציינים 40 ליטר לגרסת 7 המושבים (כנראה עם כל המושבים בשימוש) — לא ברור דיו להצגה.",
+   "sources": [
+    {
+     "name": "auto.co.il — סיטרואן C3 איירקרוס 2026 1.2 ל' טורבו, היברידי מתון, 7 מק', MAX",
+     "url": "https://www.auto.co.il/cars/citroen/c3-aircross/2026/7-seats/"
+    },
+    {
+     "name": "CarTube — סיטרואן C3 איירקרוס 2026 השוואת רמות גימור",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/55-סיטרואן/353-סיטרואן-c3-איירקרוס/compare"
+    }
+   ]
+  },
+  {
+   "rows": [
+    184
+   ],
+   "car": "Opel Corsa 1.2 Turbo 100hp Edition",
+   "drive": "הנעה קדמית",
+   "engine": "טורבו בנזין, 1.2 ליטר (1,199 סמ\"ק)",
+   "power": "100 כ\"ס",
+   "gearbox": "אוטומטית, 8 הילוכים",
+   "consumption": "18.5 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "309 ליטר",
+   "note": "שני המקורות: 100 כ\"ס (בכרטיס באתר מוצג 110 — יש לתקן). תאוצה הושמטה: auto.co.il 9.9 שנ' מול CarTube 10.8 שנ'. auto.co.il מכנה את הגרסה MHEV אך מציין תיבה אוטומטית 8 הילוכים (כמו CarTube, 'טורבו בנזין') — לכן לא צוין 'היברידי'.",
+   "sources": [
+    {
+     "name": "auto.co.il — אופל קורסה 2026 1.2 ל' טורבו, Edition",
+     "url": "https://www.auto.co.il/cars/opel/corsa/2026/mhev-edition/"
+    },
+    {
+     "name": "CarTube — אופל קורסה 1.2 טורבו 100 כ\"ס Edition 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/13-אופל/79-אופל-קורסה/629-1-2-טורבו-100-כ-ס-edition-2026"
+    }
+   ]
+  },
+  {
+   "rows": [
+    185
+   ],
+   "car": "Fiat Grande Panda 1.2 Hybrid La Prima",
+   "drive": "הנעה קדמית",
+   "engine": "טורבו בנזין היברידי-מתון, 1.2 ליטר (1,199 סמ\"ק)",
+   "power": "110 כ\"ס",
+   "accel": "10 שניות",
+   "gearbox": "רובוטית כפולת מצמדים, 6 הילוכים",
+   "consumption": "18.5 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "350 ליטר",
+   "note": "בקטלוג 'פנדה La Prima' — זוהתה כגרנדה פנדה (La Prima, 1.2 היברידי-מתון 110 כ\"ס, מחיר 126,000 זהה).",
+   "sources": [
+    {
+     "name": "auto.co.il — פיאט גרנדה פנדה 2026 1.2 ל' טורבו, היברידי-מתון, La Prima",
+     "url": "https://www.auto.co.il/cars/fiat/grande-panda/2026/mhev-la-prima/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    186
+   ],
+   "car": "Renault Clio 1.0 TCe 90 CVT Evolution (facelift)",
+   "drive": "הנעה קדמית",
+   "engine": "טורבו בנזין, 1.0 ליטר (999 סמ\"ק)",
+   "power": "90 כ\"ס",
+   "accel": "12.2 שניות",
+   "gearbox": "אוטומטית רציפה (CVT)",
+   "consumption": "17.2 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "391 ליטר",
+   "sources": [
+    {
+     "name": "auto.co.il — רנו קליאו 2026 (מתיחת פנים) 1.0 ל' טורבו, Evolution",
+     "url": "https://www.auto.co.il/cars/renault/clio/2026/581117/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    187
+   ],
+   "car": "Renault Captur 1.3 TCe 158 mild hybrid Techno",
+   "drive": "הנעה קדמית",
+   "engine": "טורבו בנזין היברידי-מתון, 1.3 ליטר (1,333 סמ\"ק)",
+   "power": "158 כ\"ס",
+   "accel": "8.5 שניות",
+   "gearbox": "רובוטית כפולת מצמדים, 7 הילוכים",
+   "consumption": "16.9 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "436 ליטר",
+   "sources": [
+    {
+     "name": "auto.co.il — רנו קפצ'ור 2026 1.3 ל' טורבו, היברידי מתון, Techno",
+     "url": "https://www.auto.co.il/cars/renault/captur/2026/580739/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    188
+   ],
+   "car": "Jeep Wrangler Unlimited 2.0 Rubicon (long)",
+   "drive": "הנעה כפולה (4x4)",
+   "engine": "טורבו בנזין, 2.0 ליטר (1,995 סמ\"ק)",
+   "power": "270 כ\"ס",
+   "gearbox": "אוטומטית, 8 הילוכים",
+   "consumption": "9.3 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "note": "הספק: auto.co.il 270 כ\"ס, CarTube 272 כ\"ס. תא מטען הושמט (897 מול 533 ליטר). אין נתון תאוצה במקורות.",
+   "sources": [
+    {
+     "name": "auto.co.il — ג'יפ רנגלר 2026 ארוך, 2.0 ל' טורבו, Rubicon S5",
+     "url": "https://www.auto.co.il/cars/jeep/wrangler/2026/581161/"
+    },
+    {
+     "name": "CarTube — ג'יפ רנגלר 2.0 ארוך Rubicon S 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/27-ג-יפ/149-ג-יפ-רנגלר/1443-2-0-ארוך-rubicon-s-2026"
+    }
+   ]
+  },
+  {
+   "rows": [
+    189
+   ],
+   "car": "Jeep Compass 1.2 e-Hybrid Altitude",
+   "drive": "הנעה קדמית",
+   "engine": "טורבו בנזין היברידי-מתון, 1.2 ליטר (1,199 סמ\"ק)",
+   "power": "145 כ\"ס",
+   "accel": "10 שניות",
+   "gearbox": "רובוטית כפולת מצמדים, 6 הילוכים",
+   "consumption": "17.5 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "493 ליטר",
+   "sources": [
+    {
+     "name": "auto.co.il — ג'יפ קומפאס 2026 1.2 ל' טורבו, היברידי מתון, Altitude",
+     "url": "https://www.auto.co.il/cars/jeep/compass/2026/12-mhev-altitude/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    190
+   ],
+   "car": "Ford Explorer 2.3 EcoBoost Platinum 7 seats 4x4",
+   "drive": "הנעה כפולה (4x4)",
+   "engine": "טורבו בנזין, 2.3 ליטר (2,261 סמ\"ק)",
+   "power": "300 כ\"ס",
+   "gearbox": "אוטומטית, 10 הילוכים",
+   "consumption": "9.8 ק\"מ/ל' (משולב)",
+   "seats": "7",
+   "trunk": "401 ליטר",
+   "note": "אין נתון תאוצה במקורות.",
+   "sources": [
+    {
+     "name": "auto.co.il — פורד אקספלורר 2026 (מ. פנים) 2.3 ל' טורבו, 7 מושבים, Platinum 4x4",
+     "url": "https://www.auto.co.il/cars/ford/explorer/2026/580938/"
+    },
+    {
+     "name": "CarTube — פורד אקספלורר 2026 השוואת רמות גימור",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/61-פורד/394-פורד-אקספלורר/compare"
+    }
+   ]
+  },
+  {
+   "rows": [
+    192
+   ],
+   "car": "Volvo XC60 B5 AWD Core (mild hybrid)",
+   "drive": "הנעה כפולה (4x4)",
+   "engine": "טורבו בנזין היברידי-מתון, 2.0 ליטר (1,969 סמ\"ק)",
+   "power": "250 כ\"ס",
+   "accel": "6.9 שניות",
+   "gearbox": "אוטומטית, 8 הילוכים",
+   "consumption": "12.5 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "483 ליטר",
+   "sources": [
+    {
+     "name": "auto.co.il — וולוו XC60 2026 B5, 2.0 ל' טורבו היברידי-מתון, Core 4x4",
+     "url": "https://www.auto.co.il/cars/volvo/xc60/2026/580853/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    193
+   ],
+   "car": "Volvo EX30 Twin Motor Performance Plus",
+   "drive": "הנעה כפולה (4x4)",
+   "engine": "חשמלי, סוללה 69 קוט\"ש",
+   "power": "428 כ\"ס",
+   "accel": "3.6 שניות",
+   "gearbox": "תיבה חד-הילוכית",
+   "consumption": "טווח 450 ק\"מ (WLTP), 17.5 קוט\"ש/100 ק\"מ",
+   "seats": "5",
+   "trunk": "318 ליטר + 7 ליטר מלפנים",
+   "note": "צריכת החשמל באתר המקור: 175 וואט לק\"מ (= 17.5 קוט\"ש/100 ק\"מ, המרת יחידות בלבד).",
+   "sources": [
+    {
+     "name": "auto.co.il — וולוו EX30 2026 Twin motor חשמלי, Performance Plus 4x4",
+     "url": "https://www.auto.co.il/cars/volvo/ex30/2026/579883/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    194
+   ],
+   "car": "Porsche Taycan Turbo GT",
+   "drive": "הנעה כפולה (4x4)",
+   "engine": "חשמלי, סוללה 105 קוט\"ש",
+   "power": "1,034 כ\"ס",
+   "gearbox": "תיבה חד-הילוכית",
+   "consumption": "טווח 553 ק\"מ (WLTP), 20.7 קוט\"ש/100 ק\"מ",
+   "trunk": "326 ליטר",
+   "note": "צריכת החשמל באתר המקור: 207 וואט לק\"מ (המרת יחידות בלבד). 1,034 כ\"ס = הספק מרבי (Launch Control). מחיר ב-auto.co.il 1,897,000 מול 2,005,000 בקטלוג — ייתכן חבילת Weissach (2 מושבים); אם כך יש לוודא מושבים/תאוצה.",
+   "sources": [
+    {
+     "name": "auto.co.il — פורשה טייקן 2026 Turbo GT חשמלי, 4x4",
+     "url": "https://www.auto.co.il/cars/porsche/taycan/2026/580379/"
+    }
+   ]
   }
  ],
  "pending": []
