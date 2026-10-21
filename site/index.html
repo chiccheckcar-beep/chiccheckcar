@@ -1579,7 +1579,6 @@ function cardHtml(g){
         <div class="uc-price">החל מ- ${fmt(c.price)}</div>
         ${specsHtml(c, i)}
         <div class="uc-btn">החזר חודשי משוער ${fmtM(monthlyOf(c.price))}</div>
-        <div class="uc-fine">${PLAN.months} תשלומים · ריבית ${PLAN.rate}% · בלון ${PLAN.balloon}%</div>
         ${multi ? `<div class="uc-acts"><button type="button" class="uc-cmp" data-cmp="${g}">השווה רמות גימור</button><button type="button" class="uc-go" data-go="${i}">בחר גרסה והמשך</button></div>` : ''}
       </div>
     </div>`;
