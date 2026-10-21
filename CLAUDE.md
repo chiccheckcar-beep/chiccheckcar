@@ -64,6 +64,16 @@ Still open:
 - "לא להמציא שום נתון. אם לא ניתן לאמת נתון בוודאות, אל תציג את השורה בכלל באתר. אסור להציג ללקוח 'ממתין לאימות', 'לא ידוע' או placeholder אחר."
 - No images with watermarks, other agencies' logos, or of a different version of the car.
 
+## Deal terms (owner, 2026-10-21)
+
+- `site/terms.js` is the single source of deal terms for every page (cards, car page, calculator, personal area). Change numbers there only.
+- Finance: 5.9% annual nominal, 60 payments, 50% balloon, full car price financed (Spitzer). The monthly payment is always labelled "משוער".
+  Never show 3.9% anywhere.
+- Down payment is paid ON TOP of the car price. Tiers: <=200k 9,900; <=300k 14,900 (EV 16,900); <=400k 16,900 (EV 19,000);
+  >400k, commercial (cat 'מסחרי') and Toyota Land Cruiser 24,900. Only fuel 'חשמלי' counts as EV (hybrids/PHEV = non-EV).
+- Required disclaimer: "המקדמה משולמת בנוסף למחיר הרכב. תנאי העסקה כפופים לאישור מימון ולהסכם העסקה."
+- End-of-term options: never promise a swap without extra payment.
+
 ## Owner-supplied material
 
 - Owner instruction (2026-10-20): "כול מה שאני שולח לך תוסיף לטבלה" — every price, car or photo the owner sends is added to the

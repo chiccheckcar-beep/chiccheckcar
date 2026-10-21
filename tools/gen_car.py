@@ -89,6 +89,8 @@ h1{font-size:clamp(30px,4.6vw,52px);font-weight:800;margin:0;line-height:1.05;le
 .fin-in label{font-size:14px;color:var(--mut);margin:0}
 .fin-row{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-top:6px}
 .fin-row output{font-weight:700;font-size:16px;font-variant-numeric:tabular-nums}
+.mon .addon{font-size:12px;opacity:.7;font-weight:500}
+.fin-row span{font-size:14px;opacity:.85}
 .fin-in input[type=range]{width:100%;accent-color:#1d1b19;margin:4px 0 8px;height:28px;padding:0;border:0}
 .fin-out{padding:26px 22px;border-radius:18px;background:#1d1b19;color:#fff;display:flex;flex-direction:column;gap:12px}
 .fin-label{font-size:13px;opacity:.75}
@@ -196,6 +198,7 @@ footer a{color:#e8c7d4 !important}
 <footer><div class="wrap">ChicCheckCar · המחירים לפי המחירון שלנו ועשויים להשתנות. התמונות להמחשה בלבד.<br><a href="index.html#privacy" style="color:inherit">מדיניות פרטיות ועוגיות</a> · <a href="index.html#settings" style="color:inherit">הגדרות פרטיות</a> · <a href="index.html#accessibility" style="color:inherit">הצהרת נגישות</a></div></footer>
 
 <script src="fb.js"></script>
+<script src="terms.js"></script>
 <script>
 const CARS = __CARS__;
 window.cccLead = async function(info){
@@ -249,7 +252,8 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') { const b = 
 const STATS = __STATS__;
 const SPECS = __SPECS__;
 const fmt = n => '₪' + Math.round(n).toLocaleString('he-IL');
-const monthlyOf = price => { const r = 3.9/100/12, n = 60, B = price*0.5; return (price - B/Math.pow(1+r,n)) * r / (1 - Math.pow(1+r,-n)); };
+const TERMS = window.CCC_TERMS;
+const monthlyOf = price => TERMS.monthlyOf(price);
 const fmtM = n => '₪' + Math.ceil(n).toLocaleString('he-IL');
 const esc = s => String(s).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 function show(){
@@ -289,8 +293,9 @@ function show(){
       <div class="pricebox">
         <div class="from">החל מ-</div>
         <div class="big">${fmt(c.price)}</div>
-        <div class="mon">ובתשלום חודשי <b>${fmtM(monthlyOf(c.price))}</b></div>
-        <p class="plan-note">לדוגמה: מימון מלא, 60 תשלומים, ריבית שנתית 3.9% ובלון 50% בסוף התקופה. תלוי BDI.</p>
+        <div class="mon">מקדמה <b>${fmt(TERMS.downOf(c))}</b> <span class="addon">בנוסף למחיר הרכב</span></div>
+        <div class="mon">החזר חודשי משוער <b>${fmtM(monthlyOf(c.price))}</b></div>
+        <p class="plan-note">${TERMS.months} תשלומים · ריבית שנתית ${TERMS.rate}% · בלון ${TERMS.balloon}% ממחיר הרכב. ההחזר משוער עד לאישור הצעה פרטנית. המקדמה משולמת בנוסף למחיר הרכב. תנאי העסקה כפופים לאישור מימון ולהסכם העסקה.</p>
       </div>
       <div class="actions"><a class="btn solid" href="#offer" id="toOffer">לרכישה זריזה</a><button type="button" class="btn cartbtn" id="cartBtn" aria-pressed="false"></button><a class="mycart" id="myCart" href="index.html#me" hidden></a><a class="btn" id="waTop" target="_blank" rel="noopener">שליחה בוואטסאפ</a><a class="btn" href="#finance" id="toFin">מחשבון מימון</a></div>
     </div>
@@ -305,33 +310,30 @@ function show(){
   ${sp.note ? `<p class="approx">${esc(sp.note)}</p>` : ''}
   ${sp.sources ? `<p class="srcs">מקורות המפרט: ${sp.sources.map(x=>`<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.name)}</a>`).join(' · ')}</p>` : ''}
   <section id="finance">
-    <h2>מחשבון מימון</h2>
-    <p class="lead">בדקו בכמה יעלה ההחזר החודשי על הרכב הזה. התוצאה היא הערכה בלבד.</p>
+    <h2>הרכב הבא שלך, בתשלום חודשי שמתאים לך</h2>
+    <p class="lead">תנאי המימון לרכב הזה. ההחזר משוער עד לאישור הצעה פרטנית.</p>
     <div class="fin">
       <div class="fin-in">
         <div class="fin-row"><label for="finPrice">מחיר הרכב</label><output id="finPriceOut"></output></div>
         <input type="number" id="finPrice" min="10000" max="1000000" step="1" inputmode="numeric">
-        <div class="fin-row"><label for="finDown">מקדמה</label><output id="finDownOut"></output></div>
-        <input type="range" id="finDown" min="0" max="100" step="1" value="0">
-        <div class="fin-row"><label for="finMonths">מספר תשלומים</label><output id="finMonthsOut"></output></div>
-        <input type="range" id="finMonths" min="12" max="100" step="1" value="60">
-        <div class="fin-row"><label for="finRate">ריבית שנתית</label><output id="finRateOut"></output></div>
-        <input type="range" id="finRate" min="0" max="15" step="0.1" value="3.9">
-        <div class="fin-row"><label for="finBalloon">תשלום בלון בסוף התקופה</label><output id="finBalloonOut"></output></div>
-        <input type="range" id="finBalloon" min="0" max="50" step="1" value="50">
+        <div class="fin-row"><span>מקדמה ראשונית (בנוסף למחיר)</span><output id="finDownOut"></output></div>
+        <div class="fin-row"><span>ריבית שנתית</span><output id="finRateOut"></output></div>
+        <div class="fin-row"><span>תקופת המימון</span><output id="finMonthsOut"></output></div>
+        <div class="fin-row"><span>בלון בסוף התקופה</span><output id="finBalloonOut"></output></div>
       </div>
       <div class="fin-out" aria-live="polite">
         <div class="fin-label">החזר חודשי משוער</div>
         <div class="fin-big" id="finMonthly">—</div>
         <dl class="fin-dl">
-          <dt>סכום ההלוואה</dt><dd id="finLoan">—</dd>
+          <dt>מחיר הרכב</dt><dd id="finLoan">—</dd>
           <dt>תשלום בלון בסוף</dt><dd id="finBal">—</dd>
           <dt>סך כל התשלומים</dt><dd id="finTotal">—</dd>
           <dt>סך הריבית</dt><dd id="finInterest">—</dd>
         </dl>
         <a class="btn solid-w" href="#offer" id="finCta">לקבלת הצעת מימון</a>
         <a class="btn ghost-w" id="finWa" target="_blank" rel="noopener">שליחת החישוב בוואטסאפ</a>
-        <p class="fin-note">החישוב לפי לוח סילוקין שפיצר. ברירת המחדל (60 תשלומים, ריבית 3.9%, בלון 50%) היא לדוגמה בלבד, תלוי BDI.</p>
+        <p class="fin-note" id="finMethod"></p>
+        <p class="fin-note">ההחזר משוער בלבד עד לאישור הצעה פרטנית. המקדמה משולמת בנוסף למחיר הרכב. תנאי העסקה כפופים לאישור מימון ולהסכם העסקה.</p>
       </div>
     </div>
   </section>
@@ -374,23 +376,21 @@ function show(){
   const nis = n => '₪' + Math.round(n).toLocaleString('he-IL');
   const el = id => document.getElementById(id);
   el('finPrice').value = c.price;
+  el('finMethod').textContent = 'שיטת החישוב: ' + TERMS.method;
   function calc(){
     const price = Math.max(0, +el('finPrice').value || 0);
-    const downPct = +el('finDown').value, months = +el('finMonths').value, rate = +el('finRate').value, balPct = +el('finBalloon').value;
-    const down = price*downPct/100, loan = Math.max(0, price-down), bal = Math.min(loan, price*balPct/100), r = rate/100/12;
-    let pay = 0; if (loan > 0) pay = r === 0 ? (loan-bal)/months : (loan - bal/Math.pow(1+r,months)) * r / (1 - Math.pow(1+r,-months));
-    const total = pay*months + bal;
+    const down = TERMS.downOf(Object.assign({}, c, {price})), q = TERMS.quote(price);
     el('finPriceOut').textContent = nis(price);
-    el('finDownOut').textContent = downPct + '% · ' + nis(down);
-    el('finMonthsOut').textContent = months + ' חודשים';
-    el('finRateOut').textContent = rate.toFixed(1) + '%';
-    el('finBalloonOut').textContent = balPct ? balPct + '% · ' + nis(bal) : 'ללא';
-    el('finMonthly').textContent = loan > 0 ? nis(Math.ceil(pay)) : '—';
-    el('finLoan').textContent = nis(loan); el('finBal').textContent = bal ? nis(bal) : 'ללא';
-    el('finTotal').textContent = nis(total); el('finInterest').textContent = nis(Math.max(0,total-loan));
-    el('finWa').href = 'https://wa.me/972545762802?text=' + encodeURIComponent(`שלום, אשמח להצעת מימון ל-${full}. מחיר: ${nis(price)}, מקדמה: ${nis(down)}, ${months} תשלומים, בלון: ${bal ? nis(bal) : 'ללא'}. החזר חודשי משוער: ${nis(Math.ceil(pay))}.`);
+    el('finDownOut').textContent = nis(down);
+    el('finMonthsOut').textContent = q.months + ' חודשים';
+    el('finRateOut').textContent = q.rate + '%';
+    el('finBalloonOut').textContent = TERMS.balloon + '% · ' + nis(q.balloon);
+    el('finMonthly').textContent = price > 0 ? nis(Math.ceil(q.monthly)) : '—';
+    el('finLoan').textContent = nis(price); el('finBal').textContent = nis(q.balloon);
+    el('finTotal').textContent = nis(q.total); el('finInterest').textContent = nis(q.interest);
+    el('finWa').href = 'https://wa.me/972545762802?text=' + encodeURIComponent(`שלום, אשמח להצעת מימון ל-${full}. מחיר הרכב: ${nis(price)}, מקדמה (בנוסף למחיר): ${nis(down)}, ${q.months} תשלומים, ריבית שנתית ${q.rate}%, בלון ${TERMS.balloon}% (${nis(q.balloon)}). החזר חודשי משוער: ${nis(Math.ceil(q.monthly))}.`);
   }
-  ['finPrice','finDown','finMonths','finRate','finBalloon'].forEach(id => el(id).addEventListener('input', calc));
+  el('finPrice').addEventListener('input', calc);
   el('finCta').addEventListener('click', e => { e.preventDefault(); if (openLoan()) return; el('offer').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); el('fName').focus({preventScroll:true}); });
   calc();
   window.scrollTo(0,0);

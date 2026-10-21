@@ -131,6 +131,7 @@ __OKCSS__
 <footer>ChicCheckCar · <a href="index.html#privacy">מדיניות פרטיות</a> · <a href="index.html#settings">הגדרות פרטיות</a> · <a href="index.html#accessibility">הצהרת נגישות</a></footer>
 __OKHTML__
 <script src="fb.js"></script>
+<script src="terms.js"></script>
 <script>
 const CARS = __CARS__;
 __LEAD__
@@ -138,8 +139,7 @@ __DONE__
 (function(){
   const $ = id => document.getElementById(id);
   const fmt = n => '₪' + Math.round(n).toLocaleString('he-IL');
-  const PLAN = {months:60, rate:3.9, balloon:50};
-  const monthly = p => { const r = PLAN.rate/100/12, n = PLAN.months, B = p*PLAN.balloon/100; return (p - B/Math.pow(1+r,n)) * r / (1 - Math.pow(1+r,-n)); };
+  const monthly = p => window.CCC_TERMS.monthlyOf(p);
   const fullName = c => [c.maker, c.model, c.trim].filter(Boolean).join(' ');
   const esc = s => String(s ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
   const LS = { get(k, d){ try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch(e){ return d; } }, set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }, del(k){ try { localStorage.removeItem(k); } catch(e){} } };
@@ -163,7 +163,7 @@ __DONE__
     P.innerHTML = '<div class="items">' + items.map(i => { const c = CARS[i];
       return '<div class="item"><a class="thumb" href="car.html#car' + i + '"><img src="' + esc(c.img || 'car-sample.png') + '" alt=""></a>' +
         '<a class="iname" href="car.html#car' + i + '"><small>' + esc(c.maker) + '</small><b>' + esc(c.model) + '</b>' + (c.trim ? '<span class="tr">' + esc(c.trim) + '</span>' : '') +
-        '<span class="pr">החל מ- ' + fmt(c.price) + '</span><span class="mo">החזר חודשי החל מ- ₪' + Math.ceil(monthly(c.price)).toLocaleString('he-IL') + '</span></a>' +
+        '<span class="pr">החל מ- ' + fmt(c.price) + '</span><span class="mo">מקדמה ' + fmt(window.CCC_TERMS.downOf(c)) + ' בנוסף למחיר · החזר חודשי משוער ₪' + Math.ceil(monthly(c.price)).toLocaleString('he-IL') + '</span></a>' +
         '<button type="button" class="rm" data-rm="' + esc(keyOf(c)) + '" aria-label="הסרה מהסל: ' + esc(fullName(c)) + '">×</button></div>'; }).join('') + '</div>' +
       '<div class="sum"><span>' + items.length + (items.length === 1 ? ' רכב בסל · נציג יחזור אליכם עם הצעה' : ' רכבים בסל · נציג יחזור אליכם עם הצעה') + '</span><button type="button" class="btn" id="send">שליחת בקשה לנציג על הרכבים בסל</button></div>';
   }
