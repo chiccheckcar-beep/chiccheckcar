@@ -2376,6 +2376,239 @@
     }
    ],
    "internal": "צריכת החשמל באתר המקור: 207 וואט לק\"מ (המרת יחידות בלבד). 1,034 כ\"ס = הספק מרבי (Launch Control). מחיר ב-auto.co.il 1,897,000 מול 2,005,000 בקטלוג — ייתכן חבילת Weissach (2 מושבים); אם כך יש לוודא מושבים/תאוצה."
+  },
+  {
+   "rows": [
+    159
+   ],
+   "car": "Kia Sportage 1.6T PHEV Premium",
+   "drive": "הנעה קדמית",
+   "engine": "פלאג-אין הייבריד: טורבו בנזין 1.6 ליטר (1,598 סמ\"ק) + מנוע חשמלי",
+   "power": "288 כ\"ס (משולב)",
+   "accel": "7.5 שניות",
+   "gearbox": "אוטומטית, 6 הילוכים",
+   "consumption": "35.7 ק\"מ/ל' (משולב), טווח חשמלי 68 ק\"מ (WLTP)",
+   "seats": "5",
+   "trunk": "540 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — קיה ספורטאז' 1.6 טורבו פלאג-אין Premium 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/71-קיה/449-קיה-ספורטאז/5436-1-6-טורבו-פלאג-אין-premium-2026"
+    },
+    {
+     "name": "auto.co.il — קיה ספורטאז' 2026 1.6 ל' טורבו פלאג-אין הייבריד Premium",
+     "url": "https://www.auto.co.il/cars/kia/sportage/2026/plug-in-hybrid-premium/"
+    },
+    {
+     "name": "CarTube — השוואת רמות גימור קיה ספורטאז' (תא מטען)",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/71-קיה/449-קיה-ספורטאז/compare"
+    }
+   ]
+  },
+  {
+   "rows": [
+    160
+   ],
+   "car": "Mazda 3 Hatchback 2.5 Turbo Premium AWD",
+   "drive": "הנעה כפולה (4X4)",
+   "engine": "טורבו בנזין, 2.5 ליטר (2,488 סמ\"ק)",
+   "power": "227 כ\"ס",
+   "accel": "6.5 שניות",
+   "gearbox": "אוטומטית, 6 הילוכים",
+   "consumption": "11.5 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "295 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — מאזדה 3 2.5 טורבו 5 דלתות Premium AWD 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/44-מאזדה/266-מאזדה-3/2886-2-5-טורבו-5-דלתות-premium-awd-2026"
+    },
+    {
+     "name": "auto.co.il — מאזדה 3 2026 האצ'בק 2.5 ל' טורבו, אוט', Premium 4x4",
+     "url": "https://www.auto.co.il/cars/mazda/3/2026/580981/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    161
+   ],
+   "car": "Mazda CX-5 2.5 AWD Executive (new generation)",
+   "drive": "הנעה כפולה (4X4)",
+   "engine": "בנזין, 2.5 ליטר (2,488 סמ\"ק)",
+   "power": "187 כ\"ס",
+   "accel": "10.2 שניות",
+   "gearbox": "אוטומטית, 6 הילוכים",
+   "consumption": "11.1 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "583 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — מאזדה CX-5 AWD Executive 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/44-מאזדה/270-מאזדה-cx-5/2931-awd-executive-2026"
+    },
+    {
+     "name": "auto.co.il — מאזדה CX5 2026 (דור חדש) 2.5 ל' Executive 4x4",
+     "url": "https://www.auto.co.il/cars/mazda/cx-5/2026/executive-4x4-ng/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    162
+   ],
+   "car": "Honda Jazz 1.5 e:HEV Advance",
+   "drive": "הנעה קדמית",
+   "engine": "היברידי: בנזין 1.5 ליטר (1,498 סמ\"ק) + מנוע חשמלי",
+   "power": "122 כ\"ס",
+   "gearbox": "תמסורת ישירה (e-CVT)",
+   "seats": "5",
+   "sources": [
+    {
+     "name": "CarTube — הונדה ג'אז 1.5 היברידי Advance 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/32-הונדה/173-הונדה-ג-אז/1708-1-5-היברידי-advance-2026"
+    },
+    {
+     "name": "auto.co.il — הונדה ג'אז 2026 1.5 ל' היברידי Advance",
+     "url": "https://www.auto.co.il/cars/honda/jazz/2026/581041/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    163
+   ],
+   "car": "Nissan Qashqai 1.3 DIG-T Mild Hybrid Acenta",
+   "drive": "הנעה קדמית",
+   "engine": "טורבו בנזין 1.3 ליטר (1,332 סמ\"ק), היברידי מתון",
+   "power": "156 כ\"ס",
+   "accel": "9.2 שניות",
+   "gearbox": "אוטומטית רציפה (CVT)",
+   "consumption": "15.9 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "504 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — ניסאן קשקאי 1.3 טורבו Acenta 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/51-ניסאן/328-ניסאן-קשקאי/3828-1-3-טורבו-acenta-2026"
+    },
+    {
+     "name": "auto.co.il — ניסאן קשקאי 2026 1.3 ל' טורבו, היברידי מתון, Acenta",
+     "url": "https://www.auto.co.il/cars/nissan/qashqai/2026/580881/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    164
+   ],
+   "car": "Nissan Juke 1.0 DIG-T Acenta-Tech",
+   "drive": "הנעה קדמית",
+   "engine": "טורבו בנזין, 1.0 ליטר (999 סמ\"ק)",
+   "power": "114 כ\"ס",
+   "accel": "11.1 שניות",
+   "gearbox": "רובוטית כפולת מצמדים, 7 הילוכים",
+   "consumption": "16.4 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "422 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — ניסאן ג'וק 1.0 טורבו Acenta-Tech 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/51-ניסאן/329-ניסאן-ג-וק/3796-1-0-טורבו-acenta-tech-2026"
+    },
+    {
+     "name": "auto.co.il — ניסאן ג'וק 2026 1.0 ל' טורבו Acenta-Tech",
+     "url": "https://www.auto.co.il/cars/nissan/juke/2026/580799/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    165
+   ],
+   "car": "Mitsubishi Outlander 1.5T MHEV Intense 2x4 7 seats",
+   "drive": "הנעה קדמית",
+   "engine": "טורבו בנזין 1.5 ליטר (1,499 סמ\"ק), היברידי מתון",
+   "power": "174 כ\"ס",
+   "accel": "9.7 שניות",
+   "gearbox": "אוטומטית רציפה (CVT)",
+   "consumption": "11.9 ק\"מ/ל' (משולב)",
+   "seats": "7",
+   "trunk": "137 ליטר (כשכל 7 המושבים בשימוש)",
+   "sources": [
+    {
+     "name": "CarTube — מיצובישי אאוטלנדר 1.5 טורבו Intense 2X4 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/47-מיצובישי/285-מיצובישי-אאוטלנדר/3211-1-5-טורבו-intense-2x4-2026"
+    },
+    {
+     "name": "auto.co.il — מיצובישי אאוטלנדר 2026 1.5 ל' MHEV, היברידי-מתון, 7 מק', Intense 2x4",
+     "url": "https://www.auto.co.il/cars/mitsubishi/outlander/2026/mhev-intense-2x4/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    166
+   ],
+   "car": "Subaru Evoltis 2.4 Turbo Luxury 7 seats 4x4",
+   "drive": "הנעה כפולה (4X4)",
+   "engine": "טורבו בנזין, 2.4 ליטר (2,387 סמ\"ק), מנוע בוקסר",
+   "power": "260 כ\"ס",
+   "gearbox": "אוטומטית רציפה (CVT)",
+   "consumption": "9.8 ק\"מ/ל' (משולב)",
+   "seats": "7",
+   "sources": [
+    {
+     "name": "auto.co.il — סובארו אבולטיס 2026 2.4 ל' טורבו, אוט', 7 מק', Luxury 4x4",
+     "url": "https://www.auto.co.il/cars/subaru/evoltis/2026/580323/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    167
+   ],
+   "car": "Subaru Forester 2.5 e-Boxer Hybrid (SHEV) Limited Plus 4x4",
+   "drive": "הנעה כפולה (4X4)",
+   "engine": "היברידי: בנזין 2.5 ליטר (2,498 סמ\"ק) + מנוע חשמלי",
+   "power": "194 כ\"ס",
+   "accel": "9.4 שניות",
+   "gearbox": "אוטומטית רציפה (CVT)",
+   "consumption": "14.9 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "sources": [
+    {
+     "name": "CarTube — סובארו פורסטר הייבריד 4X4 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/52-סובארו/333-סובארו-פורסטר/3911-הייבריד-4x4-2026"
+    },
+    {
+     "name": "auto.co.il — סובארו פורסטר 2026 2.5 ל' היברידי SHEV, Limited Plus 4x4",
+     "url": "https://www.auto.co.il/cars/subaru/forester/2026/shev-25-limited-plus-4x4/"
+    }
+   ]
+  },
+  {
+   "rows": [
+    168
+   ],
+   "car": "Suzuki Swift 1.2 Mild Hybrid GLX CVT (new generation)",
+   "drive": "הנעה קדמית",
+   "engine": "בנזין 1.2 ליטר (1,197 סמ\"ק), היברידי מתון",
+   "power": "82 כ\"ס",
+   "accel": "11.9 שניות",
+   "gearbox": "אוטומטית רציפה (CVT)",
+   "seats": "5",
+   "trunk": "265 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — סוזוקי סוויפט 1.2 ליטר GLX אוטו' 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/53-סוזוקי/337-סוזוקי-סוויפט/3947-1-2-ליטר-glx-אוטו-2026"
+    },
+    {
+     "name": "auto.co.il — סוזוקי סוויפט 2026 (דור חדש) 1.2 ל' היברידי מתון, אוט', GLX",
+     "url": "https://www.auto.co.il/cars/suzuki/swift/2026/580944/"
+    }
+   ]
   }
  ],
  "pending": []
