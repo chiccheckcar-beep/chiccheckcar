@@ -2609,6 +2609,558 @@
      "url": "https://www.auto.co.il/cars/suzuki/swift/2026/580944/"
     }
    ]
+  },
+  {
+   "rows": [
+    101
+   ],
+   "car": "BYD Dolphin Surf Boost",
+   "drive": "הנעה קדמית",
+   "engine": "חשמלי, סוללה 43.2 קוט\"ש (LFP)",
+   "power": "88 כ\"ס",
+   "accel": "12.1 שניות",
+   "gearbox": "תמסורת ישירה",
+   "consumption": "טווח 322 ק\"מ, 15.6 קוט\"ש/100 ק\"מ",
+   "seats": "4",
+   "trunk": "308 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — BYD דולפין סרף Boost 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/1-byd/8-byd-דולפין-סרף/56-boost-2026"
+    }
+   ],
+   "internal": "צריכת החשמל במקור: 156 Wh/km (= 15.6 קוט\"ש/100 ק\"מ, המרה אריתמטית)."
+  },
+  {
+   "rows": [
+    102
+   ],
+   "car": "BYD Dolphin Surf Comfort",
+   "drive": "הנעה קדמית",
+   "engine": "חשמלי, סוללה 43.2 קוט\"ש (LFP)",
+   "power": "156 כ\"ס",
+   "accel": "9.1 שניות",
+   "gearbox": "תמסורת ישירה",
+   "consumption": "טווח 310 ק\"מ, 16.0 קוט\"ש/100 ק\"מ",
+   "seats": "4",
+   "trunk": "308 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — BYD דולפין סרף Comfort 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/1-byd/8-byd-דולפין-סרף/57-comfort-2026"
+    }
+   ],
+   "internal": "צריכת החשמל במקור: 160 Wh/km (המרה אריתמטית)."
+  },
+  {
+   "rows": [
+    103,
+    104
+   ],
+   "car": "BYD Dolphin 60.4 kWh (Comfort / Design)",
+   "drive": "הנעה קדמית",
+   "engine": "חשמלי, סוללה 60.4 קוט\"ש",
+   "power": "204 כ\"ס",
+   "accel": "7.0 שניות",
+   "gearbox": "תמסורת ישירה",
+   "consumption": "טווח 427 ק\"מ, 15.2 קוט\"ש/100 ק\"מ",
+   "seats": "5",
+   "trunk": "345 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — BYD דולפין קומפורט 427 ק\"מ 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/1-byd/4-byd-דולפין/31-קומפורט-427-ק-מ-2026"
+    },
+    {
+     "name": "CarTube — BYD דולפין דיזיין 427 ק\"מ 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/1-byd/4-byd-דולפין/30-דיזיין-427-ק-מ-2026"
+    }
+   ],
+   "internal": "צריכת החשמל במקור: 152 Wh/km (המרה אריתמטית)."
+  },
+  {
+   "rows": [
+    105
+   ],
+   "car": "BYD SEAL Design RWD",
+   "drive": "הנעה אחורית",
+   "engine": "חשמלי, סוללה 82 קוט\"ש",
+   "power": "312 כ\"ס",
+   "accel": "5.9 שניות",
+   "gearbox": "תמסורת ישירה",
+   "consumption": "טווח 570 ק\"מ, 16.6 קוט\"ש/100 ק\"מ",
+   "seats": "5",
+   "trunk": "485 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — BYD סיל דיזיין 570 ק\"מ RWD 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/1-byd/5-byd-סיל/36-דיזיין-570-ק-מ-rwd-2026"
+    },
+    {
+     "name": "auto.co.il — BYD סיל 2026",
+     "url": "https://www.auto.co.il/cars/byd/seal/2026"
+    }
+   ],
+   "internal": "בכרטיס מוצג 313 כ\"ס; CarTube מציין 312 כ\"ס. צריכה במקור 166 Wh/km."
+  },
+  {
+   "rows": [
+    106
+   ],
+   "car": "BYD ATTO 2 DM-i Active (PHEV)",
+   "drive": "הנעה קדמית",
+   "engine": "פלאג-אין הייבריד, בנזין 1.5 ליטר (1,495 סמ\"ק) + מנוע חשמלי, סוללה 7.8 קוט\"ש",
+   "power": "166 כ\"ס (הספק משולב)",
+   "accel": "9.1 שניות",
+   "gearbox": "אוטומטית עם תפעול אלקטרוני (E-CVT)",
+   "consumption": "טווח חשמלי 40 ק\"מ · 19.6 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "425 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — BYD אטו 2 DM-i Active 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/1-byd/11-byd-אטו-2/74-dm-i-active-2026"
+    },
+    {
+     "name": "auto.co.il — BYD אטו 2 2026",
+     "url": "https://www.auto.co.il/cars/byd/atto-2/2026"
+    }
+   ],
+   "internal": "סוג התיבה (E-CVT) לפי auto.co.il; CarTube מציין \"תמסורת ישירה\"."
+  },
+  {
+   "rows": [
+    107
+   ],
+   "car": "BYD ATTO 2 Comfort (EV)",
+   "drive": "הנעה קדמית",
+   "engine": "חשמלי, סוללה 64.8 קוט\"ש (LFP)",
+   "power": "204 כ\"ס",
+   "accel": "7.9 שניות",
+   "gearbox": "תמסורת ישירה",
+   "consumption": "טווח 430 ק\"מ, 17.4 קוט\"ש/100 ק\"מ",
+   "seats": "5",
+   "trunk": "450 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — BYD אטו 2 Comfort 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/1-byd/11-byd-אטו-2/72-comfort-2026"
+    },
+    {
+     "name": "auto.co.il — BYD אטו 2 2026",
+     "url": "https://www.auto.co.il/cars/byd/atto-2/2026"
+    }
+   ],
+   "internal": "צריכה במקור 174 Wh/km."
+  },
+  {
+   "rows": [
+    108
+   ],
+   "car": "BYD ATTO 3 EVO Design RWD",
+   "drive": "הנעה אחורית",
+   "engine": "חשמלי, סוללה 74.8 קוט\"ש (LFP)",
+   "power": "313 כ\"ס",
+   "accel": "5.5 שניות",
+   "gearbox": "תמסורת ישירה",
+   "consumption": "טווח 510 ק\"מ, 16.4 קוט\"ש/100 ק\"מ",
+   "seats": "5",
+   "trunk": "490 ליטר (+101 ליטר תא קדמי)",
+   "sources": [
+    {
+     "name": "CarTube — BYD אטו 3 EVO Design RWD 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/1-byd/1-byd-אטו-3/14-evo-design-rwd-2026"
+    },
+    {
+     "name": "auto.co.il — BYD אטו 3 2026",
+     "url": "https://www.auto.co.il/cars/byd/atto-3/2026"
+    }
+   ],
+   "internal": "צריכה במקור 164 Wh/km."
+  },
+  {
+   "rows": [
+    109
+   ],
+   "car": "BYD ATTO 3 EVO Excellence AWD",
+   "drive": "הנעה כפולה (4X4)",
+   "engine": "חשמלי, שני מנועים, סוללה 74.8 קוט\"ש (LFP)",
+   "power": "448 כ\"ס",
+   "accel": "3.9 שניות",
+   "gearbox": "תמסורת ישירה",
+   "consumption": "טווח 470 ק\"מ, 17.8 קוט\"ש/100 ק\"מ",
+   "seats": "5",
+   "trunk": "490 ליטר (+101 ליטר תא קדמי)",
+   "sources": [
+    {
+     "name": "CarTube — BYD אטו 3 EVO Excellence AWD 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/1-byd/1-byd-אטו-3/13-evo-excellence-awd-2026"
+    },
+    {
+     "name": "auto.co.il — BYD אטו 3 2026",
+     "url": "https://www.auto.co.il/cars/byd/atto-3/2026"
+    }
+   ],
+   "internal": "צריכה במקור 178 Wh/km."
+  },
+  {
+   "rows": [
+    110
+   ],
+   "car": "BYD SEAL U EV Design",
+   "drive": "הנעה קדמית",
+   "engine": "חשמלי",
+   "power": "218 כ\"ס",
+   "accel": "9.6 שניות",
+   "gearbox": "תמסורת ישירה",
+   "consumption": "טווח 500 ק\"מ (WLTP), 20.5 קוט\"ש/100 ק\"מ",
+   "seats": "5",
+   "trunk": "425 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — BYD סיל U דיזיין 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/1-byd/6-byd-סיל-u/48-דיזיין-2026"
+    },
+    {
+     "name": "auto.co.il — BYD סיל U 2026",
+     "url": "https://www.auto.co.il/cars/byd/seal-u/2026"
+    }
+   ],
+   "internal": "קיבולת הסוללה לא הוצגה: המקורות חלוקים (87 / 89 קוט\"ש). צריכה במקור 205 Wh/km (שני המקורות)."
+  },
+  {
+   "rows": [
+    111
+   ],
+   "car": "BYD SEAL U DM-i AWD Design (PHEV)",
+   "drive": "הנעה כפולה (4X4)",
+   "engine": "פלאג-אין הייבריד, טורבו בנזין 1.5 ליטר (1,498 סמ\"ק) + שני מנועים חשמליים, סוללה 18.3 קוט\"ש",
+   "power": "324 כ\"ס (הספק משולב)",
+   "accel": "5.9 שניות",
+   "consumption": "טווח חשמלי 70 ק\"מ (WLTP)",
+   "seats": "5",
+   "trunk": "425 ליטר",
+   "sources": [
+    {
+     "name": "auto.co.il — BYD סיל U 2026",
+     "url": "https://www.auto.co.il/cars/byd/seal-u/2026"
+    },
+    {
+     "name": "CarTube — BYD סיל U פלאג-אין Design 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/1-byd/6-byd-סיל-u/50-פלאג-אין-design-2026"
+    }
+   ],
+   "internal": "CarTube מציין בטעות הנעה קדמית ו-59 שניות; הנעה כפולה ו-5.9 שניות לפי auto.co.il. נפח תא מטען 425 ליטר \"בכל הגרסאות\" לפי auto.co.il (CarTube: 552). תיבה לא הוצגה (אין מקור ודאי)."
+  },
+  {
+   "rows": [
+    112
+   ],
+   "car": "BYD Sealion 7 Boost RWD",
+   "drive": "הנעה אחורית",
+   "engine": "חשמלי, סוללה 71.8 קוט\"ש (LFP)",
+   "power": "231 כ\"ס",
+   "accel": "7.3 שניות",
+   "gearbox": "תמסורת ישירה",
+   "consumption": "טווח 440 ק\"מ, 19.1 קוט\"ש/100 ק\"מ",
+   "seats": "5",
+   "trunk": "520 ליטר (+58 ליטר תא קדמי)",
+   "sources": [
+    {
+     "name": "CarTube — BYD סיליאון 7 בוסט 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/1-byd/9-byd-סיליאון-7/62-בוסט-2026"
+    },
+    {
+     "name": "auto.co.il — BYD סיליון 7 2026",
+     "url": "https://www.auto.co.il/cars/byd/sealion-7/2026"
+    }
+   ],
+   "internal": "צריכה במקור 191 Wh/km."
+  },
+  {
+   "rows": [
+    113
+   ],
+   "car": "BYD Sealion 7 Design RWD",
+   "drive": "הנעה אחורית",
+   "engine": "חשמלי, סוללה 91.3 קוט\"ש (LFP)",
+   "power": "313 כ\"ס",
+   "accel": "6.7 שניות",
+   "gearbox": "תמסורת ישירה",
+   "consumption": "טווח 540 ק\"מ",
+   "seats": "5",
+   "trunk": "520 ליטר (+58 ליטר תא קדמי)",
+   "sources": [
+    {
+     "name": "CarTube — BYD סיליאון 7 דיזיין 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/1-byd/9-byd-סיליאון-7/63-דיזיין-2026"
+    },
+    {
+     "name": "auto.co.il — BYD סיליון 7 2026",
+     "url": "https://www.auto.co.il/cars/byd/sealion-7/2026"
+    }
+   ],
+   "internal": "תאוצה 6.7 ש' לפי CarTube (הכרטיס מציג 6.9 — לבדוק). צריכת חשמל ב-CarTube שגויה (19 Wh/km) ולכן לא הוצגה."
+  },
+  {
+   "rows": [
+    114
+   ],
+   "car": "BYD Sealion 7 Excellence AWD",
+   "drive": "הנעה כפולה (4X4)",
+   "engine": "חשמלי, שני מנועים, סוללה 91.3 קוט\"ש (LFP)",
+   "power": "530 כ\"ס",
+   "accel": "4.5 שניות",
+   "gearbox": "תמסורת ישירה",
+   "consumption": "טווח 502 ק\"מ",
+   "seats": "5",
+   "trunk": "520 ליטר (+58 ליטר תא קדמי)",
+   "sources": [
+    {
+     "name": "CarTube — BYD סיליאון 7 אקסלנס 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/1-byd/9-byd-סיליאון-7/65-אקסלנס-2026"
+    },
+    {
+     "name": "auto.co.il — BYD סיליון 7 2026",
+     "url": "https://www.auto.co.il/cars/byd/sealion-7/2026"
+    }
+   ],
+   "internal": "הספק: CarTube 530 כ\"ס, auto.co.il 531 כ\"ס. צריכת חשמל ב-CarTube שגויה (22 Wh/km) ולכן לא הוצגה."
+  },
+  {
+   "rows": [
+    197,
+    198
+   ],
+   "car": "Chery FX EV (Comfort / Noble)",
+   "drive": "הנעה קדמית",
+   "engine": "חשמלי, סוללה 61.1 קוט\"ש",
+   "power": "204 כ\"ס",
+   "accel": "7.6 שניות",
+   "gearbox": "תמסורת ישירה",
+   "consumption": "טווח 430 ק\"מ, 15.5 קוט\"ש/100 ק\"מ",
+   "seats": "5",
+   "trunk": "380 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — צ'רי FX EV חשמלי Noble 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/68-צ-רי/429-צ-רי-fx/5194-ev-חשמלי-noble-2026"
+    },
+    {
+     "name": "CarTube — צ'רי FX EV חשמלי Comfort 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/68-צ-רי/429-צ-רי-fx/5195-ev-חשמלי-comfort-2026"
+    },
+    {
+     "name": "auto.co.il — צ'רי FX 2026",
+     "url": "https://www.auto.co.il/cars/chery/fx/2026"
+    }
+   ],
+   "internal": "\"Noble TT\" במחירון = Noble (מכניקה זהה). צריכה במקור 155 Wh/km."
+  },
+  {
+   "rows": [
+    199
+   ],
+   "car": "Chery Tiggo 7 Pro 1.6T Sense",
+   "drive": "הנעה קדמית",
+   "engine": "טורבו בנזין, 1.6 ליטר (1,598 סמ\"ק)",
+   "power": "147 כ\"ס",
+   "accel": "10.5 שניות",
+   "gearbox": "רובוטית כפולת מצמדים, 7 הילוכים",
+   "consumption": "13.9 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "475 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — צ'רי טיגו 7 פרו 1.6 Sense 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/68-צ-רי/430-צ-רי-טיגו-7-פרו/5216-1-6-sense-2026"
+    },
+    {
+     "name": "auto.co.il — צ'רי טיגו 7 פרו 2026",
+     "url": "https://www.auto.co.il/cars/chery/tiggo-7-pro/2026"
+    }
+   ]
+  },
+  {
+   "rows": [
+    95,
+    97
+   ],
+   "car": "Jaecoo 5 1.6T petrol (Premium / Luxury)",
+   "drive": "הנעה קדמית",
+   "engine": "טורבו בנזין, 1.6 ליטר (1,598 סמ\"ק)",
+   "power": "147 כ\"ס",
+   "accel": "10.2 שניות",
+   "gearbox": "רובוטית כפולת מצמדים, 7 הילוכים",
+   "consumption": "14.3 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "480 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — ג'אקו 5 בנזין 1.6 טורבו Premium 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/25-ג-אקו/144-ג-אקו-5/1373-בנזין-1-6-טורבו-premium-2026"
+    },
+    {
+     "name": "CarTube — ג'אקו 5 בנזין 1.6 טורבו Luxury 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/25-ג-אקו/144-ג-אקו-5/1374-בנזין-1-6-טורבו-luxury-2026"
+    },
+    {
+     "name": "auto.co.il — ג'אקו 5 2026",
+     "url": "https://www.auto.co.il/cars/jaecoo/5/2026"
+    }
+   ],
+   "internal": "לפי auto.co.il שיווק גרסת הבנזין הופסק ביוני 2026."
+  },
+  {
+   "rows": [
+    96,
+    98
+   ],
+   "car": "Jaecoo 5 EV (Premium / Luxury)",
+   "drive": "הנעה קדמית",
+   "engine": "חשמלי, סוללה 58.9 קוט\"ש (LFP)",
+   "power": "211 כ\"ס",
+   "accel": "7.7 שניות",
+   "gearbox": "תמסורת ישירה",
+   "consumption": "טווח 402 ק\"מ (WLTP), 18.7 קוט\"ש/100 ק\"מ",
+   "seats": "5",
+   "trunk": "480 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — ג'אקו 5 חשמלי Premium 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/25-ג-אקו/144-ג-אקו-5/1375-חשמלי-premium-2026"
+    },
+    {
+     "name": "CarTube — ג'אקו 5 חשמלי Luxury 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/25-ג-אקו/144-ג-אקו-5/1376-חשמלי-luxury-2026"
+    },
+    {
+     "name": "auto.co.il — ג'אקו 5 2026",
+     "url": "https://www.auto.co.il/cars/jaecoo/5/2026"
+    }
+   ],
+   "internal": "צריכה במקור 187 Wh/km (שני המקורות)."
+  },
+  {
+   "rows": [
+    99
+   ],
+   "car": "Jaecoo 7 1.6T Executive 2WD",
+   "drive": "הנעה קדמית",
+   "engine": "טורבו בנזין, 1.6 ליטר (1,598 סמ\"ק)",
+   "power": "147 כ\"ס",
+   "accel": "10.8 שניות",
+   "gearbox": "רובוטית כפולת מצמדים, 7 הילוכים",
+   "consumption": "13.3 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "424 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — ג'אקו 7 Executive 2WD 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/25-ג-אקו/143-ג-אקו-7/1358-executive-2wd-2026"
+    },
+    {
+     "name": "auto.co.il — ג'אקו 7 2026",
+     "url": "https://www.auto.co.il/cars/jaecoo/j7/2026"
+    }
+   ]
+  },
+  {
+   "rows": [
+    100
+   ],
+   "car": "Jaecoo 7 1.6T Adventure 4WD",
+   "drive": "הנעה כפולה (4X4)",
+   "engine": "טורבו בנזין, 1.6 ליטר (1,598 סמ\"ק)",
+   "power": "147 כ\"ס",
+   "accel": "12.0 שניות",
+   "gearbox": "רובוטית כפולת מצמדים, 7 הילוכים",
+   "consumption": "12.5 ק\"מ/ל' (משולב)",
+   "seats": "5",
+   "trunk": "424 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — ג'אקו 7 Adventure 4WD 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/25-ג-אקו/143-ג-אקו-7/1361-adventure-4wd-2026"
+    },
+    {
+     "name": "auto.co.il — ג'אקו 7 2026",
+     "url": "https://www.auto.co.il/cars/jaecoo/j7/2026"
+    }
+   ]
+  },
+  {
+   "rows": [
+    191
+   ],
+   "car": "MG4 X Range RWD (77 kWh)",
+   "drive": "הנעה אחורית",
+   "engine": "חשמלי, סוללה 77 קוט\"ש",
+   "power": "245 כ\"ס",
+   "accel": "6.5 שניות",
+   "gearbox": "תמסורת ישירה",
+   "consumption": "טווח 545 ק\"מ (WLTP), 16.1 קוט\"ש/100 ק\"מ",
+   "seats": "5",
+   "trunk": "350 ליטר",
+   "sources": [
+    {
+     "name": "CarTube — MG 4 X Range 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/6-mg/24-mg-4/202-x-range-2026"
+    },
+    {
+     "name": "auto.co.il — MG 4 2026",
+     "url": "https://www.auto.co.il/cars/mg/mg4/2026"
+    }
+   ],
+   "internal": "צריכה במקור 161 Wh/km (שני המקורות)."
+  },
+  {
+   "rows": [
+    195
+   ],
+   "car": "Tesla Model 3 Standard RWD",
+   "drive": "הנעה אחורית",
+   "engine": "חשמלי",
+   "power": "283 כ\"ס",
+   "accel": "6.2 שניות",
+   "gearbox": "תמסורת ישירה",
+   "consumption": "טווח 534 ק\"מ (WLTP)",
+   "seats": "5",
+   "trunk": "594 ליטר",
+   "sources": [
+    {
+     "name": "auto.co.il — טסלה מודל 3 2026",
+     "url": "https://www.auto.co.il/cars/tesla/model-3/2026"
+    },
+    {
+     "name": "CarTube — טסלה מודל 3 Standard RWD 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/37-טסלה/213-טסלה-מודל-3/5806-standard-rwd-2026-849ad5"
+    }
+   ],
+   "internal": "CarTube מציג 572 ק\"מ וסוללה 64 קוט\"ש (כנראה נתוני גרסת RWD הקודמת); auto.co.il ומקורות אירופיים: 534 ק\"מ WLTP. קיבולת סוללה לא הוצגה (טסלה לא מפרסמת; המקורות חלוקים 57.5/64). תא מטען 594 ליטר לפי auto.co.il (CarTube: 425 + 88 קדמי)."
+  },
+  {
+   "rows": [
+    196
+   ],
+   "car": "Tesla Model Y L Premium AWD (6 seats)",
+   "drive": "הנעה כפולה (4X4)",
+   "engine": "חשמלי, שני מנועים",
+   "accel": "5.0 שניות",
+   "gearbox": "תמסורת ישירה",
+   "consumption": "טווח 681 ק\"מ (WLTP)",
+   "seats": "6",
+   "sources": [
+    {
+     "name": "auto.co.il — טסלה מודל Y 2026 (גרסת L)",
+     "url": "https://www.auto.co.il/cars/tesla/model-y/2026"
+    },
+    {
+     "name": "CarTube — טסלה מודל Y L Premium AWD 2026",
+     "url": "https://www.cartube.co.il/מחירון-רכב-חדש/37-טסלה/214-טסלה-מודל-y/5813-l-premium-awd-2026-12a77e"
+    }
+   ],
+   "internal": "תאוצה \"כ-5.0 שניות\" לפי auto.co.il (CarTube: 4.5). הספק לא נמצא במקור אמין — לא הוצג (הכרטיס מציג 299). נפח תא מטען חלוקים (536 / 420 ליטר) — לא הוצג."
   }
  ],
  "pending": []
