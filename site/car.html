@@ -115,6 +115,16 @@ html,body{background:radial-gradient(120% 80% at 50% 0,#efe9e8 0,#d9d0cf 100%) f
 h1{font-family:"Heebo",system-ui,sans-serif;font-weight:800;letter-spacing:-.025em}
 .chip{background:rgba(255,255,255,.7);border-color:var(--line);font-weight:600}
 .chip.dark{background:var(--acc);border-color:var(--acc)}
+.trimsw{margin-top:4px}
+.trimsw-l{display:block;font-size:12px;color:var(--mut);margin-bottom:6px}
+.trimsw-o{display:flex;flex-wrap:wrap;gap:8px}
+.trimsw-o a{display:flex;flex-direction:column;gap:1px;min-width:96px;padding:8px 14px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.7);color:inherit;text-decoration:none;transition:border-color .15s,background .15s}
+.trimsw-o a:hover{border-color:var(--acc)}
+.trimsw-o a b{font-size:13px;font-weight:700}
+.trimsw-o a small{font-size:12px;color:var(--mut);font-variant-numeric:tabular-nums}
+.trimsw-o a.on{background:var(--txt);border-color:var(--txt);color:#fff}
+.trimsw-o a.on small{color:rgba(255,255,255,.75)}
+@media (max-width:600px){.trimsw-o a{min-width:0;padding:6px 10px}.trimsw-o a b{font-size:12px}}
 .pricebox{background:var(--card);border-color:var(--line);border-radius:22px;padding:20px 22px;box-shadow:0 14px 34px -26px rgba(31,21,25,.4)}
 .pricebox .big{color:var(--txt);font-size:34px}
 .pricebox .mon b{color:var(--acc)}
@@ -245,6 +255,15 @@ const TERMS = window.CCC_TERMS;
 const monthlyOf = price => TERMS.monthlyOf(price);
 const fmtM = n => '₪' + Math.ceil(n).toLocaleString('he-IL');
 const esc = s => String(s).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+const GKEY = c => [c.maker, c.model, c.fuel, c.cat].join('|');
+function trimSwitch(i){
+  const k = GKEY(CARS[i]), ix = CARS.map((c, j) => j).filter(j => GKEY(CARS[j]) === k).sort((a, b) => CARS[a].price - CARS[b].price);
+  if (ix.length < 2) return '';
+  let L = ix.map(j => (CARS[j].trim || CARS[j].extra || '').trim());
+  const sh = L.map(l => l.replace(/\s*\([^)]*\)\s*/g, ' ').trim()); if (new Set(sh).size === sh.length) L = sh;
+  L = L.map((l, n) => L.indexOf(l) === n && L.lastIndexOf(l) === n ? (l || fmt(CARS[ix[n]].price)) : [l, CARS[ix[n]].extra && CARS[ix[n]].extra !== l ? CARS[ix[n]].extra : fmt(CARS[ix[n]].price)].filter(Boolean).join(' · '));
+  return `<div class="trimsw"><span class="trimsw-l">רמת גימור</span><div class="trimsw-o">${ix.map((j, n) => `<a href="#car${j}" class="${j === i ? 'on' : ''}" ${j === i ? 'aria-current="true"' : ''}><b>${esc(L[n])}</b><small>${fmt(CARS[j].price)}</small></a>`).join('')}</div></div>`;
+}
 function show(){
   const m = /^#car(\d+)$/.exec(location.hash);
   const i = m ? +m[1] : -1;
@@ -279,6 +298,7 @@ function show(){
       <h1>${esc(c.model)}</h1>
       <div class="chips">${c.trim ? `<span class="chip dark">${esc(c.trim)}</span>` : ''}${c.fuel ? `<span class="chip">${esc(c.fuel)}</span>` : ''}${c.cat ? `<span class="chip">${esc(c.cat)}</span>` : ''}<span class="chip">0 ק"מ</span></div>
       ${c.extra ? `<div class="extraline">${esc(c.extra)}</div>` : ''}
+      ${trimSwitch(i)}
       <div class="pricebox">
         <div class="from">החל מ-</div>
         <div class="big">${fmt(c.price)}</div>

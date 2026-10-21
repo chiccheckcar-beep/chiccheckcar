@@ -914,6 +914,69 @@ body:has(.adm:not([hidden])) .me-fab,body:has(#gate:not([hidden])) .me-fab{displ
 #mCart[aria-pressed="true"]{background:var(--s-acc);color:#fff;border-color:var(--s-acc)}
 @media (max-width:800px){.adm-side{position:absolute;top:0;bottom:0;right:0;z-index:2;box-shadow:-12px 0 30px rgba(0,0,0,.14)}.adm-body{position:relative}.adm:not(.side-open) .adm-side{display:none}.adm.side-open .adm-side{display:block}.adm-search{flex:1;min-width:0}.adm-search input{width:100%}.adm-head-l{width:100%}.adm-head,.adm-top-bar{padding-inline:14px}.adm-main{padding:14px 12px 40px}.adm-kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.adm-kpi{padding:12px}.adm-kpi b{font-size:22px}.adm-logo{height:46px}.adm-top-bar{height:64px}.adm-cards{grid-template-columns:1fr}.adm-badge{display:none}.adm-newform{grid-template-columns:1fr}}
 
+/* ===== One card per model: trim picker + trim comparison (2026-10-22) ===== */
+.uc-name .ctrim{direction:rtl}
+.uc-trims{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.uc-trim{position:relative;font:inherit;font-size:12px;font-weight:600;line-height:1.2;padding:6px 12px;border-radius:999px;border:1px solid rgba(122,42,74,.28);background:rgba(255,255,255,.6);color:var(--s-ink);cursor:pointer;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;transition:background .18s,color .18s,border-color .18s}
+.uc-trim:hover{border-color:var(--s-acc)}
+.uc-trim[aria-pressed="true"]{background:var(--s-ink);border-color:var(--s-ink);color:#fff}
+.uc-trim:focus-visible,.uc-cmp:focus-visible,.uc-go:focus-visible,.cmp-go:focus-visible{outline:2px solid var(--s-acc);outline-offset:2px}
+.uc-trim em,.cmp-rec{font-style:normal;font-size:10px;font-weight:700;margin-inline-start:6px;padding:1px 7px;border-radius:999px;background:var(--s-acc);color:#fff;vertical-align:1px}
+.uc-acts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.uc-cmp,.uc-go{font:inherit;font-size:12.5px;font-weight:700;padding:10px 8px;border-radius:12px;cursor:pointer;transition:background .15s,color .15s}
+.uc-cmp{background:transparent;border:1px solid rgba(31,21,25,.25);color:var(--s-ink)}
+.uc-cmp:hover{border-color:var(--s-ink)}
+.uc-go{background:var(--s-acc);border:1px solid var(--s-acc);color:#fff}
+.uc-go:hover{background:var(--s-acc2)}
+@media (max-width:600px){.uc-trims{gap:4px;margin-top:8px}.uc-trim{font-size:10.5px;padding:4px 8px}.uc-acts{grid-template-columns:1fr;gap:6px}.uc-cmp,.uc-go{font-size:11px;padding:8px 6px;border-radius:10px}}
+.cmp{position:fixed;inset:0;z-index:120;display:grid;place-items:center;padding:20px}
+.cmp[hidden]{display:none}
+.cmp-bg{position:absolute;inset:0;background:rgba(20,12,16,.5);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);animation:meFade .2s ease}
+.cmp-box{position:relative;width:min(1100px,100%);max-height:calc(100vh - 40px);overflow:auto;background:#f4e9ee;border-radius:24px;box-shadow:0 30px 70px rgba(20,12,16,.35);padding:28px 28px 22px;color:var(--s-ink);animation:meFade .25s ease}
+.cmp-x{position:absolute;top:14px;inset-inline-end:14px;width:38px;height:38px;border-radius:50%;border:0;background:#fff;color:var(--s-ink);font-size:22px;line-height:1;cursor:pointer}
+.cmp-head{padding-inline-end:48px;margin-bottom:16px}
+.cmp-head small{display:block;font-size:12px;color:var(--s-acc);font-weight:700;letter-spacing:.2em}
+.cmp-head h3{margin:2px 0 4px;font-size:24px;font-weight:800}
+.cmp-head p{margin:0 0 10px;font-size:13.5px;color:var(--s-mut)}
+.cmp-only{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;cursor:pointer}
+.cmp-only input{accent-color:var(--s-acc);width:16px;height:16px}
+.cmp-scroll{overflow-x:auto}
+.cmp-t{width:100%;min-width:560px;border-collapse:separate;border-spacing:0;font-size:14px}
+.cmp-t th,.cmp-t td{padding:11px 9px;text-align:right;vertical-align:top;border-bottom:1px solid rgba(122,42,74,.12)}
+.cmp-t thead th{vertical-align:bottom;border-bottom:2px solid rgba(122,42,74,.25)}
+.cmp-t thead th b{display:block;font-family:"Unbounded",system-ui,"Segoe UI",Arial,sans-serif;font-size:17px;font-weight:700;margin-top:4px;direction:ltr;text-align:right;font-variant-numeric:tabular-nums}
+.cmp-trim{font-weight:800;font-size:14px}
+.cmp-t thead th{white-space:nowrap}
+.cmp-t td{min-width:0}
+.cmp-t tbody th{font-weight:600;color:var(--s-mut);white-space:nowrap;width:1%}
+.cmp-t .cur{background:rgba(255,255,255,.55)}
+.cmp-t tr.diff td{font-weight:700}
+.cmp-t tr.diff th{color:var(--s-acc)}
+.cmp-t tr.diff th::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--s-acc);margin-inline-end:7px;vertical-align:2px}
+.cmp-t tr.same td{color:var(--s-mut)}
+.cmp-t tfoot td,.cmp-t tfoot th{border-bottom:0;padding-top:14px}
+.cmp-go{font:inherit;width:100%;font-size:12px;font-weight:700;padding:9px 8px;white-space:nowrap;border-radius:12px;border:0;background:var(--s-ink);color:#fff;cursor:pointer}
+.cmp-go:hover{background:var(--s-acc)}
+.cmp.only .same{display:none}
+.cmp-note{margin:16px 0 0;font-size:11.5px;color:var(--s-mut);line-height:1.6}
+.cmp-cards{display:none}
+@media (max-width:760px){
+  .cmp{padding:0;place-items:end stretch}
+  .cmp-box{border-radius:22px 22px 0 0;max-height:92vh;padding:22px 16px 18px}
+  .cmp-head h3{font-size:19px}
+  .cmp-scroll{display:none}
+  .cmp-cards{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;margin-inline:-16px;padding-inline:16px}
+  .cmp-card{flex:0 0 82%;scroll-snap-align:center;background:rgba(255,255,255,.6);border:1px solid rgba(122,42,74,.15);border-radius:18px;padding:14px;display:flex;flex-direction:column}
+  .cmp-card.cur{border-color:var(--s-ink)}
+  .cmp-ch b{display:block;font-family:"Unbounded",system-ui,"Segoe UI",Arial,sans-serif;font-size:17px;margin-top:2px;direction:ltr;text-align:right}
+  .cmp-card dl{margin:10px 0 12px;flex:1}
+  .cmp-card dl div{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid rgba(122,42,74,.1);font-size:13px}
+  .cmp-card dt{color:var(--s-mut);flex:0 0 42%}
+  .cmp-card dd{margin:0;text-align:left;font-weight:600}
+  .cmp-card .diff dt{color:var(--s-acc);font-weight:700}
+  .cmp-card .diff dd{font-weight:800}
+}
+@media (prefers-reduced-motion:reduce){.cmp-bg,.cmp-box{animation:none}.uc-trim{transition:none}}
 /* ===== Deal terms (2026-10-21): down payments, finance terms, benefits, steps, end of term ===== */
 .uc-terms{font-size:13px;font-weight:700;color:var(--s-acc);margin-top:2px;font-variant-numeric:tabular-nums}
 .uc-terms span{font-weight:500;color:var(--s-mut);font-size:11.5px}
@@ -1479,37 +1542,138 @@ $('fuel').innerHTML  = '<option value="">כל סוגי המנוע</option>' + fu
 
 const CAT_ORDER = ['פנאי-שטח קטן','פנאי-שטח בינוני','עירוני קטן','פנאי-שטח גדול / 7 מקומות','משפחתי','מיניוואן / רב-תכליתי','מיני עירוני','טנדר','יוקרה / מנהלים'];
 let curCat = '';
+// One card per model: cars with the same maker + model + engine type + category are trims of one model.
+// Different engine types, or a van vs a passenger version, stay separate cards.
+const GKEY = c => [c.maker, c.model, c.fuel, c.cat].join('|');
+const GROUPS = (() => { const m = new Map(); CARS.forEach((c, i) => { const k = GKEY(c); if (!m.has(k)) m.set(k, []); m.get(k).push(i); });
+  return [...m.values()].map(ix => ix.sort((a, b) => CARS[a].price - CARS[b].price)); })();
+const GROUP_OF = {}; GROUPS.forEach((ix, g) => ix.forEach(i => GROUP_OF[i] = g));
+// Recommended trim per model: index -> reason. Set only when real data (equipment / value for money) supports it.
+// No such data exists in the catalog yet, so no trim is marked.
+const RECOMMEND = {};
+const esc1 = s => String(s ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+function trimLabels(ix){
+  let L = ix.map(i => (CARS[i].trim || CARS[i].extra || '').trim());
+  const short = L.map(l => l.replace(/\s*\([^)]*\)\s*/g, ' ').trim());
+  if (new Set(short).size === short.length) L = short;
+  return L.map((l, k) => L.indexOf(l) === k && L.lastIndexOf(l) === k ? (l || fmt(CARS[ix[k]].price))
+    : [l, CARS[ix[k]].extra && CARS[ix[k]].extra !== l ? CARS[ix[k]].extra : fmt(CARS[ix[k]].price)].filter(Boolean).join(' · '));
+}
+const SEL = {};   // group -> selected car index (default: the cheapest trim)
+const selOf = g => SEL[g] ?? GROUPS[g][0];
+function cardHtml(g){
+  const ix = GROUPS[g], i = selOf(g), c = CARS[i], multi = ix.length > 1, labels = trimLabels(ix);
+  const pills = multi ? `<div class="uc-trims" role="group" aria-label="בחירת רמת גימור">${ix.map((j, k) =>
+    `<button type="button" class="uc-trim" data-pick="${j}" aria-pressed="${j === i}">${esc1(labels[k])}${RECOMMEND[j] ? '<em>מומלץ</em>' : ''}</button>`).join('')}</div>` : '';
+  return `
+    <div class="car uc${multi ? ' multi' : ''}" role="button" tabindex="0" data-g="${g}" data-i="${i}" aria-label="פרטים על ${esc1(fullName(c))}">
+      <div class="uc-top">
+        ${c.fuel ? `<span class="uc-badge">${c.fuel}</span>` : ''}
+        <button type="button" class="uc-cart" data-cart="${i}" aria-pressed="false" aria-label="הוספה לסל: ${esc1(fullName(c))}"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="9.5" cy="19.5" r="1.5" fill="currentColor"/><circle cx="17" cy="19.5" r="1.5" fill="currentColor"/><path d="M2.5 3.5h2.2l2.4 11.1a1.5 1.5 0 0 0 1.5 1.2h8.7a1.5 1.5 0 0 0 1.5-1.1L21 7.5H5.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="imgbox"><img class="cimg" id="img${i}" src="${c.img || 'car-sample.png'}" alt="${c.img ? esc1(fullName(c)) : 'תמונה להמחשה'}" loading="lazy" onerror="this.parentNode.classList.add('noimg')"><div class="ph"><span class="ph-maker">${c.maker}</span><b>${c.model}</b></div></div>
+        <div class="uc-name"><div class="maker">${c.maker}</div><div class="model">${c.maker} ${c.model}</div>${multi ? `<div class="ctrim">${ix.length} רמות גימור</div>` : (c.trim ? `<div class="ctrim">${c.trim}</div>` : '')}</div>
+        ${pills}
+      </div>
+      <div class="uc-body">
+        <div class="uc-lbl">מחיר${multi ? ` · ${esc1(labels[ix.indexOf(i)])}` : ''}</div>
+        <div class="uc-price">החל מ- ${fmt(c.price)}</div>
+        ${specsHtml(c, i)}
+        <div class="uc-btn">החזר חודשי משוער ${fmtM(monthlyOf(c.price))}</div>
+        <div class="uc-fine">${PLAN.months} תשלומים · ריבית ${PLAN.rate}% · בלון ${PLAN.balloon}%</div>
+        ${multi ? `<div class="uc-acts"><button type="button" class="uc-cmp" data-cmp="${g}">השווה רמות גימור</button><button type="button" class="uc-go" data-go="${i}">בחר גרסה והמשך</button></div>` : ''}
+      </div>
+    </div>`;
+}
 function renderCats(){
-  const counts = {}; CARS.forEach(c => counts[c.cat] = (counts[c.cat]||0)+1);
-  $('cats').innerHTML = `<option value="">כל הקטגוריות (${CARS.length})</option>` + CAT_ORDER.filter(k => counts[k]).map(k => `<option value="${k}">${k} (${counts[k]})</option>`).join('');
+  const counts = {}; GROUPS.forEach(ix => { const k = CARS[ix[0]].cat; counts[k] = (counts[k]||0)+1; });
+  $('cats').innerHTML = `<option value="">כל הקטגוריות (${GROUPS.length})</option>` + CAT_ORDER.filter(k => counts[k]).map(k => `<option value="${k}">${k} (${counts[k]})</option>`).join('');
 }
 renderCats();
 $('cats').addEventListener('input', () => { curCat = $('cats').value; render(); });
 function render(){
   const q = $('q').value.trim().toLowerCase();
   const mk = $('maker').value, fu = $('fuel').value, so = $('sort').value;
-  let list = CARS.filter(c =>
-    (!q || [c.maker,c.model,c.trim,c.extra,c.fuel,c.drive].join(' ').toLowerCase().includes(q)) &&
-    (!mk || c.maker===mk) && (!fu || c.fuel===fu) && (!curCat || c.cat===curCat));
-  list.sort((a,b)=> so==='name' ? fullName(a).localeCompare(fullName(b),'he') : so==='desc' ? b.price-a.price : a.price-b.price);
-  $('count').textContent = `מציגים ${list.length} מתוך ${CARS.length} רכבים`;
-  $('grid').innerHTML = list.map(c => `
-    <div class="car uc" role="button" tabindex="0" data-i="${CARS.indexOf(c)}" aria-label="פרטים על ${fullName(c)}">
-      <div class="uc-top">
-        ${c.fuel ? `<span class="uc-badge">${c.fuel}</span>` : ''}
-        <button type="button" class="uc-cart" data-cart="${CARS.indexOf(c)}" aria-pressed="false" aria-label="הוספה לסל: ${fullName(c)}"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="9.5" cy="19.5" r="1.5" fill="currentColor"/><circle cx="17" cy="19.5" r="1.5" fill="currentColor"/><path d="M2.5 3.5h2.2l2.4 11.1a1.5 1.5 0 0 0 1.5 1.2h8.7a1.5 1.5 0 0 0 1.5-1.1L21 7.5H5.6" fill="var(--cf,none)" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-        <div class="imgbox"><img class="cimg" id="img${CARS.indexOf(c)}" src="${c.img || 'car-sample.png'}" alt="${c.img ? fullName(c) : 'תמונה להמחשה'}" loading="lazy" onerror="this.parentNode.classList.add('noimg')"><div class="ph"><span class="ph-maker">${c.maker}</span><b>${c.model}</b></div></div>
-        <div class="uc-name"><div class="maker">${c.maker}</div><div class="model">${c.maker} ${c.model}</div>${c.trim ? `<div class="ctrim">${c.trim}</div>` : ''}</div>
-      </div>
-      <div class="uc-body">
-        <div class="uc-lbl">מחיר</div>
-        <div class="uc-price">החל מ- ${fmt(c.price)}</div>
-        ${specsHtml(c, CARS.indexOf(c))}
-        <div class="uc-btn">החזר חודשי משוער ${fmtM(monthlyOf(c.price))}</div>
-        <div class="uc-fine">${PLAN.months} תשלומים · ריבית ${PLAN.rate}% · בלון ${PLAN.balloon}%</div>
-      </div>
-    </div>`).join('');
+  const ok = c => (!q || [c.maker,c.model,c.trim,c.extra,c.fuel,c.drive].join(' ').toLowerCase().includes(q)) &&
+    (!mk || c.maker===mk) && (!fu || c.fuel===fu) && (!curCat || c.cat===curCat);
+  let list = [];
+  GROUPS.forEach((ix, g) => { const hit = ix.filter(i => ok(CARS[i])); if (!hit.length) return;
+    if (q && !hit.includes(selOf(g))) SEL[g] = hit[0];   // a search that names a trim opens the card on that trim
+    list.push(g); });
+  const lo = g => CARS[GROUPS[g][0]].price, hi = g => CARS[GROUPS[g][GROUPS[g].length - 1]].price;
+  list.sort((a,b)=> so==='name' ? fullName(CARS[GROUPS[a][0]]).localeCompare(fullName(CARS[GROUPS[b][0]]),'he') : so==='desc' ? hi(b)-hi(a) : lo(a)-lo(b));
+  const nv = list.reduce((n, g) => n + GROUPS[g].length, 0);
+  $('count').textContent = `מציגים ${list.length} דגמים (${nv} גרסאות) מתוך ${GROUPS.length} דגמים`;
+  $('grid').innerHTML = list.map(cardHtml).join('');
   $('empty').style.display = list.length ? 'none' : 'block';
+  if (window.cccCart) window.cccCart.sync();
+}
+function pickTrim(g, i, focus){
+  SEL[g] = i;
+  const old = document.querySelector('.car.uc[data-g="' + g + '"]'); if (!old) return;
+  old.insertAdjacentHTML('afterend', cardHtml(g)); const card = old.nextElementSibling; old.remove();
+  if (window.cccCart) window.cccCart.sync();
+  if (focus){ const b = card.querySelector('.uc-trim[data-pick="' + i + '"]'); if (b) b.focus(); }
+}
+
+// ===== Trim comparison =====
+const CMP_ROWS = [
+  ['מחיר', i => fmt(CARS[i].price), 'price'],
+  ['החזר חודשי משוער', i => fmtM(monthlyOf(CARS[i].price)), 'pay'],
+  ['מקדמה (בנוסף למחיר)', i => fmt(downOf(CARS[i])), 'pay'],
+  ['מנוע', i => (spOf(i).engine || '')],
+  ['הספק', i => spOf(i).power || (VERIFIED_HP[i] ? VERIFIED_HP[i].n + ' כ"ס' : '')],
+  ['תיבת הילוכים', i => spOf(i).gearbox || ''],
+  ['הנעה', i => spOf(i).drive || (CARS[i].drive === '4x4' ? 'הנעה כפולה (4x4)' : '')],
+  ['צריכת דלק / טווח נסיעה', i => spOf(i).consumption || (VERIFIED_RANGE[i] ? (CARS[i].fuel === 'חשמלי' ? 'טווח נסיעה ' : 'טווח חשמלי ') + VERIFIED_RANGE[i] + ' ק"מ' : '')],
+  ['תאוצה 0-100 קמ"ש', i => spOf(i).accel || (VERIFIED_0100[i] ? VERIFIED_0100[i] + ' שניות' : '')],
+  ['מושבים', i => spOf(i).seats || ''],
+  ['תא מטען', i => spOf(i).trunk || ''],
+  ['פרטים מהמחירון', i => CARS[i].extra || '']
+];
+const spOf = i => (window.CCC_SPECS || {})[i] || {};
+let specsReady = null;
+const loadSpecs = () => specsReady || (specsReady = new Promise(res => { if (window.CCC_SPECS) return res();
+  const sc = document.createElement('script'); sc.src = 'specs.js'; sc.onload = sc.onerror = () => res(); document.head.appendChild(sc); }));
+let cmpLast = null;
+function cmpBox(){
+  let m = $('cmp'); if (m) return m;
+  document.body.insertAdjacentHTML('beforeend', `<div class="cmp" id="cmp" hidden role="dialog" aria-modal="true" aria-labelledby="cmpT">
+    <div class="cmp-bg" data-cx></div>
+    <div class="cmp-box">
+      <button type="button" class="cmp-x" data-cx aria-label="סגירת ההשוואה">×</button>
+      <div class="cmp-head"><small id="cmpMk"></small><h3 id="cmpT"></h3><p id="cmpSub"></p>
+        <label class="cmp-only"><input type="checkbox" id="cmpOnly"> הצגת ההבדלים בלבד</label></div>
+      <div id="cmpBody"></div>
+      <p class="cmp-note">נתונים טכניים לפי מקורות היבואן והיצרן, כפי שמופיעים בעמוד של כל גרסה. שורה שאין לה נתון מאומת לא מוצגת. ההחזר החודשי משוער (${PLAN.months} תשלומים, ריבית ${PLAN.rate}%, בלון ${PLAN.balloon}%). המקדמה משולמת בנוסף למחיר הרכב. תנאי העסקה כפופים לאישור מימון ולהסכם העסקה.</p>
+    </div></div>`);
+  m = $('cmp');
+  m.addEventListener('click', e => {
+    if (e.target.closest('[data-cx]')) return closeCmp();
+    const go = e.target.closest('[data-go]'); if (go) goCar(go.dataset.go);
+  });
+  $('cmpOnly').addEventListener('change', () => m.classList.toggle('only', $('cmpOnly').checked));
+  return m;
+}
+function closeCmp(){ const m = $('cmp'); if (!m || m.hidden) return; m.hidden = true; document.body.style.overflow = ''; if (cmpLast) cmpLast.focus(); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCmp(); });
+async function openCompare(g){
+  cmpLast = document.activeElement;
+  await loadSpecs();
+  const m = cmpBox(), ix = GROUPS[g], c0 = CARS[ix[0]], labels = trimLabels(ix), sel = selOf(g);
+  const rows = CMP_ROWS.map(([l, f, kind]) => { const v = ix.map(i => f(i)); const filled = v.filter(Boolean);
+    return {l, v, kind, diff: filled.length && (new Set(v)).size > 1}; }).filter(r => r.v.some(Boolean));
+  const diffs = rows.filter(r => r.diff && r.kind !== 'pay').map(r => r.l);
+  $('cmpMk').textContent = c0.maker; $('cmpT').textContent = c0.maker + ' ' + c0.model;
+  $('cmpSub').textContent = `השוואת ${ix.length} רמות גימור` + (diffs.length ? ` · ההבדלים: ${diffs.join(', ')}` : '');
+  const head = ix.map((i, k) => `<th scope="col" class="${i === sel ? 'cur' : ''}"><span class="cmp-trim">${esc1(labels[k])}</span>${RECOMMEND[i] ? '<em class="cmp-rec">מומלץ</em>' : ''}</th>`).join('');
+  const body = rows.map(r => `<tr class="${r.diff ? 'diff' : 'same'}"><th scope="row">${r.l}</th>${r.v.map((v, k) => `<td class="${ix[k] === sel ? 'cur' : ''}">${esc1(v)}</td>`).join('')}</tr>`).join('');
+  const foot = ix.map(i => `<td><button type="button" class="cmp-go" data-go="${i}">בחר גרסה והמשך</button></td>`).join('');
+  const cards = ix.map((i, k) => `<div class="cmp-card${i === sel ? ' cur' : ''}"><div class="cmp-ch"><span class="cmp-trim">${esc1(labels[k])}</span>${RECOMMEND[i] ? '<em class="cmp-rec">מומלץ</em>' : ''}</div>
+    <dl>${rows.map(r => r.v[k] ? `<div class="${r.diff ? 'diff' : 'same'}"><dt>${r.l}</dt><dd>${esc1(r.v[k])}</dd></div>` : '').join('')}</dl>
+    <button type="button" class="cmp-go" data-go="${i}">בחר גרסה והמשך</button></div>`).join('');
+  $('cmpBody').innerHTML = `<div class="cmp-scroll"><table class="cmp-t"><thead><tr><th></th>${head}</tr></thead><tbody>${body}</tbody><tfoot><tr><th></th>${foot}</tr></tfoot></table></div><div class="cmp-cards">${cards}</div>`;
+  $('cmpOnly').checked = false; m.classList.remove('only');
+  m.hidden = false; document.body.style.overflow = 'hidden'; m.querySelector('.cmp-x').focus();
 }
 
 // fill the lead form car list (same catalog, sorted by price)
@@ -1569,6 +1733,8 @@ $('grid').addEventListener('click', e => {
   if (e.target.closest('.addimg')) return;
   const cb = e.target.closest('.uc-cart'); if (cb){ e.stopPropagation(); window.cccCart && window.cccCart.toggle(+cb.dataset.cart); return; }
   const card = e.target.closest('.car');
+  const tp = e.target.closest('.uc-trim'); if (tp && card){ pickTrim(+card.dataset.g, +tp.dataset.pick, true); return; }
+  const cp = e.target.closest('.uc-cmp'); if (cp){ openCompare(+cp.dataset.cmp); return; }
   if (card) goCar(card.dataset.i);
 });
 $('grid').addEventListener('keydown', e => {
