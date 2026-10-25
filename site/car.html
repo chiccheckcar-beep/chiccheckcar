@@ -225,6 +225,10 @@ window.cccLead = async function(info){
     if (info.req){
       // every request is its own lead in the leads center, even from the same person
       const rq = {rid, ts: now, src: info.src, car: String(info.car || '').slice(0,500), detail: String(info.detail || '').slice(0,300), name, phone, city, status: 'new', note: '', unseen: true};
+      // the deal as the customer saw it when sending (price, down payment, route, monthly), so the request keeps it even if prices change
+      try { const email = String((info.profile && info.profile.email) || saved.email || '').slice(0,120); if (email) rq.email = email;
+        const T = window.CCC_TERMS, c = (T && info.car && typeof CARS !== 'undefined') ? CARS.find(x => [x.maker, x.model, x.trim].filter(Boolean).join(' ') === String(info.car)) : null;
+        if (c) rq.deal = {price: c.price, down: T.downOf(c), monthly: Math.ceil(T.monthlyOf(c.price)), months: T.months, rate: T.rate, balloon: T.balloon}; } catch(e) {}
       if (info.loan) rq.loan = info.loan;
       data.reqs = (Array.isArray(cur.reqs) ? cur.reqs : []).concat([rq]).slice(-60);
       data.unseen = true; if (ex.exists && (!cur.status || ['cold','lost','noans'].includes(cur.status))) data.status = 'new';

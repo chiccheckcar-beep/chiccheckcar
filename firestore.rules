@@ -15,10 +15,25 @@ service cloud.firestore {
     function self(id) { return signedIn() && request.auth.uid == id; }
 
     // Leads: the owner and approved staff see and manage all of them.
-    // A visitor can only read and write their own lead (its id is their own anonymous uid).
+    // A customer (anonymous visitor or signed-in account; the doc id is their uid) can read and write only their own lead,
+    // and cannot set team-only fields: a status other than new/cold, merge marks, or the audit test flag after creation.
+    function customerStatusOk() {
+      return request.resource.data.get('status', 'new') in ['new', 'cold']
+        || request.resource.data.get('status', '') == resource.data.get('status', '');
+    }
     match /leads/{id} {
       allow read, write: if isTeam();
-      allow get, create, update: if self(id);
+      allow get: if self(id);
+      allow create: if self(id) && request.resource.data.get('status', 'new') in ['new', 'cold']
+        && !request.resource.data.keys().hasAny(['mergedInto', 'mergedFrom', 'mergedAt', 'mergedBy']);
+      allow update: if self(id) && customerStatusOk()
+        && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['mergedInto', 'mergedFrom', 'mergedAt', 'mergedBy', 'test']);
+    }
+
+    // Purchase-process stage per request (shown to the customer in the personal area). Only the team writes it.
+    match /progress/{id} {
+      allow read: if isTeam() || self(id);
+      allow write: if isTeam();
     }
 
     // Staff accounts: a person creates their own request; only the owner sees the list.

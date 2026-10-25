@@ -49,3 +49,23 @@ try {
     if (fixed.some((k, i) => k !== cart[i])) localStorage.setItem('ccc_cart', JSON.stringify(fixed));
   }
 } catch (e) {}
+
+// Purchase process stages (owner's list, 2026-10-25). The team sets the real stage per request in the leads center
+// (stored in Firestore progress/<customerUid>, writable only by the team); the customer sees it in the personal area.
+// A request with no stage set yet is at stage 2 ("waiting for review"): stage 1 (received) is true the moment it is saved.
+window.CCC_STAGES = [
+  null,
+  'בקשת הרכישה התקבלה',
+  'הבקשה ממתינה לבדיקה',
+  'פרטי הלקוח והרכב נבדקים',
+  'הבקשה הועברה לנציג',
+  'הבקשה בטיפול',
+  'פרטי המימון נבדקים',
+  'החלטת המימון',          // 7: shown as "המימון אושר" / "המימון נדחה" by result
+  'החוזה מוכן לחתימה',
+  'החוזה נחתם',
+  'הרכב בתהליך הכנה',
+  'הרכב מוכן למסירה',
+  'הרכב נמסר ללקוח'
+];
+window.CCC_STAGE_LABEL = (n, result) => n === 7 ? (result === 'rejected' ? 'המימון נדחה' : result === 'approved' ? 'המימון אושר' : 'החלטת המימון') : (window.CCC_STAGES[n] || '');

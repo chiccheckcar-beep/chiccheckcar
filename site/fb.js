@@ -4,6 +4,7 @@
    - db        -> Firestore (compat API: collection().doc().get/set/update/delete, onSnapshot, orderBy, limit)
    - user.id() -> Firebase Auth uid (visitors are signed in anonymously on their first request)
    - user.isOwner() -> signed in with the owner's email
+   - customer accounts: cccFb.customerRegister / signIn / resetPassword (Firebase Auth email+password, same uid as the anonymous visitor)
    Who may read what is enforced by firestore.rules (in the repo root), not by this file. */
 (function(){
   const CFG = {
@@ -53,9 +54,19 @@
     }
   };
 
+  // customer accounts (Firebase Auth email/password). Registering upgrades the visitor's anonymous session, so the
+  // visitor keeps the same uid and their lead document (leads/<uid>) stays theirs on every device.
+  async function customerRegister(email, pw){
+    const {auth} = await init(); const u = auth.currentUser;
+    if (u && u.isAnonymous){ const cred = firebase.auth.EmailAuthProvider.credential(email, pw); return (await u.linkWithCredential(cred)).user; }
+    if (u) await auth.signOut();
+    return (await auth.createUserWithEmailAndPassword(email, pw)).user;
+  }
   // staff / owner sign-in used by the admin area
   window.cccFb = {
-    OWNER, init, isOwnerUser,
+    OWNER, CFG, init, isOwnerUser, customerRegister,
+    async resetPassword(email){ const {auth} = await init(); auth.languageCode = 'he'; await auth.sendPasswordResetEmail(email); },
+    async onAuth(cb){ const {auth} = await init(); return auth.onAuthStateChanged(cb); },
     async current(){ const {auth} = await init(); return auth.currentUser; },
     async signIn(email, pw){ const {auth} = await init(); return (await auth.signInWithEmailAndPassword(email, pw)).user; },
     async signUp(email, pw){ const {auth} = await init(); return (await auth.createUserWithEmailAndPassword(email, pw)).user; },

@@ -1,6 +1,10 @@
 /* ChicCheckCar — customer account (registration, sign-in, password reset). Shared by index.html, car.html and me.html.
-   The account lives in this browser (localStorage "ccc_me"). The password is stored only as a PBKDF2 hash and is never sent anywhere.
-   Password reset is verified with ID number + date of birth (SMS is not available on this hosting). */
+   Since 2026-10-25 the account is a Firebase Auth email/password account (see fb.js): the same login works on every device,
+   and the customer's data lives in Firestore leads/<uid> (readable only by the customer and the team, see firestore.rules).
+   Registering upgrades the visitor's anonymous session, so the uid (and the lead document) does not change.
+   Password reset = Firebase reset e-mail. This browser keeps only name / phone / city / e-mail / username for pre-filling forms;
+   ID number, date of birth and passwords are never stored in the browser. Old browser-only accounts are moved to Firebase on
+   their next sign-in (same password). */
 (function(){
   const get = () => { try { return JSON.parse(localStorage.getItem('ccc_me') || '{}') || {}; } catch(e){ return {}; } };
   const put = m => { try { localStorage.setItem('ccc_me', JSON.stringify(m)); sessionStorage.setItem('ccc_name', m.name || ''); sessionStorage.setItem('ccc_phone', m.phone || ''); } catch(e){} };
@@ -21,9 +25,27 @@
   }
   async function setPassword(m, pw){ m.salt = b64(crypto.getRandomValues(new Uint8Array(16))); m.hash = await hashPw(pw, m.salt); return m; }
   const signedIn = () => { const m = get(); return String(m.name || '').trim().length >= 2 && phoneOk(m.phone); };
-  const hasAccount = () => { const m = get(); return !!(m.username && m.hash); };
-  const unlocked = () => { try { return sessionStorage.getItem('ccc_unlocked') === '1'; } catch(e){ return false; } };
-  const setUnlocked = v => { try { v ? sessionStorage.setItem('ccc_unlocked','1') : sessionStorage.removeItem('ccc_unlocked'); } catch(e){} };
+  // Firebase account state (null = visitor). "ready" resolves once Firebase reported the session.
+  let acct = null, readyRes; const ready = new Promise(r => readyRes = r); setTimeout(() => readyRes(), 6000);
+  const legacy = () => { const m = get(); return !!(m.username && m.hash); };            // old browser-only account, not yet moved
+  const hasAccount = () => !!acct || legacy();
+  const unlocked = () => !!acct;
+  const setUnlocked = () => {};
+  const keepLocal = m => { const o = {}; ['name','phone','city','email','username'].forEach(k => { if (m[k]) o[k] = m[k]; }); return o; };
+  async function pullProfile(){            // after sign-in on any device: fill this browser from the account's lead document
+    try { const db = await claude.use('db'); const s = await db.collection('leads').doc(acct.uid).get(); if (!s.exists) return;
+      const d = s.data() || {}, p = d.profile || {};
+      put(Object.assign(keepLocal(get()), {name: d.name || get().name, phone: d.phone || get().phone, city: d.city || get().city, email: p.email || acct.email, username: p.username || get().username}));
+    } catch(e) {}
+  }
+  if (window.cccFb) cccFb.onAuth(u => { const was = acct; acct = u && !u.isAnonymous ? u : null; readyRes();
+    if (acct && (!was || was.uid !== acct.uid)) pullProfile().then(() => document.dispatchEvent(new CustomEvent('ccc-signed-in')));
+    if (!acct && was) document.dispatchEvent(new CustomEvent('ccc-signed-out')); }).catch(() => readyRes());
+  else readyRes();
+  const fbErr = c => ({'auth/email-already-in-use':'כבר קיים חשבון עם האימייל הזה. היכנסו עם האימייל והסיסמה.', 'auth/credential-already-in-use':'כבר קיים חשבון עם האימייל הזה. היכנסו עם האימייל והסיסמה.',
+    'auth/invalid-credential':'האימייל או הסיסמה שגויים.', 'auth/wrong-password':'האימייל או הסיסמה שגויים.', 'auth/user-not-found':'האימייל או הסיסמה שגויים.', 'auth/invalid-email':'כתובת האימייל לא תקינה.',
+    'auth/too-many-requests':'היו יותר מדי ניסיונות. נסו שוב בעוד כמה דקות.', 'auth/network-request-failed':'אין חיבור לרשת. נסו שוב.', 'auth/operation-not-allowed':'פתיחת חשבונות לא זמינה כרגע. פנו אלינו בוואטסאפ.',
+    'auth/weak-password':'הסיסמה חלשה מדי.'})[c] || 'הפעולה לא הצליחה. נסו שוב.';
   const profileOf = m => ({username: m.username || '', idn: m.idn || '', dob: m.dob || '', email: m.email || ''});
 
   // validation shared by the registration modal and the personal details page
@@ -105,22 +127,20 @@
       <button type="submit" class="au-go">פתיחת חשבון והמשך</button>
     </form>
     <form id="auLogin" novalidate hidden>
-      ${F('cuLUser','שם משתמש','dir="ltr" autocomplete="username" autocapitalize="off" spellcheck="false"')}
+      ${F('cuLUser','אימייל','type="email" dir="ltr" autocomplete="username" autocapitalize="off" spellcheck="false" placeholder="name@gmail.com"')}
       ${F('cuLPw','סיסמה','type="password" dir="ltr" autocomplete="current-password"')}
       <p class="au-err" id="cuLErr" role="alert"></p>
       <button type="submit" class="au-go">כניסה</button>
       <button type="button" class="au-link" id="cuForgot">שכחתי סיסמה</button>
     </form>
     <form id="auReset" novalidate hidden>
-      <p class="au-sub" style="margin:0">לאיפוס הסיסמה, אמתו את הזהות שלכם עם הפרטים ששמרתם בחשבון.</p>
-      ${F('cuRId','תעודת זהות','inputmode="numeric" dir="ltr" maxlength="9" autocomplete="off"')}
-      ${F('cuRDob','תאריך לידה','type="date" dir="ltr"')}
-      <div class="au-two"><div>${F('cuRPw','סיסמה חדשה','type="password" dir="ltr" autocomplete="new-password"','(8+ תווים)')}</div><div>${F('cuRPw2','אימות סיסמה','type="password" dir="ltr" autocomplete="new-password"')}</div></div>
+      <p class="au-sub" style="margin:0">הזינו את האימייל של החשבון, ונשלח אליו קישור לבחירת סיסמה חדשה.</p>
+      ${F('cuRMail','אימייל','type="email" dir="ltr" autocomplete="email" placeholder="name@gmail.com"')}
       <p class="au-err" id="cuRErr" role="alert"></p><p class="au-ok" id="cuROk" role="status"></p>
-      <button type="submit" class="au-go">איפוס הסיסמה</button>
+      <button type="submit" class="au-go">שליחת קישור לאיפוס</button>
       <button type="button" class="au-link" data-au-tab="login">חזרה לכניסה</button>
     </form>
-    <p class="au-note">החשבון נשמר בדפדפן הזה. הסיסמה נשמרת מוצפנת ולא נשלחת לשום מקום.</p>
+    <p class="au-note">החשבון שמור במערכת של ChicCheckCar ופועל מכל מכשיר. הסיסמה מנוהלת באמצעות Firebase ואיננו רואים אותה.</p>
   </div>`;
   document.body.appendChild(root);
   const $ = id => document.getElementById(id);
@@ -144,14 +164,14 @@
     const m = get(); let sn = '', sp = ''; try { sn = sessionStorage.getItem('ccc_name') || ''; sp = sessionStorage.getItem('ccc_phone') || ''; } catch(e){}
     $('auName').value = m.name || sn; $('auPhone').value = m.phone || sp; $('auCity').value = m.city || ''; $('auMail').value = m.email || '';
     $('auId').value = m.idn || ''; $('auDob').value = m.dob || ''; $('auUser').value = m.username || '';
-    $('auDob').max = ymd(yearsAgo(18)); $('auDob').min = ymd(yearsAgo(100)); $('cuRDob').max = $('auDob').max;
+    $('auDob').max = ymd(yearsAgo(18)); $('auDob').min = ymd(yearsAgo(100));
     $('auSub').textContent = reason || 'פתחו חשבון פעם אחת, ותוכלו לשמור רכבים בסל, לשלוח בקשות ולעקוב אחריהן.';
     root.hidden = false; document.documentElement.style.overflow = 'hidden';
     tab(startTab || (hasAccount() ? 'login' : 'reg'));
-    if (hasAccount()) $('cuLUser').value = m.username;
+    if (hasAccount()) $('cuLUser').value = m.email || '';
   }
   function close(){ root.hidden = true; document.documentElement.style.overflow = ''; pending = null; if (last && last.focus) last.focus(); }
-  function done(){ const cb = pending; pending = null; root.hidden = true; document.documentElement.style.overflow = ''; setUnlocked(true); document.dispatchEvent(new CustomEvent('ccc-signed-in')); if (cb) cb(); }
+  function done(){ const cb = pending; pending = null; root.hidden = true; document.documentElement.style.overflow = ''; document.dispatchEvent(new CustomEvent('ccc-signed-in')); if (cb) cb(); }
   root.addEventListener('click', e => {
     if (e.target.closest('[data-au-close]')) return close();
     const t = e.target.closest('[data-au-tab]'); if (t) return tab(t.dataset.auTab);
@@ -167,29 +187,42 @@
     const errs = checkFields(f, true); $('auErr').textContent = '';
     if (Object.keys(errs).length){ showErrs(errs); return; }
     if (!$('auOk').checked){ $('auErr').textContent = 'צריך לאשר את שמירת הפרטים.'; return; }
-    const m = Object.assign(get(), {name: f.name, username: f.username, idn: f.idn.padStart(9,'0'), dob: f.dob, phone: f.phone, email: f.email, city: f.city});
-    await setPassword(m, f.pw); put(m);
-    if (window.cccLead) window.cccLead({src:'me', name: m.name, phone: m.phone, city: m.city, profile: profileOf(m), detail: 'פתח חשבון באזור האישי (שם משתמש: ' + m.username + ')'});
-    $('auPw').value = $('auPw2').value = ''; done();
+    const btn = e.submitter || $('auReg').querySelector('[type=submit]'); btn.disabled = true;
+    try { acct = await cccFb.customerRegister(f.email, f.pw); }
+    catch(err){ btn.disabled = false; $('auErr').textContent = fbErr(err && err.code); return; }
+    const m = {name: f.name, username: f.username, phone: f.phone, email: f.email, city: f.city};
+    put(m);
+    if (window.cccLead) await window.cccLead({src:'me', name: m.name, phone: m.phone, city: m.city, profile: {username: f.username, idn: f.idn.padStart(9,'0'), dob: f.dob, email: f.email}, detail: 'פתח חשבון באזור האישי (' + f.email + ')'});
+    $('auPw').value = $('auPw2').value = ''; btn.disabled = false; done();
   });
   $('auLogin').addEventListener('submit', async e => {
-    e.preventDefault(); const m = get(), u = $('cuLUser').value.trim(), pw = $('cuLPw').value;
-    if (!m.hash){ $('cuLErr').textContent = 'לא נמצא חשבון בדפדפן הזה. פתחו חשבון חדש.'; return; }
-    if (u.toLowerCase() !== String(m.username).toLowerCase() || await hashPw(pw, m.salt) !== m.hash){ $('cuLErr').textContent = 'שם המשתמש או הסיסמה שגויים.'; return; }
-    $('cuLPw').value = ''; done();
+    e.preventDefault(); const em = $('cuLUser').value.trim().toLowerCase(), pw = $('cuLPw').value; $('cuLErr').textContent = '';
+    if (!mailOk(em)){ $('cuLErr').textContent = 'הזינו את כתובת האימייל של החשבון.'; return; }
+    const btn = $('auLogin').querySelector('[type=submit]'); btn.disabled = true;
+    try { acct = await cccFb.signIn(em, pw); }
+    catch(err){
+      // an account that so far lived only in this browser: move it to Firebase with the same password
+      const m = get();
+      if (m.hash && (String(m.email || '').toLowerCase() === em || String(m.username || '').toLowerCase() === em) && await hashPw(pw, m.salt) === m.hash){
+        try { acct = await cccFb.customerRegister(m.email || em, pw);
+          if (window.cccLead) await window.cccLead({src:'me', name: m.name, phone: m.phone, city: m.city, profile: {username: m.username || '', idn: m.idn || '', dob: m.dob || '', email: m.email || em}, detail: 'החשבון הועבר מהדפדפן למערכת'});
+          put(keepLocal(m));
+        } catch(err2){ btn.disabled = false; $('cuLErr').textContent = fbErr(err2 && err2.code); return; }
+      } else { btn.disabled = false; $('cuLErr').textContent = fbErr(err && err.code); return; }
+    }
+    btn.disabled = false; $('cuLPw').value = ''; await pullProfile(); done();
   });
   $('auReset').addEventListener('submit', async e => {
-    e.preventDefault(); const m = get(); $('cuRErr').textContent = ''; $('cuROk').textContent = '';
-    if (!m.hash){ $('cuRErr').textContent = 'לא נמצא חשבון בדפדפן הזה.'; return; }
-    if (digits($('cuRId').value).padStart(9,'0') !== m.idn || $('cuRDob').value !== m.dob){ $('cuRErr').textContent = 'תעודת הזהות או תאריך הלידה לא תואמים לחשבון.'; return; }
-    const pw = $('cuRPw').value, pw2 = $('cuRPw2').value;
-    if (pw.length < 8 || !/\d/.test(pw) || !/[A-Za-zא-ת]/.test(pw)){ $('cuRErr').textContent = 'סיסמה: לפחות 8 תווים, עם אותיות וספרות.'; return; }
-    if (pw !== pw2){ $('cuRErr').textContent = 'הסיסמאות לא תואמות.'; return; }
-    await setPassword(m, pw); put(m); $('cuRPw').value = $('cuRPw2').value = '';
-    $('cuROk').textContent = 'הסיסמה עודכנה. אפשר להיכנס עם הסיסמה החדשה.'; setTimeout(() => { tab('login'); $('cuLUser').value = m.username; }, 1200);
+    e.preventDefault(); $('cuRErr').textContent = ''; $('cuROk').textContent = '';
+    const em = $('cuRMail').value.trim().toLowerCase(); if (!mailOk(em)){ $('cuRErr').textContent = 'הזינו כתובת אימייל תקינה.'; return; }
+    try { await cccFb.resetPassword(em); $('cuROk').textContent = 'אם קיים חשבון עם האימייל הזה, נשלח אליו קישור לבחירת סיסמה חדשה. בדקו גם בתיקיית הספאם.'; }
+    catch(err){ $('cuRErr').textContent = err && err.code === 'auth/user-not-found' ? 'אם קיים חשבון עם האימייל הזה, נשלח אליו קישור.' : fbErr(err && err.code); }
   });
 
   window.cccAuth = {get, put, signedIn, hasAccount, unlocked, setUnlocked, checkFields, setPassword, hashPw, profileOf, idOk, mailOk, phoneOk, userOk, age, ymd, yearsAgo,
-    open, require(reason, cb){ if (hasAccount() && unlocked()) cb(); else open(reason, cb); },
-    signOut(){ setUnlocked(false); document.dispatchEvent(new CustomEvent('ccc-signed-out')); }};
+    ready, user: () => acct,
+    open, require(reason, cb){ ready.then(() => { if (acct) cb(); else open(reason, cb); }); },
+    async signOut(){ try { await cccFb.signOut(); } catch(e) {} acct = null; try { ['ccc_me','ccc_cart','ccc_reqs'].forEach(k => localStorage.removeItem(k)); sessionStorage.removeItem('ccc_name'); sessionStorage.removeItem('ccc_phone'); } catch(e) {} document.dispatchEvent(new CustomEvent('ccc-signed-out')); }};
+  // remove sensitive leftovers of old browser-only accounts once the account is in Firebase
+  ready.then(() => { if (acct){ const m = get(); if (m.hash || m.idn || m.dob) put(keepLocal(m)); } });
 })();

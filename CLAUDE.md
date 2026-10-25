@@ -56,9 +56,22 @@ Data shapes:
   the admin list shows every request as its own row.
 - Statuses: new, work, meet, quote, uw, won, lost, noans, cold (cold = left details at the gate, no request yet).
 
+Customer accounts (2026-10-25): Firebase Auth email/password (auth.js + fb.js customerRegister). Registering links the visitor's
+anonymous session, so the uid and leads/<uid> stay the same; signing in on another device opens the same doc. Password reset =
+Firebase reset e-mail. The browser keeps only name/phone/city/email/username (ccc_me); ID number + birth date live only in
+leads/<uid>.profile. Old browser-only accounts (PBKDF2 hash in ccc_me) move to Firebase on their next sign-in with the same password.
+Personal area (me.html) lists requests from the server (leads/<uid>.reqs; local-only ones are flagged "not saved") with the deal
+(request.deal = price, down, monthly, months, rate, balloon, saved by cccLead) and the purchase-process timeline.
+Purchase process: 12 stages in terms.js (CCC_STAGES / CCC_STAGE_LABEL). The team sets the stage per request in the leads-center
+drawer ("שלב בתהליך הרכישה") -> progress/<customerUid> {reqs: {<rid>: {stage, result, ts, by, log[]}}}; customers can only read it.
+No stage yet = stage 2 ("waiting for review").
+firestore.rules (2026-10-25) adds `progress` and stops customers from setting team-only fields (status other than new/cold,
+merge marks, test flag). THE OWNER MUST PUBLISH IT in Firebase console; until then stages cannot be saved and the audit flags it.
+Audit "אזור אישי" tab: metrics + checks + a full end-to-end test with a temporary test customer (separate Firebase app, doc
+flagged test:true and hidden from the leads center), deleted at the end.
+
 Still open:
-- Customer accounts (auth.js) are browser-local (localStorage `ccc_me`, PBKDF2 password hash). Move them to Firebase Auth
-  and add real SMS verification for password reset (owner asked for SMS).
+- SMS verification for password reset (owner asked for SMS; needs the Firebase Blaze plan). Reset is by e-mail today.
 - Licence-plate lookup (loan.js step 4, `plateLookup`) calls data.gov.il resource 053cea08-09bc-40ec-8f7a-156f0677aff3
   directly from the browser and fills make/model + first-registration year. Not yet verified against the live API from the live site.
 

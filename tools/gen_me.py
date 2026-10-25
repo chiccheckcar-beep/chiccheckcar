@@ -75,6 +75,26 @@ a{color:inherit}
 .st::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
 .req ul{margin:0;padding:0 18px 0 0}
 .req .x{color:var(--mut);font-size:13px}
+.req-no{font-family:"Unbounded",system-ui,sans-serif;font-size:11.5px;letter-spacing:.06em;color:var(--mut);direction:ltr;unicode-bidi:isolate}
+.req-warn{background:#fff6e6;color:#7a4a00;border-radius:12px;padding:8px 12px;font-size:13px}
+.req dl.deal{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:6px 0 2px;font-size:13.5px}
+.req dl.deal dt{color:var(--mut)}
+.req dl.deal dd{margin:0;font-weight:600}
+.req .deal-n{font-size:12px;color:var(--mut)}
+.tl{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:0}
+.tl li{position:relative;padding:0 26px 12px 0;font-size:13.5px;color:var(--mut)}
+.tl li::before{content:"";position:absolute;right:5px;top:5px;width:10px;height:10px;border-radius:50%;border:2px solid #d8cdd2;background:#fff}
+.tl li::after{content:"";position:absolute;right:10px;top:17px;bottom:-2px;width:2px;background:#e9e1e4}
+.tl li:last-child::after{display:none}
+.tl li.done{color:#1f1519}
+.tl li.done::before{background:#7a2a4a;border-color:#7a2a4a}
+.tl li.done::after{background:#7a2a4a}
+.tl li.cur{color:#7a2a4a;font-weight:800}
+.tl li.cur::before{background:#fff;border-color:#7a2a4a;box-shadow:0 0 0 4px rgba(122,42,74,.15)}
+.tl li.stop{color:#b3261e;font-weight:800}
+.tl li.stop::before{background:#b3261e;border-color:#b3261e}
+.tl li small{display:block;font-weight:400;color:var(--mut);font-size:11.5px}
+.tl-more{border:0;background:none;color:#7a2a4a;font:inherit;font-size:13px;text-decoration:underline;cursor:pointer;padding:0;align-self:flex-start}
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
 .stats a{display:flex;flex-direction:column;padding:14px 16px;border-radius:18px;background:#fff;border:1px solid var(--line);text-decoration:none}
 .stats a:hover{border-color:var(--acc)}
@@ -150,13 +170,13 @@ __DONE__
   const CST = {new:['הפנייה התקבלה','#2f6fed'], work:['נציג מטפל בפנייה','#e08a00'], meet:['נקבעה פגישה','#7c4ddb'], quote:['נשלחה אליך הצעת מחיר','#0c97b8'], uw:['בתהליך אישור מימון','#c2417a'], won:['העסקה נסגרה','#18965a'], lost:['הפנייה נסגרה','#8b9098'], noans:['ניסינו להשיג אותך','#d64545']};
   const RT = {form:'פנייה בטופס יצירת קשר', car:'פנייה מעמוד רכב', cart:'בקשת הצעה על רכבים מהסל', loan:'בקשה לבדיקת זכאות למימון'};
   const ic = '<svg viewBox="0 0 24 24" width="56" height="56" aria-hidden="true"><circle cx="9.5" cy="19.5" r="1.5" fill="currentColor"/><circle cx="17" cy="19.5" r="1.5" fill="currentColor"/><path d="M2.5 3.5h2.2l2.4 11.1a1.5 1.5 0 0 0 1.5 1.2h8.7a1.5 1.5 0 0 0 1.5-1.1L21 7.5H5.6" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-  let cart = LS.get('ccc_cart', []).filter(k => idxOf(k) >= 0), remote = null, tab = 'cart';
+  let cart = LS.get('ccc_cart', []).filter(k => idxOf(k) >= 0), remote = null, prog = null, tab = 'cart'; const openTl = new Set();
 
   function head(){
     const d = me(), p = d.name.trim().split(/\s+/).filter(Boolean);
     $('av').textContent = p.length ? p[0][0] + (p[1] ? p[1][0] : '') : '?';
     $('hi').textContent = d.name ? 'שלום ' + d.name : 'שלום, אורח/ת';
-    $('nCart').textContent = cart.length || ''; $('nReq').textContent = LS.get('ccc_reqs', []).length || '';
+    $('nCart').textContent = cart.length || ''; $('nReq').textContent = reqList().length || '';
   }
   function drawCart(){
     const items = cart.map(idxOf).filter(i => i >= 0), P = $('pCart');
@@ -168,20 +188,49 @@ __DONE__
         '<button type="button" class="rm" data-rm="' + esc(keyOf(c)) + '" aria-label="הסרה מהסל: ' + esc(fullName(c)) + '">×</button></div>'; }).join('') + '</div>' +
       '<div class="sum"><span>' + items.length + (items.length === 1 ? ' רכב בסל · נציג יחזור אליכם עם הצעה' : ' רכבים בסל · נציג יחזור אליכם עם הצעה') + '</span><button type="button" class="btn" id="send">שליחת בקשה לנציג על הרכבים בסל</button></div>';
   }
-  function drawReq(){
-    const log = LS.get('ccc_reqs', []), P = $('pReq');
-    if (!log.length){ P.innerHTML = '<div class="card empty"><b>עדיין לא שלחת פניות</b><span>כל פנייה שתשלחו באתר, מהטופס, מעמוד רכב, מהסל או מבדיקת הזכאות, תופיע כאן יחד עם הסטטוס שלה.</span></div>'; return; }
-    const rreqs = remote && Array.isArray(remote.reqs) ? remote.reqs : [];
-    P.innerHTML = '<div class="reqs">' + log.slice().reverse().map((r, j) => {
-      const rq = r.rid ? rreqs.find(q => q.rid === r.rid) : null;
-      const rs = rq ? rq.status : (j === 0 && !rreqs.length && remote ? remote.status : '');
-      const s = rs && CST[rs] ? CST[rs] : ['הפנייה נשלחה', '#7a2a4a'];
-      const extra = [r.amount ? 'סכום מימון ' + fmt(r.amount) : '', r.trade ? 'כולל טרייד-אין' : ''].filter(Boolean).join(' · ');
-      return '<div class="req"><div class="req-top"><span class="st" style="--c:' + s[1] + '">' + s[0] + '</span><small>' + esc(new Date(r.ts).toLocaleString('he-IL',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'})) + '</small></div>' +
-        '<b>' + esc(RT[r.src] || 'בקשת הצעה על רכבים מהסל') + '</b>' + ((r.cars || []).length ? '<ul>' + r.cars.map(n => '<li>' + esc(n) + '</li>').join('') + '</ul>' : '') + (extra ? '<span class="x">' + esc(extra) + '</span>' : '') + '</div>'; }).join('') + '</div>';
+  // requests come from the server (leads/<uid>.reqs), so they are the same on every device; requests this browser sent
+  // that are not on the server are listed too, marked as not saved
+  const reqList = () => {
+    const log = LS.get('ccc_reqs', []), rq = (remote && Array.isArray(remote.reqs) ? remote.reqs : []).filter(q => !q.mergedInto), have = new Set(rq.map(q => q.rid));
+    return rq.map(q => Object.assign({saved: true}, q)).concat(log.filter(r => r.rid && !have.has(r.rid)).map(r => ({rid: r.rid, ts: r.ts, src: r.src, car: (r.cars || []).join(', '), cars: r.cars, loan: r.amount ? {amount: r.amount, trade: r.trade} : null, saved: false})))
+      .sort((a, b) => String(b.ts).localeCompare(String(a.ts)));
+  };
+  const carByName = n => CARS.find(c => fullName(c) === String(n || '').trim());
+  function dealHtml(q){
+    const T = window.CCC_TERMS, rows = [], names = (q.cars && q.cars.length ? q.cars : String(q.car || '').split(', ')).filter(Boolean);
+    if (names.length) rows.push(['רכב', names.join(' · ')]);
+    let d = q.deal, live = false;
+    if (!d && names.length === 1){ const c = carByName(names[0]); if (c && T){ d = {price: c.price, down: T.downOf(c), monthly: Math.ceil(T.monthlyOf(c.price)), months: T.months, rate: T.rate, balloon: T.balloon}; live = true; } }
+    if (d){ rows.push(['מחיר הרכב', fmt(d.price)], ['מקדמה (בנוסף למחיר)', fmt(d.down)], ['מסלול מימון', d.months + ' תשלומים · ריבית ' + d.rate + '% · בלון ' + d.balloon + '%'], ['תקופת המימון', d.months + ' חודשים'], ['החזר חודשי משוער', fmt(d.monthly)]); }
+    else if (names.length > 1) names.forEach(n => { const c = carByName(n); if (c) rows.push(['', n + ': ' + fmt(c.price)]); });
+    if (q.loan && q.loan.amount) rows.push(['סכום מימון מבוקש', fmt(q.loan.amount)]);
+    const tr = q.loan && q.loan.trade; if (tr) rows.push(['טרייד-אין', typeof tr === 'object' ? [tr.plate, tr.make, tr.model, tr.year, tr.km ? Number(tr.km).toLocaleString('he-IL') + ' ק"מ' : ''].filter(Boolean).join(' · ') || 'כן' : 'כן']);
+    rows.push(['תאריך הבקשה', new Date(q.ts).toLocaleString('he-IL', {day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit'})]);
+    return '<dl class="deal">' + rows.map(([k, v]) => '<dt>' + esc(k) + '</dt><dd>' + esc(v) + '</dd>').join('') + '</dl>' + (live ? '<span class="deal-n">המחיר וההחזר לפי מחירי האתר היום (הבקשה נשלחה לפני שמירת פרטי העסקה).</span>' : '');
   }
-  function drawInfo(){ const d = me(), m = LS.get('ccc_me', {}); $('iName').value = d.name; $('iPhone').value = d.phone; $('iCity').value = d.city; $('iMail').value = m.email || ''; $('iId').value = m.idn || ''; $('iDob').value = m.dob || ''; $('iUser').value = m.username || ''; $('iPw').value = $('iPw2').value = '';
-    $('sCart').textContent = cart.length; $('sReq').textContent = LS.get('ccc_reqs', []).length; document.querySelectorAll('.fe').forEach(x => x.textContent = ''); document.querySelectorAll('input.bad').forEach(x => x.classList.remove('bad')); }
+  function tlHtml(q){
+    const S = window.CCC_STAGES, L = window.CCC_STAGE_LABEL; if (!S) return '';
+    const p = prog && prog.reqs && prog.reqs[q.rid], stage = p && p.stage ? +p.stage : 2, res = p && p.result, stop = stage === 7 && res === 'rejected';
+    const last = stop ? 7 : 12, all = openTl.has(q.rid), upto = all ? last : Math.min(last, stage + 1);
+    const items = []; for (let n = 1; n <= upto; n++){
+      const cls = n < stage ? 'done' : n === stage ? (stop ? 'stop' : (stage === 12 ? 'done' : 'cur')) : '';
+      const when = p && Array.isArray(p.log) ? (p.log.slice().reverse().find(x => +x.stage === n) || {}).ts : (n === 1 ? q.ts : null);
+      items.push('<li class="' + cls + '">' + esc(n + '. ' + L(n, n === stage ? res : null)) + (when && n <= stage ? '<small>' + esc(new Date(when).toLocaleDateString('he-IL')) + '</small>' : '') + '</li>');
+    }
+    return '<ol class="tl" aria-label="מעקב אחר הבקשה">' + items.join('') + '</ol>' + (upto < last ? '<button type="button" class="tl-more" data-tl="' + esc(q.rid) + '">הצגת כל שלבי התהליך</button>' : (all && last > stage + 1 ? '<button type="button" class="tl-more" data-tl="' + esc(q.rid) + '">הסתרת השלבים הבאים</button>' : ''));
+  }
+  function drawReq(){
+    const list = reqList(), P = $('pReq');
+    if (!list.length){ P.innerHTML = '<div class="card empty"><b>עדיין לא שלחת פניות</b><span>כל פנייה שתשלחו באתר, מהטופס, מעמוד רכב, מהסל או מבדיקת הזכאות, תופיע כאן יחד עם הסטטוס שלה.</span></div>'; return; }
+    P.innerHTML = '<div class="reqs">' + list.map(q => {
+      const p = prog && prog.reqs && prog.reqs[q.rid], stage = p && p.stage ? +p.stage : 2;
+      const s = !q.saved ? ['לא נשמרה במערכת', '#b3261e'] : [window.CCC_STAGE_LABEL ? window.CCC_STAGE_LABEL(stage, p && p.result) : (CST[q.status] || CST.new)[0], stage === 7 && p && p.result === 'rejected' ? '#b3261e' : '#7a2a4a'];
+      return '<div class="req"><div class="req-top"><span class="st" style="--c:' + s[1] + '">' + esc(s[0]) + '</span><span class="req-no">#' + esc(String(q.rid || '').toUpperCase()) + '</span></div>' +
+        '<b>' + esc(RT[q.src] || 'בקשה') + '</b>' + (!q.saved ? '<div class="req-warn">הבקשה נשמרה רק בדפדפן הזה ולא הגיעה אלינו. שלחו אותה שוב, או פנו אלינו בוואטסאפ 054-576-2802.</div>' : '') +
+        dealHtml(q) + (q.saved ? tlHtml(q) : '') + '</div>'; }).join('') + '</div>';
+  }
+  function drawInfo(){ const d = me(), m = LS.get('ccc_me', {}); $('iName').value = d.name; $('iPhone').value = d.phone; $('iCity').value = d.city; $('iMail').value = (window.cccAuth && cccAuth.user() && cccAuth.user().email) || m.email || ''; $('iMail').readOnly = !!(window.cccAuth && cccAuth.user()); $('iId').value = (remote && remote.profile && remote.profile.idn) || ''; $('iDob').value = (remote && remote.profile && remote.profile.dob) || ''; $('iUser').value = m.username || ''; $('iPw').value = $('iPw2').value = '';
+    $('sCart').textContent = cart.length; $('sReq').textContent = reqList().length; document.querySelectorAll('.fe').forEach(x => x.textContent = ''); document.querySelectorAll('input.bad').forEach(x => x.classList.remove('bad')); }
   function show(){
     tab = ['cart','req','info'].includes(location.hash.slice(1)) ? location.hash.slice(1) : 'cart';
     document.querySelectorAll('.tabs a').forEach(a => { if (a.dataset.tab === tab) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current'); });
@@ -201,37 +250,41 @@ __DONE__
   }
   async function loadRemote(){
     try { const [db, user] = await Promise.all([claude.use('db'), claude.use('user')]); if (!db || !user) return; const id = await user.id(); if (!id) return;
-      const s = await db.collection('leads').doc(id).get(); remote = s.exists ? s.data() : null; if (tab === 'req') drawReq(); } catch(e){}
+      const s = await db.collection('leads').doc(id).get(); remote = s.exists ? s.data() : null;
+      try { const g = await db.collection('progress').doc(id).get(); prog = g.exists ? g.data() : null; } catch(e) { prog = null; }
+      head(); if (tab === 'req') drawReq(); if (tab === 'info') drawInfo(); } catch(e){}
   }
   document.addEventListener('click', e => {
     const rm = e.target.closest('[data-rm]'); if (rm){ cart = cart.filter(k => k !== rm.dataset.rm); LS.set('ccc_cart', cart); head(); drawCart(); return; }
     if (e.target.closest('#send')) send();
+    const tl = e.target.closest('[data-tl]'); if (tl){ const r = tl.dataset.tl; openTl.has(r) ? openTl.delete(r) : openTl.add(r); drawReq(); }
   });
   $('fInfo').addEventListener('submit', async e => { e.preventDefault();
     const A = window.cccAuth, m0 = LS.get('ccc_me', {}), msg = $('iMsg'); msg.classList.remove('err'); msg.hidden = true;
     const f = {name: $('iName').value.trim().replace(/\s+/g,' ').slice(0,60), username: $('iUser').value.trim(), pw: $('iPw').value, pw2: $('iPw2').value, idn: $('iId').value.replace(/\D/g,''), dob: $('iDob').value,
       phone: $('iPhone').value.replace(/\D/g,'').replace(/^972/,'0'), email: $('iMail').value.trim().toLowerCase(), city: $('iCity').value.trim().slice(0,40)};
-    const needPw = !!f.pw || !m0.hash; const errs = A.checkFields(f, needPw);
+    const needPw = !!f.pw; const errs = A.checkFields(f, needPw);
     document.querySelectorAll('.fe').forEach(x => x.textContent = ''); document.querySelectorAll('input.bad').forEach(x => x.classList.remove('bad'));
     const ids = {name:'iName', username:'iUser', pw:'iPw', pw2:'iPw2', idn:'iId', dob:'iDob', phone:'iPhone', email:'iMail'};
     if (Object.keys(errs).length){ Object.entries(errs).forEach(([k, v]) => { const x = document.querySelector('.fe[data-f="' + k + '"]'); if (x) x.textContent = v; $(ids[k]).classList.add('bad'); }); document.querySelector('input.bad').focus(); return; }
-    const m = Object.assign(m0, {name: f.name, username: f.username, idn: f.idn.padStart(9,'0'), dob: f.dob, phone: f.phone, email: f.email, city: f.city});
-    if (f.pw) await A.setPassword(m, f.pw);
-    A.put(m); A.setUnlocked(true); $('iPw').value = $('iPw2').value = '';
-    msg.textContent = f.pw ? 'הפרטים והסיסמה החדשה נשמרו.' : 'הפרטים נשמרו.'; msg.hidden = false; head();
-    window.cccLead({src:'me', name: m.name, phone: m.phone, city: m.city, profile: A.profileOf(m), detail: 'עדכן פרטים באזור האישי'});
+    if (f.pw){ try { const u = A.user(); await u.updatePassword(f.pw); }
+      catch(err){ msg.textContent = err && err.code === 'auth/requires-recent-login' ? 'כדי להחליף סיסמה, צאו מהחשבון והיכנסו שוב, ואז נסו שוב.' : 'לא הצלחנו להחליף את הסיסמה. נסו שוב.'; msg.classList.add('err'); msg.hidden = false; return; } }
+    const m = {name: f.name, username: f.username, phone: f.phone, email: f.email, city: f.city};
+    A.put(m); $('iPw').value = $('iPw2').value = '';
+    const ok = await window.cccLead({src:'me', name: m.name, phone: m.phone, city: m.city, profile: {username: f.username, idn: f.idn.padStart(9,'0'), dob: f.dob, email: f.email}, detail: 'עדכן פרטים באזור האישי'});
+    msg.textContent = ok ? (f.pw ? 'הפרטים והסיסמה החדשה נשמרו.' : 'הפרטים נשמרו בחשבון.') : 'הפרטים נשמרו בדפדפן, אבל לא הגיעו לשרת. נסו שוב בעוד רגע.'; if (!ok) msg.classList.add('err'); msg.hidden = false; head(); loadRemote();
   });
   $('iReset').addEventListener('click', () => window.cccAuth.open('', () => show(), 'reset'));
-  $('iOut').addEventListener('click', () => { window.cccAuth.signOut(); location.href = 'index.html'; });
+  $('iOut').addEventListener('click', async () => { await window.cccAuth.signOut(); location.href = 'index.html'; });
   $('iClear').addEventListener('click', () => { ['ccc_me','ccc_cart','ccc_reqs'].forEach(LS.del); try { sessionStorage.removeItem('ccc_unlocked'); } catch(_) {} cart = []; drawInfo(); head(); const m = $('iMsg'); m.classList.remove('err'); m.textContent = 'החשבון, הסל והפניות נמחקו מהדפדפן.'; m.hidden = false; });
   addEventListener('hashchange', show);
   // the personal area opens only after signing in (or opening an account)
-  function gate(){ const A = window.cccAuth; if (!A) return show();
-    if (A.hasAccount() && A.unlocked()){ document.body.classList.remove('locked'); show(); loadRemote(); return; }
-    document.body.classList.add('locked');
-    A.open(A.hasAccount() ? 'היכנסו עם שם המשתמש והסיסמה שלכם.' : 'פתחו חשבון כדי להשתמש באזור האישי: הסל, הפניות והפרטים שלכם.', () => { document.body.classList.remove('locked'); show(); loadRemote(); });
+  async function gate(){ const A = window.cccAuth; if (!A) return show();
+    document.body.classList.add('locked'); await A.ready;
+    if (A.unlocked()){ document.body.classList.remove('locked'); show(); loadRemote(); return; }
+    A.open(A.hasAccount() ? 'היכנסו עם האימייל והסיסמה שלכם. החשבון פועל מכל מכשיר.' : 'פתחו חשבון כדי להשתמש באזור האישי: הסל, הפניות והמעקב אחריהן, מכל מכשיר.', () => { document.body.classList.remove('locked'); show(); loadRemote(); });
   }
-  document.addEventListener('ccc-signed-in', () => { document.body.classList.remove('locked'); show(); });
+  document.addEventListener('ccc-signed-in', () => { document.body.classList.remove('locked'); show(); loadRemote(); });
   window.addEventListener('load', gate);
 })();
 </script>

@@ -188,6 +188,7 @@ a.btn{text-decoration:none}
     <button class="btn" data-run="leads">בדיקת לידים בלבד</button>
     <button class="btn" data-run="dups">בדיקת כפילויות</button>
     <button class="btn" data-run="catalog">בדיקת קטלוג הרכבים</button>
+    <button class="btn" data-run="portal">בדיקת האזור האישי</button>
     <span class="run" id="runInfo">עוד לא הורצה בדיקה בדפדפן הזה.</span>
   </div>
 
@@ -209,6 +210,7 @@ a.btn{text-decoration:none}
   <nav class="tabs" role="tablist" id="tabs">
     <button class="tab" role="tab" data-p="issues" aria-selected="true">תקלות<span class="c" id="cIssues"></span></button>
     <button class="tab" role="tab" data-p="leads" aria-selected="false">לידים<span class="c" id="cLeads"></span></button>
+    <button class="tab" role="tab" data-p="portal" aria-selected="false">אזור אישי<span class="c" id="cPortal"></span></button>
     <button class="tab" role="tab" data-p="catalog" aria-selected="false">קטלוג<span class="c" id="cCatalog"></span></button>
     <button class="tab" role="tab" data-p="flows" aria-selected="false">תהליכי לקוח<span class="c" id="cFlows"></span></button>
     <button class="tab" role="tab" data-p="all" aria-selected="false">כל הבדיקות<span class="c" id="cAll"></span></button>
@@ -216,6 +218,7 @@ a.btn{text-decoration:none}
   </nav>
   <section class="pane" id="p-issues"></section>
   <section class="pane" id="p-leads" hidden></section>
+  <section class="pane" id="p-portal" hidden></section>
   <section class="pane" id="p-catalog" hidden></section>
   <section class="pane" id="p-flows" hidden></section>
   <section class="pane" id="p-all" hidden></section>
@@ -233,7 +236,7 @@ const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt
 const nis = n => '₪' + Math.round(+n || 0).toLocaleString('he-IL');
 const T = window.CCC_TERMS;
 const WA = '972545762802';
-const SYS = {infra:'אתר ותשתית', catalog:'קטלוג רכבים', finance:'מימון ומקדמות', flows:'תהליכי לקוח', leads:'מערכת לידים'};
+const SYS = {infra:'אתר ותשתית', catalog:'קטלוג רכבים', finance:'מימון ומקדמות', flows:'תהליכי לקוח', leads:'מערכת לידים', portal:'אזור אישי'};
 const ST = {pass:'תקין', warn:'אזהרה', fail:'תקלה', na:'לא זמינה'};
 const LST = {new:'חדש', work:'בטיפול', meet:'נקבעה פגישה', quote:'הצעת מחיר', uw:'אישור מימון', won:'נסגר', lost:'לא רלוונטי', noans:'אין מענה', cold:'השאיר פרטים'};
 const LSRC = {form:'טופס יצירת קשר', car:'עמוד רכב', cart:'סל', loan:'רכישה זריזה', wa:'וואטסאפ', gate:'מסך כניסה', me:'אזור אישי', finance:'מחשבון מימון', manual:'הוזן ידנית'};
@@ -449,8 +452,8 @@ async function loadLeads(){
   try {
     const all = await db.collection('leads').get();
     let admin = null; try { admin = await db.collection('leads').orderBy('ts', 'desc').limit(1000).get(); } catch(e) {}
-    const docs = all.docs.map(d => Object.assign({_id: d.id}, d.data() || {}));
-    return {u, db, docs, adminIds: admin ? new Set(admin.docs.map(d => d.id)) : null};
+    const docsAll = all.docs.map(d => Object.assign({_id: d.id}, d.data() || {})), docs = docsAll.filter(x => !x.test);
+    return {u, db, docs, testDocs: docsAll.filter(x => x.test), adminIds: admin ? new Set(admin.docs.map(d => d.id)) : null};
   } catch(e){ return {err: (e && e.code) === 'permission-denied' ? 'perm' : 'net', msg: e && e.message}; }
 }
 function flatReqs(docs){
@@ -501,6 +504,119 @@ async function checkLeads(onlyDups){
 }
 const fmtTs = t => { if (!t) return ''; const d = new Date(t); return isNaN(d) ? String(t) : d.toLocaleString('he-IL', {day:'2-digit', month:'2-digit', year:'2-digit', hour:'2-digit', minute:'2-digit'}); };
 
+
+// ---------- 6. customer portal (personal area) ----------
+const PSEV = {high:'גבוהה', mid:'בינונית', low:'נמוכה'};
+const padd = (id, title, status, detail, sev, fix, extra) => add('portal', id, title, status, detail, Object.assign({sev: sev ? PSEV[sev] : '', fix: fix || ''}, extra || {}));
+let PM = null;   // portal metrics for the dashboard
+async function checkPortal(){
+  const L = LEADS && !LEADS.err ? LEADS : await loadLeads(); if (!LEADS) LEADS = L;
+  if (L.err){ PM = null; padd('pt-avail', 'גישה לנתוני האזור האישי', 'na', 'הנתונים של האזור האישי שמורים ב-Firebase ונגישים רק למנהלים. לא בוצעה התחברות מתאימה.', '', 'להתחבר כבעלים או כנציג מאושר ולהריץ שוב.'); return; }
+  const docs = L.docs.filter(x => !x.mergedInto), C = D ? D.cars : null;
+  let prog = null, progErr = '';
+  try { const g = await L.db.collection('progress').get(); prog = Object.fromEntries(g.docs.map(d => [d.id, d.data() || {}])); } catch(e){ progErr = e && e.code || 'err'; }
+  const reqs = []; docs.forEach(x => (x.reqs || []).filter(q => !q.mergedInto).forEach(q => reqs.push(Object.assign({_doc: x._id, _profile: x.profile || {}}, q))));
+  const stageOf = q => { const p = prog && prog[q._doc] && prog[q._doc].reqs && prog[q._doc].reqs[q.rid]; return p && p.stage ? +p.stage : null; };
+  const isLoan = q => q.src === 'loan' || !!q.loan, isBuy = q => !isLoan(q) && ['car','cart','form','wa'].includes(q.src) && !!q.car;
+  const working = q => { const st = stageOf(q); return st ? st >= 3 && st <= 11 : ['work','meet','quote','uw'].includes(q.status); };
+  const accounts = docs.filter(x => x.profile && (x.profile.email || x.profile.username));
+  const local = LS.get('ccc_reqs', []), have = new Set(); L.docs.forEach(x => (x.reqs || []).forEach(q => have.add(q.rid)));
+  const unsaved = (Array.isArray(local) ? local : []).filter(q => q.rid && !have.has(q.rid));
+  const rep = []; docs.forEach(x => { const rq = (x.reqs || []).filter(q => !q.mergedInto).sort((a, b) => String(a.ts).localeCompare(String(b.ts))); rq.forEach((q, i) => { const p = rq[i - 1]; if (p && p.car === q.car && p.src === q.src && (new Date(q.ts) - new Date(p.ts)) < 10 * 60000) rep.push([x.name || '', q.car || '', srcL(q.src), fmtTs(p.ts) + ' / ' + fmtTs(q.ts)]); }); });
+  const noStatus = reqs.filter(q => !q.status && !stageOf(q));
+  const orphan = prog ? Object.entries(prog).flatMap(([d, v]) => Object.keys(v.reqs || {}).filter(rid => !(L.docs.find(x => x._id === d) || {reqs: []}).reqs?.some(q => q.rid === rid)).map(rid => [d.slice(0, 8), rid])) : [];
+  const gone = C ? reqs.filter(q => q.car && !q.car.includes(', ') && !C.some(c => fullName(c) === q.car)) : [];
+  PM = {accounts: accounts.length, buy: reqs.filter(isBuy).length, loan: reqs.filter(isLoan).length, working: reqs.filter(working).length, unsaved: unsaved.length, dup: rep.length, nostatus: noStatus.length, unsynced: orphan.length + unsaved.length};
+  padd('pt-avail', 'גישה לנתוני האזור האישי', 'pass', `${docs.length} רשומות לקוח, ${accounts.length} מהן עם חשבון רשום, ו-${reqs.length} בקשות.`);
+  // A. what each request stores
+  const has = f => reqs.filter(f).length, pct = n => reqs.length ? Math.round(100 * n / reqs.length) + '%' : '—';
+  const F = [['שם מלא', q => (q.name || '').trim()], ['טלפון', q => q.phone], ['אימייל', q => q.email || q._profile.email || (q.loan && q.loan.email)], ['רכב, דגם וגרסה', q => q.car], ['מחיר הרכב', q => q.deal && q.deal.price], ['מקדמה', q => q.deal && q.deal.down], ['מסלול ותקופת מימון', q => q.deal && q.deal.months], ['החזר חודשי', q => q.deal && q.deal.monthly], ['טרייד-אין (כשיש)', q => q.loan && q.loan.trade], ['תאריך יצירה', q => q.ts], ['מספר בקשה ייחודי', q => q.rid]];
+  const cov = F.map(([n, f]) => [n, has(f), pct(has(f))]), dealN = has(q => q.deal);
+  const rids = reqs.map(q => q.rid), ridDup = rids.length - new Set(rids).size;
+  padd('pt-fields', 'שמירת פרטי הבקשה במסד הנתונים', !reqs.length ? 'na' : (ridDup ? 'fail' : (dealN < reqs.length ? 'warn' : 'pass')),
+    reqs.length ? `נבדקו ${reqs.length} בקשות ב-Firebase. ${ridDup ? ridDup + ' מספרי בקשה כפולים. ' : 'לכל בקשה מספר ייחודי. '}${dealN < reqs.length ? (reqs.length - dealN) + ' בקשות נשלחו לפני ששמירת פרטי העסקה (מחיר, מקדמה, מסלול, החזר) נוספה, ולכן האזור האישי מציג אצלן את המחיר הנוכחי באתר ומסמן זאת.' : 'בכל הבקשות נשמרו פרטי העסקה.'}` : 'אין עדיין בקשות במערכת.',
+    'low', 'בקשות חדשות נשמרות עם כל הפרטים אוטומטית. בקשות ישנות אפשר להשלים ידנית במרכז הלידים לפי הצורך.', {rows: cov, cols: ['שדה','בקשות שבהן נשמר','אחוז']});
+  // B. accounts and sessions
+  padd('pt-acct', 'חשבונות לקוח פועלים מכל מכשיר', 'pass', 'החשבונות הם חשבונות Firebase (אימייל וסיסמה). אותו חשבון נכנס מכל מכשיר ורואה את אותה רשומה ואת אותן בקשות. ההתחברות נשמרת בדפדפן גם אחרי רענון ואחרי סגירה. (בדיקה מלאה בפועל: ראו "בדיקה מלאה עם חשבון בדיקה".)');
+  const ls = (() => { try { return JSON.parse(localStorage.getItem('ccc_me') || '{}') || {}; } catch(e){ return {}; } })(), sens = ['idn','dob','hash','salt'].filter(k => ls[k]);
+  padd('pt-local', 'נתונים רגישים בדפדפן', sens.length ? 'fail' : 'pass', sens.length ? `בדפדפן הזה שמורים שדות רגישים מחשבון ישן: ${sens.join(', ')}.` : 'בדפדפן הזה לא שמורים ת"ז, תאריך לידה או סיסמה. נשמרים רק שם, טלפון, עיר ואימייל למילוי טפסים.', 'mid', 'השדות נמחקים אוטומטית בכניסה הבאה של הלקוח לחשבון.');
+  // C. process tracking
+  padd('pt-progress', 'מעקב אחר תהליך הרכישה', progErr ? 'fail' : 'pass', progErr ? (progErr === 'permission-denied' ? 'לא ניתן לקרוא את שלבי התהליך: כללי האבטחה המעודכנים עוד לא פורסמו ב-Firebase, ולכן לא ניתן לשמור שלבים מתוך מערכת הניהול.' : 'קריאת שלבי התהליך נכשלה.') : `${Object.keys(prog).length} לקוחות עם שלב מעודכן. בקשה בלי שלב מוצגת ללקוח בשלב 2 ("הבקשה ממתינה לבדיקה"), ולא כאילו התקדמה.`,
+    'high', 'להעתיק את תוכן הקובץ firestore.rules מהמאגר אל Firebase Console ← Firestore Database ← Rules, וללחוץ Publish.');
+  // D. sync
+  padd('pt-sync', 'סנכרון בין האזור האישי למערכת הלידים', orphan.length || unsaved.length ? 'warn' : 'pass',
+    'האזור האישי ומרכז הלידים קוראים את אותה רשומה ב-Firebase, ושלב התהליך שנבחר במרכז הלידים מוצג ללקוח. ' + (orphan.length ? orphan.length + ' שלבים שמורים לבקשות שכבר לא קיימות. ' : '') + (unsaved.length ? unsaved.length + ' בקשות שמורות רק בדפדפן הזה ולא הגיעו לשרת. ' : 'לא נמצאו בקשות שלא מסונכרנות.'), 'mid', 'בקשה שלא נשמרה מוצגת ללקוח עם הנחיה לשלוח שוב או לפנות בוואטסאפ.', orphan.length ? {rows: orphan, cols: ['לקוח','מספר בקשה']} : null);
+  padd('pt-catalog', 'הרכבים שבבקשות קיימים בקטלוג', !C ? 'na' : (gone.length ? 'warn' : 'pass'), !C ? 'קטלוג הרכבים לא נטען.' : (gone.length ? `${gone.length} בקשות על רכבים שכבר לא מופיעים בקטלוג (ייתכן שהשם או הגרסה השתנו).` : 'כל הרכבים שבבקשות קיימים בקטלוג.'), 'low', 'אין צורך בפעולה: פרטי העסקה נשמרים בבקשה עצמה.', gone.length ? {rows: gone.map(q => [q.name || '', q.car, fmtTs(q.ts)]), cols: ['לקוח','רכב','תאריך']} : null);
+  // E. duplicates
+  const perVisit = reqs.filter(q => q.src === 'me').length;
+  const multiRoute = []; docs.forEach(x => { const m = {}; (x.reqs || []).forEach(q => { if (!q.car) return; (m[q.car] = m[q.car] || new Set()).add(isLoan(q) ? 'מימון' : srcL(q.src)); }); Object.entries(m).forEach(([car, set]) => { if (set.size > 1) multiRoute.push([x.name || '', car, [...set].join(', ')]); }); });
+  const acctDup = []; const byPh = {}; docs.forEach(x => { const p = normPhone(x.phone); if (p) (byPh[p] = byPh[p] || []).push(x); }); Object.entries(byPh).forEach(([p, xs]) => { if (xs.length > 1 && xs.some(x => x.profile && x.profile.email) && xs.some(x => !(x.profile && x.profile.email))) acctDup.push([p, xs.length]); });
+  padd('pt-dup', 'כפילויות בבקשות', rep.length || perVisit || acctDup.length ? 'warn' : 'pass',
+    `${rep.length} בקשות נשלחו שוב תוך 10 דקות (לחיצה כפולה או שליחה חוזרת). ${perVisit ? perVisit + ' בקשות נוצרו מכניסה לאזור האישי (לא אמור לקרות). ' : 'כניסה לאזור האישי לא יוצרת בקשה. '}${acctDup.length ? acctDup.length + ' לקוחות עם ליד ישן נוסף על החשבון שלהם (אותו טלפון). ' : ''}${multiRoute.length ? multiRoute.length + ' לקוחות ביקשו אותו רכב בכמה מסלולים; אלה בקשות שונות, לא כפילות.' : ''}`,
+    'low', 'בקשות כפולות ולידים ישנים של אותו לקוח ממזגים בלשונית "לידים" (המיזוג לא מוחק ואפשר לבטל).', {rows: rep.concat(multiRoute.map(r => [r[0], r[1], 'מסלולים: ' + r[2], 'בקשות שונות'])), cols: ['לקוח','רכב','מקור','זמנים']});
+  // F. security (static)
+  const pub = await Promise.all(['index.html','car.html','me.html','fb.js','auth.js','loan.js','terms.js','specs.js'].map(f => fetch(f, {cache:'no-store'}).then(r => r.text()).then(t => [f, t]).catch(() => [f, ''])));
+  const okMail = /^(ankermeir2005@gmail\.com|chiccheckcar@gmail\.com|name@gmail\.com)$/i, okPh = /^(0?545762802|972545762802|0500000000|0501234567)$/;   // business number + sample formats shown in form fields
+  const leaks = []; pub.forEach(([f, t]) => { (t.match(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g) || []).filter(m => !okMail.test(m) && !/\.(png|jpg|webp|js|css)$/i.test(m) && !/@(media|keyframes|font-face|import|supports)/.test(m) && !/firebase|gstatic|googleapis|example/i.test(m)).forEach(m => leaks.push([f, m]));
+    (t.match(/(?<![\d#])05\d[- ]?\d{7}(?!\d)/g) || []).filter(m => !okPh.test(m.replace(/\D/g, ''))).forEach(m => leaks.push([f, m])); });
+  padd('pt-js', 'פרטי לקוחות בקבצי האתר', leaks.length ? 'fail' : 'pass', leaks.length ? `נמצאו ${leaks.length} כתובות אימייל או מספרי טלפון בקבצים הציבוריים.` : 'בקבצים הציבוריים אין פרטי לקוחות. מופיעים רק פרטי העסק ואימייל הבעלים (fb.js, לצורך זיהוי מנהל).', 'high', 'להסיר את הפרטים מהקבצים ולפרסם מחדש.', leaks.length ? {rows: leaks, cols: ['קובץ','ערך']} : null);
+  padd('pt-url', 'שינוי מזהה בכתובת האתר', 'pass', 'האזור האישי לא מקבל מזהה לקוח או בקשה מהכתובת: הוא מציג רק את הרשומה של המשתמש המחובר. car.html#car<מספר> מציג רק את הקטלוג הציבורי.');
+  padd('pt-noauth', 'לקוחות שלא מצליחים להיכנס', 'na', 'ניסיונות כניסה כושלים לא נשמרים באתר, ו-Firebase לא חושף אותם לדפדפן.', '', 'להפעיל ב-Firebase את Identity Platform עם Cloud Logging (מחייב תוכנית Blaze), או להוסיף שרת קטן שרושם כניסות כושלות.');
+}
+
+// full end-to-end test with a dedicated, temporary test customer (separate Firebase app, so the manager stays signed in)
+async function portalE2E(){
+  const L = LEADS && !LEADS.err ? LEADS : null;
+  const S = (id, title, status, detail, sev, fix, extra) => padd('e2e-' + id, 'בדיקה מלאה עם חשבון בדיקה · ' + title, status, detail, sev, fix, extra);
+  if (!L){ S('0', 'לא הורצה', 'na', 'הבדיקה יוצרת חשבון בדיקה זמני ומוחקת אותו בסוף, ולכן מחייבת התחברות של מנהל (למחיקה).', '', 'להתחבר כבעלים ולהריץ שוב.'); return; }
+  const ts = Date.now(), email = 'audit.' + ts + '@example.com', pw = 'Aa1' + Math.random().toString(36).slice(2, 12) + 'x9';
+  const mk = n => { const a = firebase.initializeApp(cccFb.CFG, n + ts); return a; };
+  let A = null, B = null, uid = null;
+  const team = L.db, del = async () => { if (!uid) return; for (const c of ['leads','progress','approvals']) { try { await team.collection(c).doc(uid).delete(); } catch(e) {} } };
+  try {
+    A = mk('auditA'); await A.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
+    try { uid = (await A.auth().createUserWithEmailAndPassword(email, pw)).user.uid; }
+    catch(e){ S('1', 'הרשמה', e.code === 'auth/operation-not-allowed' ? 'na' : 'fail', 'יצירת חשבון לקוח נכשלה: ' + (e.code || e.message), 'high', 'ב-Firebase Console ← Authentication ← Sign-in method להפעיל Email/Password.'); return; }
+    S('1', 'הרשמה', 'pass', 'נוצר חשבון לקוח זמני (' + email + ').');
+    const c0 = D && D.cars[0], T0 = window.CCC_TERMS, now = new Date().toISOString(), rid = ts.toString(36) + 'audit';
+    const deal = c0 && T0 ? {price: c0.price, down: T0.downOf(c0), monthly: Math.ceil(T0.monthlyOf(c0.price)), months: T0.months, rate: T0.rate, balloon: T0.balloon} : null;
+    const doc = {test: true, name: 'בדיקת מערכת', phone: '0500000000', city: 'בדיקה', status: 'new', src: 'loan', ts: now, last: 'בדיקת מערכת אוטומטית', history: [],
+      profile: {email, username: 'audit', idn: '000000018', dob: '1990-01-01'},
+      reqs: [{rid, ts: now, src: 'loan', car: c0 ? fullName(c0) : 'בדיקה', detail: 'בדיקת מערכת אוטומטית', name: 'בדיקת מערכת', phone: '0500000000', city: 'בדיקה', status: 'new', note: '', email, deal, loan: {amount: deal ? deal.price : 0, trade: {plate: '0000000', make: 'בדיקה'}}}]};
+    try { await A.firestore().collection('leads').doc(uid).set(doc); S('2', 'שמירת פרטים ובקשה', 'pass', 'הלקוח שמר פרטים, רכב ובקשת מימון עם טרייד-אין ברשומה שלו.'); }
+    catch(e){ S('2', 'שמירת פרטים ובקשה', 'fail', 'הלקוח לא הצליח לשמור את הבקשה: ' + (e.code || e.message), 'high', 'לבדוק את כללי האבטחה (firestore.rules) לאוסף leads.'); return; }
+    await A.auth().signOut();
+    // "another device": a fresh app instance signs in with the same e-mail and password
+    B = mk('auditB'); await B.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
+    const ub = (await B.auth().signInWithEmailAndPassword(email, pw)).user, dbB = B.firestore();
+    const back = (await dbB.collection('leads').doc(ub.uid).get()).data() || {}, q = (back.reqs || [])[0] || {};
+    const okBack = ub.uid === uid && back.name === doc.name && back.profile && back.profile.email === email && q.rid === rid && q.deal && q.deal.price === (deal || {}).price && q.loan && q.loan.trade;
+    S('3', 'יציאה, כניסה מחדש וכניסה ממכשיר אחר', okBack ? 'pass' : 'fail', okBack ? 'אחרי יציאה וכניסה מחדש במופע נפרד (כמו מכשיר אחר), הלקוח קיבל את אותו חשבון ואת כל הפרטים והבקשה, כולל מחיר, מקדמה, מסלול וטרייד-אין.' : 'אחרי כניסה מחדש חלק מהנתונים חסרים או שונים.', 'high', 'לבדוק את auth.js ו-fb.js (קישור החשבון למזהה הקבוע).');
+    // permissions as a customer
+    const other = L.docs.find(x => x._id !== uid);
+    const tryOp = async f => { try { await f(); return 'allowed'; } catch(e){ return e.code === 'permission-denied' ? 'denied' : (e.code || 'error'); } };
+    const rOther = other ? await tryOp(() => dbB.collection('leads').doc(other._id).get()) : 'skip';
+    const rList = await tryOp(() => dbB.collection('leads').limit(1).get());
+    S('4', 'לקוח לא יכול לראות לקוח אחר', (rOther === 'denied' || rOther === 'skip') && rList === 'denied' ? 'pass' : 'fail',
+      `קריאת רשומה של לקוח אחר: ${rOther === 'denied' ? 'נחסמה' : rOther === 'skip' ? 'אין לקוח אחר לבדיקה' : 'הצליחה!'} · רשימת כל הלידים: ${rList === 'denied' ? 'נחסמה' : 'הצליחה!'}.`, 'high', 'לפרסם את firestore.rules העדכני.');
+    const rStatus = await tryOp(() => dbB.collection('leads').doc(uid).update({status: 'won'}));
+    const rProg = await tryOp(() => dbB.collection('progress').doc(uid).set({reqs: {[rid]: {stage: 12}}}));
+    const rAppr = await tryOp(() => dbB.collection('approvals').doc(uid).set({status: 'approved'}));
+    S('5', 'לקוח לא יכול לשנות סטטוס או לקבל הרשאת מנהל', rStatus === 'denied' && rProg === 'denied' && rAppr === 'denied' ? 'pass' : (rAppr === 'allowed' ? 'fail' : 'fail'),
+      `שינוי הסטטוס של הבקשה שלו ל"נסגר": ${rStatus === 'denied' ? 'נחסם' : 'הצליח'} · עדכון שלב בתהליך: ${rProg === 'denied' ? 'נחסם' : 'הצליח'} · מתן הרשאת מנהל לעצמו: ${rAppr === 'denied' ? 'נחסם' : 'הצליח'}.`, rAppr === 'allowed' ? 'high' : 'mid', 'לפרסם את firestore.rules העדכני ב-Firebase Console ← Firestore ← Rules.');
+    // status sync: the team sets a stage, the customer sees it
+    const wProg = await tryOp(() => team.collection('progress').doc(uid).set({updatedAt: new Date().toISOString(), reqs: {[rid]: {stage: 6, result: null, ts: new Date().toISOString(), by: 'audit', log: [{stage: 6, ts: new Date().toISOString(), by: 'audit'}]}}}));
+    if (wProg !== 'allowed') S('6', 'עדכון שלב ממערכת הניהול מגיע ללקוח', 'na', 'המנהל לא יכול לשמור שלבים: כללי האבטחה המעודכנים עוד לא פורסמו ב-Firebase.', '', 'להעתיק את firestore.rules אל Firebase Console ← Firestore ← Rules ← Publish, ולהריץ שוב.');
+    else { const seen = await tryOp(async () => { const g = await dbB.collection('progress').doc(uid).get(); if (((g.data() || {}).reqs || {})[rid].stage !== 6) throw {code: 'mismatch'}; });
+      S('6', 'עדכון שלב ממערכת הניהול מגיע ללקוח', seen === 'allowed' ? 'pass' : 'fail', seen === 'allowed' ? 'המנהל עדכן את הבקשה לשלב 6 ("פרטי המימון נבדקים"), והלקוח קרא את השלב המעודכן מהחשבון שלו.' : 'הלקוח לא קיבל את השלב המעודכן (' + seen + ').', 'high', 'לבדוק את כללי הגישה לאוסף progress.'); }
+    // cleanup: nothing is left behind
+    await del(); try { await B.auth().currentUser.delete(); } catch(e) {}
+    const left = await tryOp(async () => { const g = await team.collection('leads').doc(uid).get(); if (g.exists) throw {code: 'left'}; });
+    S('7', 'ניקוי', left === 'allowed' ? 'pass' : 'warn', left === 'allowed' ? 'רשומת הבדיקה ושלבי התהליך נמחקו, וחשבון הבדיקה נמחק. לא נשאר כלום במערכת.' : 'רשומת הבדיקה לא נמחקה. היא מוסתרת ממרכז הלידים (מסומנת כבדיקה).', 'low', 'אפשר למחוק ידנית ב-Firebase Console את הרשומה ' + uid + '.');
+  } catch(e){ S('9', 'שגיאה', 'fail', 'הבדיקה נעצרה: ' + (e.code || e.message), 'mid', ''); await del(); }
+  finally { try { A && await A.delete(); } catch(e) {} try { B && await B.delete(); } catch(e) {} }
+}
+
 // ---------- merge (explicit, confirmed, reversible; never deletes) ----------
 async function mergeDocs(targetId, otherIds){
   const db = LEADS.db, ref = id => db.collection('leads').doc(id);
@@ -539,7 +655,8 @@ function statusOf(sysKey){ const cs = checks.filter(c => c.sys === sysKey); if (
 function score(){ const s = checks.filter(c => c.status !== 'na'); if (!s.length) return null; return Math.round(100 * s.reduce((n, c) => n + (c.status === 'pass' ? 1 : c.status === 'warn' ? .6 : 0), 0) / s.length); }
 const chip = s => `<span class="st ${s}">${ST[s] || s}</span>`;
 function tableHtml(rows, cols){ if (!rows || !rows.length) return ''; return `<div class="tw"><table class="t"><thead><tr>${cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr>${r.map(v => `<td>${esc(v)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`; }
-function checkHtml(c, open){ return `<details class="chk"${open ? ' open' : ''}><summary>${chip(c.status)}<span><b>${esc(c.title)}</b><br><span class="d">${esc(c.detail)}</span></span><span class="sys-l">${SYS[c.sys]}</span></summary>${c.rows ? `<div class="body">${tableHtml(c.rows, c.cols)}</div>` : ''}</details>`; }
+function checkHtml(c, open){ const meta = (c.sev && c.status !== 'pass' ? `<p><b>חומרה:</b> ${esc(c.sev)}</p>` : '') + (c.fix && c.status !== 'pass' ? `<p><b>${c.status === 'na' ? 'מה נדרש כדי לבדוק' : 'דרך לתיקון'}:</b> ${esc(c.fix)}</p>` : '');
+  return `<details class="chk"${open ? ' open' : ''}><summary>${chip(c.status)}<span><b>${esc(c.title)}</b><br><span class="d">${esc(c.detail)}</span></span><span class="sys-l">${SYS[c.sys]}</span></summary>${c.rows || meta ? `<div class="body">${meta}${tableHtml(c.rows, c.cols)}</div>` : ''}</details>`; }
 function leadCard(x, opts){ const rq = (x.reqs || []).filter(q => !q.mergedInto);
   return `<div class="lead${x.mergedInto ? ' merged' : ''}"><b>${esc(x.name || 'ללא שם')}</b><dl>
     <dt>טלפון</dt><dd class="mono">${esc(normPhone(x.phone) || '—')}</dd><dt>עיר</dt><dd>${esc(x.city || '—')}</dd>
@@ -567,11 +684,15 @@ function renderAll(){
   const na = checks.filter(c => c.status === 'na').length;
   $('scoreSub').textContent = sc === null ? 'הציון מחושב רק מבדיקות שבוצעו בפועל.' : `${checks.length - na} בדיקות נכללו בציון` + (na ? ` · ${na} לא זמינות ולא נכללו` : '');
   $('sysTiles').innerHTML = Object.entries(SYS).map(([k, l]) => { const s = statusOf(k), cs = checks.filter(c => c.sys === k);
-    return `<button class="tile" data-goto="${k === 'leads' ? 'leads' : k === 'catalog' ? 'catalog' : k === 'flows' ? 'flows' : 'all'}"><h3>${l}</h3>${s ? chip(s) : '<span class="st na">לא נבדק</span>'}<span class="n">${cs.filter(c => c.status === 'pass').length}/${cs.filter(c => c.status !== 'na').length || 0}</span><span class="s">${cs.length ? cs.filter(c => c.status === 'fail').length + ' תקלות · ' + cs.filter(c => c.status === 'warn').length + ' אזהרות' : 'הריצו בדיקה'}</span></button>`; }).join('');
+    return `<button class="tile" data-goto="${k === 'leads' ? 'leads' : k === 'catalog' ? 'catalog' : k === 'flows' ? 'flows' : k === 'portal' ? 'portal' : 'all'}"><h3>${l}</h3>${s ? chip(s) : '<span class="st na">לא נבדק</span>'}<span class="n">${cs.filter(c => c.status === 'pass').length}/${cs.filter(c => c.status !== 'na').length || 0}</span><span class="s">${cs.length ? cs.filter(c => c.status === 'fail').length + ' תקלות · ' + cs.filter(c => c.status === 'warn').length + ' אזהרות' : 'הריצו בדיקה'}</span></button>`; }).join('');
   const iss = checks.filter(c => c.status === 'fail' || c.status === 'warn').sort((a, b) => (a.status === 'fail' ? 0 : 1) - (b.status === 'fail' ? 0 : 1));
   const nas = checks.filter(c => c.status === 'na');
   $('p-issues').innerHTML = (checks.length ? (iss.length ? iss.map(c => checkHtml(c)).join('') : '<div class="empty">אין תקלות או אזהרות בבדיקה האחרונה.</div>') : '<div class="empty">הריצו בדיקה כדי לראות תקלות.</div>') + (nas.length ? `<h3 style="margin:22px 0 8px">בדיקות שלא בוצעו</h3>` + nas.map(c => checkHtml(c)).join('') : '');
   $('p-leads').innerHTML = leadsPane();
+  const pc = checks.filter(c => c.sys === 'portal'), M = PM, met = (n, l, note) => `<div class="tile" style="cursor:default"><h3>${l}</h3><span class="n">${n === null ? '—' : n}</span>${note ? `<span class="s">${note}</span>` : ''}</div>`;
+  $('p-portal').innerHTML = (M ? `<div class="card" style="margin-bottom:14px"><b>האזור האישי במספרים</b><div class="sys" style="margin-top:12px">${met(M.accounts, 'לקוחות רשומים')}${met(M.buy, 'בקשות רכישה')}${met(M.loan, 'בקשות מימון')}${met(M.working, 'בקשות בטיפול')}${met(M.unsaved, 'בקשות שלא נשמרו', 'מהדפדפן הזה')}${met(M.dup, 'בקשות כפולות')}${met(M.nostatus, 'בקשות ללא סטטוס')}${met(null, 'לקוחות שלא מצליחים להיכנס', 'לא ניתן לבדוק')}${met(M.unsynced, 'בקשות לא מסונכרנות')}</div></div>` : '') +
+    (pc.length ? pc.map(c => checkHtml(c)).join('') : '<div class="empty">הריצו "בדיקת האזור האישי" או בדיקה מלאה.</div>');
+  $('cPortal').textContent = cnt('portal');
   $('p-catalog').innerHTML = checks.filter(c => c.sys === 'catalog' || c.sys === 'finance').map(c => checkHtml(c)).join('') || '<div class="empty">הריצו "בדיקת קטלוג הרכבים" או בדיקה מלאה.</div>';
   $('p-flows').innerHTML = checks.filter(c => c.sys === 'flows').sort((a, b) => parseInt(a.title) - parseInt(b.title)).map(c => checkHtml(c)).join('') || '<div class="empty">תהליכי הלקוח נבדקים בבדיקה המלאה.</div>';
   $('p-all').innerHTML = Object.keys(SYS).map(k => { const cs = checks.filter(c => c.sys === k); return cs.length ? `<h3 style="margin:18px 0 8px">${SYS[k]}</h3>` + cs.map(c => checkHtml(c)).join('') : ''; }).join('') || '<div class="empty">עוד לא הורצו בדיקות.</div>';
@@ -588,18 +709,20 @@ function renderHistory(){
 }
 
 // ---------- runs ----------
-const MODES = {full:'בדיקה מלאה', leads:'לידים', dups:'כפילויות', catalog:'קטלוג'};
+const MODES = {full:'בדיקה מלאה', leads:'לידים', dups:'כפילויות', catalog:'קטלוג', portal:'אזור אישי'};
 async function run(mode){
   if (running) return; running = true; lastMode = mode; const t0 = performance.now();
   document.querySelectorAll('[data-run]').forEach(b => b.disabled = true);
   const step = s => { $('runInfo').innerHTML = '<span class="st run">רץ</span> ' + esc(s); };
   try {
-    if (mode === 'full') checks = []; else checks = checks.filter(c => mode === 'leads' ? c.sys !== 'leads' : mode === 'catalog' ? !['catalog','finance'].includes(c.sys) : !['cat-dup','cat-ver','cat-key','ld-dphone','ld-dphonecar','ld-repeat'].includes(c.id));
-    if (mode !== 'leads'){ step('טוען את נתוני האתר…'); await loadSource(); }
+    if (mode === 'full') checks = []; else checks = checks.filter(c => mode === 'leads' ? c.sys !== 'leads' : mode === 'catalog' ? !['catalog','finance'].includes(c.sys) : mode === 'portal' ? c.sys !== 'portal' : !['cat-dup','cat-ver','cat-key','ld-dphone','ld-dphonecar','ld-repeat'].includes(c.id));
+    if (mode !== 'leads' && mode !== 'portal'){ step('טוען את נתוני האתר…'); await loadSource(); }
     if (mode === 'full'){ step('בודק קבצים ותמונות…'); await checkInfra(); }
     if (mode === 'full' || mode === 'catalog'){ step('סורק את קטלוג הרכבים…'); if (!D.badImgs && mode === 'catalog') await checkInfra().then(() => checks = checks.filter(c => c.sys !== 'infra')); checkCatalog(false); step('בודק מימון ומקדמות…'); checkFinance(); }
     if (mode === 'dups'){ checkCatalog(true); }
-    if (mode === 'full' || mode === 'leads' || mode === 'dups'){ step('קורא לידים מ-Firebase…'); await checkLeads(mode === 'dups'); }
+    if (mode === 'full' || mode === 'leads' || mode === 'dups' || mode === 'portal'){ step('קורא לידים מ-Firebase…'); if (mode === 'portal') LEADS = await loadLeads(); else await checkLeads(mode === 'dups'); }
+    if (mode === 'portal' && !D){ try { await loadSource(); } catch(e) {} }
+    if (mode === 'full' || mode === 'portal'){ if (mode === 'portal') checks = checks.filter(c => c.sys !== 'portal'); step('בודק את האזור האישי…'); await checkPortal(); step('מריץ בדיקה מלאה עם חשבון בדיקה זמני…'); await portalE2E(); }
     if (mode === 'full'){ step('מריץ את תהליכי הלקוח בדפי האתר…'); await checkFlows(); }
   } catch(e){ add('infra', 'run-err', 'הבדיקה נעצרה', 'fail', String(e && e.message || e)); }
   const ms = Math.round(performance.now() - t0), sc = score();

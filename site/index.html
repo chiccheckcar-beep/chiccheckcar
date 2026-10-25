@@ -941,6 +941,8 @@ body:has(.adm:not([hidden])) .me-fab,body:has(#gate:not([hidden])) .me-fab{displ
 #adm .adm-nav.on{background:#f4e9ee;color:#7a2a4a}
 #adm .adm-nav.on .adm-nav-n{background:#fff}
 #adm .adm-badge{border-radius:14px}
+#adm .adm-stage{display:flex;flex-direction:column;gap:8px}
+#adm .adm-stage-sel{font:inherit;font-size:14.5px;padding:10px 12px;border-radius:12px;border:1px solid rgba(122,42,74,.25);background:#fff;color:#1f1519}
 #adm .adm-auth{background:#f4e9ee;border:0;border-radius:22px;box-shadow:0 14px 34px rgba(31,21,25,.10)}
 #adm .adm-auth input{background:#fff}
 /* System Audit inside the managers area (2026-10-25) */
@@ -1526,6 +1528,10 @@ window.cccLead = async function(info){
     if (info.req){
       // every request is its own lead in the leads center, even from the same person
       const rq = {rid, ts: now, src: info.src, car: String(info.car || '').slice(0,500), detail: String(info.detail || '').slice(0,300), name, phone, city, status: 'new', note: '', unseen: true};
+      // the deal as the customer saw it when sending (price, down payment, route, monthly), so the request keeps it even if prices change
+      try { const email = String((info.profile && info.profile.email) || saved.email || '').slice(0,120); if (email) rq.email = email;
+        const T = window.CCC_TERMS, c = (T && info.car && typeof CARS !== 'undefined') ? CARS.find(x => [x.maker, x.model, x.trim].filter(Boolean).join(' ') === String(info.car)) : null;
+        if (c) rq.deal = {price: c.price, down: T.downOf(c), monthly: Math.ceil(T.monthlyOf(c.price)), months: T.months, rate: T.rate, balloon: T.balloon}; } catch(e) {}
       if (info.loan) rq.loan = info.loan;
       data.reqs = (Array.isArray(cur.reqs) ? cur.reqs : []).concat([rq]).slice(-60);
       data.unseen = true; if (ex.exists && (!cur.status || ['cold','lost','noans'].includes(cur.status))) data.status = 'new';
@@ -2085,7 +2091,7 @@ $('grid').addEventListener('change', e => {
     unsub = db.collection('leads').orderBy('ts','desc').limit(1000).onSnapshot(snap => { loadErr = '';
       raw = {}; snap.docs.forEach(d => raw[d.id] = d.data() || {});
       // leads merged in the System Audit (audit.html) stay in the database but are not listed twice
-      rows = snap.docs.filter(d => !(d.data() || {}).mergedInto).flatMap(d => { const x = d.data() || {}, rq = (Array.isArray(x.reqs) ? x.reqs : []).filter(q => !q.mergedInto);
+      rows = snap.docs.filter(d => { const x = d.data() || {}; return !x.mergedInto && !x.test; }).flatMap(d => { const x = d.data() || {}, rq = (Array.isArray(x.reqs) ? x.reqs : []).filter(q => !q.mergedInto);
         if (!rq.length) return [Object.assign({}, x, {id: d.id, _doc: d.id})];
         return rq.map(q => Object.assign({}, x, {loan: null, car: '', last: ''}, q, {id: d.id + '~' + q.rid, _doc: d.id, _rid: q.rid, name: q.name || x.name, phone: q.phone || x.phone, city: q.city || x.city, last: q.detail, status: q.status || 'new', note: q.note || '', unseen: !!q.unseen, ts: q.ts})); })
         .sort((a, b) => String(b.ts || '').localeCompare(String(a.ts || '')));
@@ -2093,6 +2099,31 @@ $('grid').addEventListener('change', e => {
       refreshFab();
       if (!panel.hidden) draw();
     }, () => { loadErr = (agent && !owner) ? 'agent' : 'err'; listening = false; if (!panel.hidden) draw(); });
+    // purchase-process stage per request (progress/<customerUid>), shown to the customer in the personal area
+    db.collection('progress').onSnapshot(s => { PROG = {}; progErr = ''; s.docs.forEach(d => PROG[d.id] = d.data() || {}); if (drId && !$a('admDr').hidden) drawDrawer(); },
+      e => { progErr = (e && e.code) || 'err'; });
+  }
+  let PROG = {}, progErr = '';
+  function stageBox(r){
+    const S = window.CCC_STAGES, L = window.CCC_STAGE_LABEL, box = el('div','adm-stage');
+    const p = ((PROG[r._doc] || {}).reqs || {})[r._rid] || null, cur = p && p.stage ? +p.stage : 2, res = p && p.result || '';
+    const sel = document.createElement('select'); sel.className = 'adm-stage-sel'; sel.setAttribute('aria-label', 'שלב בתהליך הרכישה');
+    for (let n = 1; n <= 12; n++){
+      if (n === 7){ [['approved','המימון אושר'], ['rejected','המימון נדחה']].forEach(([v, t]) => { const o = new Option('7. ' + t, '7:' + v); if (cur === 7 && res === v) o.selected = true; sel.add(o); }); continue; }
+      const o = new Option(n + '. ' + S[n], String(n)); if (n === cur) o.selected = true; sel.add(o);
+    }
+    sel.addEventListener('change', async () => {
+      const [st, rs] = sel.value.split(':'), stage = +st, result = rs || null, ts = new Date().toISOString(); let by = ''; try { by = ((await cccFb.current()) || {}).email || ''; } catch(_) {}
+      try { await db.collection('progress').doc(r._doc).set({updatedAt: ts, reqs: {[r._rid]: {stage, result, ts, by, log: firebase.firestore.FieldValue.arrayUnion({stage, result, ts, by})}}}, {merge: true});
+        toast('השלב עודכן. הלקוח יראה אותו באזור האישי.'); }
+      catch(e){ toast(e && e.code === 'permission-denied' ? 'אין הרשאה: יש לפרסם את כללי האבטחה החדשים ב-Firebase (firestore.rules).' : 'העדכון נכשל. נסו שוב.'); sel.value = cur === 7 ? '7:' + res : String(cur); }
+    });
+    box.append(sel);
+    if (!p) box.append(el('p','adm-muted','עדיין לא עודכן שלב. הלקוח רואה: "' + S[2] + '".'));
+    const log = p && Array.isArray(p.log) ? p.log.slice(-4).reverse() : [];
+    if (log.length){ const ul = el('ul','adm-hist'); log.forEach(x => { const li = el('li'); li.append(el('span','adm-hist-t', when(x.ts)), el('span', null, L(+x.stage, x.result) + (x.by ? ' · ' + x.by : ''))); ul.append(li); }); box.append(ul); }
+    if (progErr) box.append(el('p','adm-muted', progErr === 'permission-denied' ? 'כדי לשמור שלבים יש לפרסם ב-Firebase את כללי האבטחה המעודכנים (הקובץ firestore.rules).' : 'לא ניתן לקרוא את שלבי התהליך כרגע.'));
+    return box;
   }
   // ---- staff accounts (owner side) ----
   function listenAccounts(){
@@ -2387,6 +2418,7 @@ $('grid').addEventListener('change', e => {
     if (reqs.length){ want.append(el('div','adm-dr-sub','הפניות האחרונות')); const ul = el('ul','adm-hist'); reqs.forEach(x => { const li = el('li'); li.append(el('span','adm-hist-t', when(x.ts)), el('span', null, x.detail)); ul.append(li); }); want.append(ul); }
     if (!want.childNodes.length) want.append(el('p','adm-muted','הלקוח עדיין לא ביקש רכב מסוים.'));
     parts.push(drSection('מה הלקוח רוצה', want));
+    if (r._rid) parts.push(drSection('שלב בתהליך הרכישה', stageBox(r)));
     { const np = x => String(x.phone || '').replace(/\D/g,'').replace(/^972/,'0'), nn = x => String(x.name || '').trim().replace(/\s+/g,' ').toLowerCase();
       const sims = rows.filter(x => x.id !== r.id && ((np(r) && np(x) === np(r)) || (nn(r) && nn(x) === nn(r))));
       if (sims.length){ const ul = el('ul','adm-dr-sims'); sims.forEach(x => { const li = el('li'); const b = el('button', null, (x.name || 'ללא שם') + ' · ' + fmtPhone(x.phone) + (x.city ? ' · ' + x.city : '')); b.type = 'button'; b.addEventListener('click', () => openDrawer(x.id)); li.append(b, el('small', null, np(x) === np(r) ? 'אותו טלפון, ייתכן שזה אותו לקוח' : 'אותו שם, טלפון אחר')); ul.append(li); }); parts.push(drSection('לקוחות עם אותו שם או טלפון (' + sims.length + ')', ul)); } }

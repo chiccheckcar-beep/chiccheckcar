@@ -213,37 +213,7 @@ footer a{color:#e8c7d4 !important}
 <script src="terms.js"></script>
 <script>
 const CARS = __CARS__;
-window.cccLead = async function(info){
-  // every request the customer sends also goes to "הפניות שלי" in this browser, even if it can't reach the leads center
-  const rid = info.req ? Date.now().toString(36) + Math.random().toString(36).slice(2,6) : null;
-  if (info.req){ try { const L = JSON.parse(localStorage.getItem('ccc_reqs') || '[]'); L.push({rid, ts: new Date().toISOString(), src: info.src, cars: info.cars || (info.car ? String(info.car).split(', ') : []), amount: info.loan ? info.loan.amount : 0, trade: !!(info.loan && info.loan.trade)}); localStorage.setItem('ccc_reqs', JSON.stringify(L.slice(-30))); } catch(e) {} }
-  try {
-    const [db, user] = await Promise.all([claude.use('db'), claude.use('user')]); if (!db || !user) return false;
-    const id = await user.id(); if (!id) return false;
-    const ref = db.collection('leads').doc(id), ex = await ref.get(), cur = ex.exists ? (ex.data() || {}) : {};
-    let saved = {}; try { saved = JSON.parse(localStorage.getItem('ccc_me') || '{}') || {}; } catch(e) {}
-    let sn = '', sp = ''; try { sn = sessionStorage.getItem('ccc_name') || ''; sp = sessionStorage.getItem('ccc_phone') || ''; } catch(e) {}
-    const name = String(info.name || cur.name || saved.name || sn || '').slice(0,60);
-    const phone = String(info.phone || cur.phone || saved.phone || sp || '').replace(/\D/g,'').replace(/^972/,'0');
-    const city = String(info.city || cur.city || saved.city || '').slice(0,40);
-    if (!ex.exists && !name && !phone) return false;
-    const now = new Date().toISOString();
-    const history = (Array.isArray(cur.history) ? cur.history : []).concat([{ts: now, src: info.src, car: String(info.car || '').slice(0,300), detail: String(info.detail || '').slice(0,300)}]).slice(-40);
-    const data = {name, phone, city, src: info.src, ts: now, history, last: String(info.detail || '').slice(0,300)};
-    if (info.car) data.car = String(info.car).slice(0,500);
-    if (info.loan) data.loan = info.loan;
-    if (info.profile) data.profile = info.profile;
-    if (info.req){
-      // every request is its own lead in the leads center, even from the same person
-      const rq = {rid, ts: now, src: info.src, car: String(info.car || '').slice(0,500), detail: String(info.detail || '').slice(0,300), name, phone, city, status: 'new', note: '', unseen: true};
-      if (info.loan) rq.loan = info.loan;
-      data.reqs = (Array.isArray(cur.reqs) ? cur.reqs : []).concat([rq]).slice(-60);
-      data.unseen = true; if (ex.exists && (!cur.status || ['cold','lost','noans'].includes(cur.status))) data.status = 'new';
-    }
-    if (ex.exists) await ref.update(data); else await ref.set(Object.assign({status: info.req ? 'new' : 'cold', car: ''}, data));
-    return true;
-  } catch(e) { return false; }
-};
+__LEAD__
 // Confirmation after a request: "received" only when it really reached the leads center; otherwise ask to finish in WhatsApp.
 window.cccDone = function({ok, phone, wa, title, text}){
   const box = document.getElementById('okBox'); if (!box) return;
@@ -436,6 +406,8 @@ SPECS = {}
 for g in spec['groups']:
     for r in g['rows']:
         SPECS[str(r)] = {k: g[k] for k in ('drive','engine','power','accel','gearbox','consumption','seats','trunk','sources','note') if k in g}
+lead_js = html[html.index('window.cccLead = async function(info){'):html.index('\n};', html.index('window.cccLead = async function(info){'))+3]
+page = page.replace('__LEAD__', lead_js)
 page = page.replace('__SPECS__', json.dumps(SPECS, ensure_ascii=False))
 page = page.replace('__CARS__', json.dumps(cars, ensure_ascii=False)).replace('__STATS__', json.dumps({str(k):v for k,v in stats.items()}, ensure_ascii=False))
 open(f'{site}/car.html','w',encoding='utf-8').write(page)
