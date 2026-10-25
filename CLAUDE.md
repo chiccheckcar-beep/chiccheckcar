@@ -50,6 +50,8 @@ Preview locally: `cd site && python3 -m http.server 8080` then open http://local
   Only the owner changes a customer's status or purchase stage (owner, 2026-10-25): staff see the selects disabled;
   firestore.rules lets staff update leads only with the doc status unchanged, and `progress` is owner-write only.
   (Per-request statuses inside `reqs[]` are blocked for staff in the UI only — rules can't check array items.)
+- Leads center: clicking a lead opens its customer details as a full page inside the admin (owner, 2026-10-25),
+  address index.html#admin/lead/<rowId>; browser back / "חזרה לכל הלידים" / Esc returns to the list.
 - Access is enforced by `firestore.rules` (repo root). After changing it, paste it in Firebase console -> Firestore -> Rules -> Publish.
 - Firebase console needs: Authentication with Email/Password + Anonymous enabled, the owner user added, Firestore created.
 

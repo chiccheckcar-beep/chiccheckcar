@@ -757,6 +757,16 @@ footer p,footer .legal-links button,footer .legal-links a{color:#d9d0cf !importa
 .adm-dr-sims small{display:block;color:var(--a-mut);font-size:12px}
 .adm-dr-sub{font-size:12.5px;font-weight:700;color:var(--a-mut);margin:12px 0 6px}
 .adm-dr-want .adm-dr-dl + .adm-dr-sub{border-top:1px solid var(--a-line);padding-top:10px}
+/* customer details open as their own page inside the leads center (owner, 2026-10-25) */
+#admDr .adm-dr-bg{display:none}
+#admDr .adm-dr-panel{left:0;right:0;width:auto;background:var(--a-bg);box-shadow:none;animation:drPg .2s ease-out}
+@keyframes drPg{from{opacity:0}}
+#admDr .adm-dr-head{background:var(--a-surf);padding:12px max(18px,calc((100% - 1120px)/2))}
+#admDr .adm-dr-back{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:999px;background:var(--a-ink);color:#fff;font:inherit;font-size:14px;font-weight:700;padding:9px 18px;cursor:pointer}
+#admDr .adm-dr-body{display:grid;grid-template-columns:1fr 1fr;align-items:start;gap:16px;padding:22px max(18px,calc((100% - 1120px)/2)) 40px}
+#admDr .adm-dr-body > .adm-dr-top,#admDr .adm-dr-body > .adm-phone,#admDr .adm-dr-body > .adm-dr-copy{grid-column:1/-1}
+#admDr .adm-dr-body > .adm-dr-copy{justify-self:start;min-width:220px}
+@media (max-width:820px){#admDr .adm-dr-body{grid-template-columns:1fr}#admDr .adm-dr-body > .adm-dr-copy{justify-self:stretch}}
 .adm-loan{background:#f4e9ee;border-radius:12px;padding:10px 12px;font-size:13px}
 .adm-loan b{color:var(--a-acc);display:block;margin-bottom:6px}
 .adm-loan dl{display:grid;grid-template-columns:auto 1fr;gap:3px 12px;margin:0}
@@ -1181,10 +1191,10 @@ body:has(.adm:not([hidden])) .me-fab,body:has(#gate:not([hidden])) .me-fab{displ
   </div>
   <div class="adm-dr" id="admDr" hidden>
     <div class="adm-dr-bg" data-dr-close></div>
-    <aside class="adm-dr-panel" role="dialog" aria-modal="true" aria-labelledby="drName">
-      <div class="adm-dr-head"><span class="adm-dr-t">פרטי לקוח</span><button type="button" class="adm-x" data-dr-close aria-label="סגירת פרטי הלקוח">×</button></div>
+    <main class="adm-dr-panel" aria-labelledby="drName">
+      <div class="adm-dr-head"><span class="adm-dr-t">פרטי לקוח</span><button type="button" class="adm-dr-back" data-dr-close>→ חזרה לכל הלידים</button></div>
       <div class="adm-dr-body" id="drBody"></div>
-    </aside>
+    </main>
   </div>
   <p class="adm-toast" id="admToast" hidden role="status"></p>
 </div>
@@ -2095,6 +2105,7 @@ $('grid').addEventListener('change', e => {
         if (!rq.length) return [Object.assign({}, x, {id: d.id, _doc: d.id})];
         return rq.map(q => Object.assign({}, x, {loan: null, car: '', last: ''}, q, {id: d.id + '~' + q.rid, _doc: d.id, _rid: q.rid, name: q.name || x.name, phone: q.phone || x.phone, city: q.city || x.city, last: q.detail, status: q.status || 'new', note: q.note || '', unseen: !!q.unseen, ts: q.ts})); })
         .sort((a, b) => String(b.ts || '').localeCompare(String(a.ts || '')));
+      tryPendLead();
       if (drId && !$a('admDr').hidden && !($a('drBody').contains(document.activeElement) && document.activeElement.matches('textarea'))) drawDrawer();
       refreshFab();
       if (!panel.hidden) draw();
@@ -2212,7 +2223,7 @@ $('grid').addEventListener('change', e => {
     $a('admLocked').hidden = true; $a('admApp').hidden = false;
     $a('admWho').hidden = !(agent || ownerIn); $a('admWho').textContent = agent ? agent.name : 'מנהל';
     $a('admLogout').hidden = !(agent || ownerIn);
-    listen(); listenAccounts(); draw();
+    listen(); listenAccounts(); draw(); tryPendLead();
   }
   function openAdmin(){
     panel.hidden = false; document.documentElement.style.overflow = 'hidden';
@@ -2436,8 +2447,16 @@ $('grid').addEventListener('change', e => {
     const del = el('button','adm-ghost adm-danger adm-dr-copy','מחיקת הליד'); del.type = 'button'; del.addEventListener('click', () => askDelete([r.id])); parts.push(del);
     B.replaceChildren(...parts);
   }
-  function openDrawer(id){ drId = id; { const r = rows.find(x => x.id === id); if (r && r.unseen) save(id, {unseen: false}); } drawDrawer(); $a('admDr').hidden = false; $a('admDr').querySelector('.adm-x').focus(); }
-  function closeDrawer(){ $a('admDr').hidden = true; drId = null; }
+  const LEAD_H = '#admin/lead/';
+  function openDrawer(id, fromUrl){ drId = id; { const r = rows.find(x => x.id === id); if (r && r.unseen) save(id, {unseen: false}); } drawDrawer(); $a('admDr').hidden = false; $a('drBody').scrollTop = 0;
+    const h = LEAD_H + encodeURIComponent(id); if (!fromUrl && location.hash !== h){ if (location.hash.startsWith(LEAD_H)) history.replaceState(null, '', h); else history.pushState({fromList: true}, '', h); }
+    $a('admDr').querySelector('.adm-dr-back').focus(); }
+  function closeDrawer(fromUrl){ $a('admDr').hidden = true; drId = null; pendLead = null;
+    if (!fromUrl && location.hash.startsWith(LEAD_H)){ if (history.state && history.state.fromList) history.back(); else history.replaceState(null, '', '#admin'); } }
+  let pendLead = null;
+  function leadFromUrl(){ if (!location.hash.startsWith(LEAD_H)) return false; pendLead = decodeURIComponent(location.hash.slice(LEAD_H.length)); tryPendLead(); return true; }
+  function tryPendLead(){ if (pendLead && rows.some(x => x.id === pendLead) && !$a('admApp').hidden){ const id = pendLead; pendLead = null; openDrawer(id, true); } }
+  addEventListener('popstate', () => { if (location.hash.startsWith(LEAD_H)){ if (panel.hidden) openAdmin(); leadFromUrl(); } else if (!$a('admDr').hidden) closeDrawer(true); });
   $a('admDr').addEventListener('click', e => { if (e.target.closest('[data-dr-close]')) closeDrawer(); });
   $a('admView').addEventListener('click', e => {
     if (e.target.closest('select, textarea, input, a, .adm-ibtn, .adm-ckc')) return;
@@ -2525,6 +2544,7 @@ $('grid').addEventListener('change', e => {
       else await restoreAgent();
     }
     if (location.hash === '#admin') openAdmin();
+    else if (location.hash.startsWith('#admin/lead/')){ openAdmin(); leadFromUrl(); }
   })();
 })();
 ['q','maker','fuel','sort'].forEach(id => $(id).addEventListener('input', render));
