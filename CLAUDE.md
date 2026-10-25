@@ -53,7 +53,8 @@ Still open:
 ## Owner's rules (keep them)
 
 - "המחיר, המלאי והפרטים העסקיים נלקחים רק מהאקסל שלי. מידע טכני בלבד מותר להשלים מהאינטרנט."
-  Prices are shown exactly as in the Excel (no rounding).
+  Prices: update 2026-10-25 (owner): every price is rounded UP to the next whole thousand (e.g. 145,960 -> 146,000).
+  New prices the owner sends get the same rounding. Logged in docs/price-report-icar-2026.md.
   Update 2026-10-20 (owner request): prices for model-year 2026 cars were replaced with the verified importer list price on iCar,
   only where model, trim, engine and drive match exactly; others keep the Excel price. See docs/price-report-icar-2026.md.
 - "אל תשנה, תמחק או תאחד דגמים מהאקסל בלי אישור שלי". 2026-10-20 the owner approved removing exact duplicates
