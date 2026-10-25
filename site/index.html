@@ -942,6 +942,7 @@ body:has(.adm:not([hidden])) .me-fab,body:has(#gate:not([hidden])) .me-fab{displ
 #adm .adm-nav.on .adm-nav-n{background:#fff}
 #adm .adm-badge{border-radius:14px}
 #adm .adm-stage{display:flex;flex-direction:column;gap:8px}
+#adm .adm-sel:disabled,#adm .adm-stage-sel:disabled{opacity:.6;cursor:not-allowed}
 #adm .adm-stage-sel{font:inherit;font-size:14.5px;padding:10px 12px;border-radius:12px;border:1px solid rgba(122,42,74,.25);background:#fff;color:#1f1519}
 #adm .adm-auth{background:#f4e9ee;border:0;border-radius:22px;box-shadow:0 14px 34px rgba(31,21,25,.10)}
 #adm .adm-auth input{background:#fff}
@@ -2111,14 +2112,17 @@ $('grid').addEventListener('change', e => {
       if (n === 7){ [['approved','המימון אושר'], ['rejected','המימון נדחה']].forEach(([v, t]) => { const o = new Option('7. ' + t, '7:' + v); if (cur === 7 && res === v) o.selected = true; sel.add(o); }); continue; }
       const o = new Option(n + '. ' + S[n], String(n)); if (n === cur) o.selected = true; sel.add(o);
     }
+    if (!owner){ sel.disabled = true; sel.title = 'רק הבעלים (ankermeir2005@gmail.com) יכול לשנות סטטוס של לקוח.'; }
     sel.addEventListener('change', async () => {
+      if (!owner){ toast('רק הבעלים (ankermeir2005@gmail.com) יכול לשנות סטטוס של לקוח.'); return; }
       const [st, rs] = sel.value.split(':'), stage = +st, result = rs || null, ts = new Date().toISOString(); let by = ''; try { by = ((await cccFb.current()) || {}).email || ''; } catch(_) {}
       try { await db.collection('progress').doc(r._doc).set({updatedAt: ts, reqs: {[r._rid]: {stage, result, ts, by, log: firebase.firestore.FieldValue.arrayUnion({stage, result, ts, by})}}}, {merge: true});
         toast('השלב עודכן. הלקוח יראה אותו באזור האישי.'); }
-      catch(e){ toast(e && e.code === 'permission-denied' ? 'אין הרשאה: יש לפרסם את כללי האבטחה החדשים ב-Firebase (firestore.rules).' : 'העדכון נכשל. נסו שוב.'); sel.value = cur === 7 ? '7:' + res : String(cur); }
+      catch(e){ toast(e && e.code === 'permission-denied' ? 'אין הרשאה: יש לפרסם ב-Firebase את כללי האבטחה המעודכנים (firestore.rules), ולהיות מחוברים כבעלים.' : 'העדכון נכשל. נסו שוב.'); sel.value = cur === 7 ? '7:' + res : String(cur); }
     });
     box.append(sel);
     if (!p) box.append(el('p','adm-muted','עדיין לא עודכן שלב. הלקוח רואה: "' + S[2] + '".'));
+    if (!owner) box.append(el('p','adm-muted','רק הבעלים (ankermeir2005@gmail.com) יכול לשנות סטטוס של לקוח.'));
     const log = p && Array.isArray(p.log) ? p.log.slice(-4).reverse() : [];
     if (log.length){ const ul = el('ul','adm-hist'); log.forEach(x => { const li = el('li'); li.append(el('span','adm-hist-t', when(x.ts)), el('span', null, L(+x.stage, x.result) + (x.by ? ' · ' + x.by : ''))); ul.append(li); }); box.append(ul); }
     if (progErr) box.append(el('p','adm-muted', progErr === 'permission-denied' ? 'כדי לשמור שלבים יש לפרסם ב-Firebase את כללי האבטחה המעודכנים (הקובץ firestore.rules).' : 'לא ניתן לקרוא את שלבי התהליך כרגע.'));
@@ -2243,6 +2247,7 @@ $('grid').addEventListener('change', e => {
     s.style.setProperty('--c', SC[st(r)]);
     s.addEventListener('click', e => e.stopPropagation());
     s.addEventListener('change', () => { s.style.setProperty('--c', SC[s.value]); save(r.id, {status: s.value}); });
+    if (!owner){ s.disabled = true; s.title = 'רק הבעלים (ankermeir2005@gmail.com) יכול לשנות סטטוס של לקוח.'; }
     return s;
   }
   function actions(r){
@@ -2463,6 +2468,8 @@ $('grid').addEventListener('change', e => {
     $a('admView').replaceChildren(!list.length && view !== 'board' ? empty() : view === 'board' ? drawBoard(list) : view === 'cards' ? drawCards(list) : drawList(list));
   }
   async function save(id, data){
+    // only the owner changes a customer's status (owner, 2026-10-25); approved staff can still work the lead (notes, seen)
+    if ('status' in data && !owner){ toast('רק הבעלים (ankermeir2005@gmail.com) יכול לשנות סטטוס של לקוח.'); if (!panel.hidden) draw(); return; }
     try {
       const r = rows.find(x => x.id === id), docId = r ? r._doc : id;
       if (r && r._rid){

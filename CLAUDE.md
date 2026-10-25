@@ -47,6 +47,9 @@ Preview locally: `cd site && python3 -m http.server 8080` then open http://local
 - `user.isOwner()` / `cccFb.isOwnerUser()` = signed in with the owner email (ankermeir2005@gmail.com, set in fb.js and firestore.rules).
 - Admin area (index.html#admin): owner and staff sign in with Firebase email/password (`cccFb.signIn/signUp/signOut`).
   Staff create an account -> `accounts/<uid>`; the owner approves -> `approvals/<uid>` {status:'approved'}.
+  Only the owner changes a customer's status or purchase stage (owner, 2026-10-25): staff see the selects disabled;
+  firestore.rules lets staff update leads only with the doc status unchanged, and `progress` is owner-write only.
+  (Per-request statuses inside `reqs[]` are blocked for staff in the UI only — rules can't check array items.)
 - Access is enforced by `firestore.rules` (repo root). After changing it, paste it in Firebase console -> Firestore -> Rules -> Publish.
 - Firebase console needs: Authentication with Email/Password + Anonymous enabled, the owner user added, Firestore created.
 
