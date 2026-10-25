@@ -87,7 +87,7 @@ Still open:
 ## Service terms (owner, 2026-10-25)
 
 - The owner's service agreement (company name ChicCheckCar; contact chiccheckcar@gmail.com, 054-576-2802 — owner 2026-10-25) is shown as the "תנאי שירות" legal window (`#legal-service`, open with index.html#service;
-  footer + side menu links) and the original is downloadable at site/service-agreement.pdf. Text kept as the owner wrote it; site/service-agreement.pdf is rebuilt from that text (Chromium print) with the ChicCheckCar name.
+  footer + side menu links) and the original is downloadable at site/service-agreement.pdf. Text kept as the owner wrote it; site/service-agreement.pdf is the owner's updated PDF (2026-10-25, with logo).
 
 ## Owner-supplied material
 
