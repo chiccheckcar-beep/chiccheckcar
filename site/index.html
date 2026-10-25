@@ -921,6 +921,11 @@ body:has(.adm:not([hidden])) .me-fab,body:has(#gate:not([hidden])) .me-fab{displ
 #mCart[aria-pressed="true"]{background:var(--s-acc);color:#fff;border-color:var(--s-acc)}
 @media (max-width:800px){.adm-side{position:absolute;top:0;bottom:0;right:0;z-index:2;box-shadow:-12px 0 30px rgba(0,0,0,.14)}.adm-body{position:relative}.adm:not(.side-open) .adm-side{display:none}.adm.side-open .adm-side{display:block}.adm-search{flex:1;min-width:0}.adm-search input{width:100%}.adm-head-l{width:100%}.adm-head,.adm-top-bar{padding-inline:14px}.adm-main{padding:14px 12px 40px}.adm-kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.adm-kpi{padding:12px}.adm-kpi b{font-size:22px}.adm-logo{height:46px}.adm-top-bar{height:64px}.adm-cards{grid-template-columns:1fr}.adm-badge{display:none}.adm-newform{grid-template-columns:1fr}}
 
+/* System Audit inside the managers area (2026-10-25) */
+.adm-audit{position:fixed;inset:0;z-index:2147483000;background:#f4f4f2;display:flex;flex-direction:column}
+.adm-audit[hidden]{display:none}
+.adm-audit-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 16px;background:#fff;border-bottom:1px solid #e3e3e0}
+.adm-audit iframe{flex:1;width:100%;border:0}
 /* ===== One card per model: trim picker + trim comparison (2026-10-22) ===== */
 .uc-name .ctrim{direction:rtl}
 .uc-trims{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
@@ -1115,7 +1120,7 @@ body:has(.adm:not([hidden])) .me-fab,body:has(#gate:not([hidden])) .me-fab{displ
       <div class="adm-head-l">
         <label class="adm-search"><span aria-hidden="true">⌕</span><input type="search" id="admSearch" placeholder="חיפוש"></label>
         <button type="button" class="adm-ghost adm-danger" id="admDelSel" hidden>מחיקה</button>
-        <a class="adm-ghost" href="audit.html" target="_blank" rel="noopener" style="text-decoration:none">בדיקת מערכת</a><button type="button" class="adm-ghost" id="admCsv">ייצוא</button>
+        <button type="button" class="adm-ghost" id="admAuditBtn">בדיקת מערכת</button><button type="button" class="adm-ghost" id="admCsv">ייצוא</button>
         <button type="button" class="adm-new" id="admNew"><span aria-hidden="true">+</span> חדש</button>
       </div>
     </div>
@@ -1125,6 +1130,10 @@ body:has(.adm:not([hidden])) .me-fab,body:has(#gate:not([hidden])) .me-fab{displ
         <nav id="admSide"></nav>
       </aside>
       <main class="adm-main"><div class="adm-kpis" id="admKpi"></div><div class="adm-view" id="admView"></div></main>
+    </div>
+    <div class="adm-audit" id="admAudit" hidden>
+      <div class="adm-audit-bar"><b>בדיקת מערכת · System Audit</b><button type="button" class="adm-ghost" id="admAuditClose">חזרה ללידים</button></div>
+      <iframe id="admAuditFrame" title="בדיקת מערכת"></iframe>
     </div>
   </div>
   <div class="adm-newbox" id="admNewBox" hidden>
@@ -2796,6 +2805,16 @@ render();
 })();
 </script>
 <script>(async function(){ try { const u = await claude.use('user'); if (u && await u.isOwner()) document.body.classList.add('is-owner'); } catch(e){} })();</script>
+<script>
+// System Audit opens inside the managers area only (audit.html itself also refuses anyone who is not signed in as team)
+(function(){
+  const b = document.getElementById('admAuditBtn'), box = document.getElementById('admAudit'), fr = document.getElementById('admAuditFrame');
+  if (!b || !box) return;
+  b.addEventListener('click', () => { if (!fr.getAttribute('src')) fr.setAttribute('src', 'audit.html?embed=1'); box.hidden = false; document.getElementById('admAuditClose').focus(); });
+  document.getElementById('admAuditClose').addEventListener('click', () => { box.hidden = true; b.focus(); });
+  addEventListener('keydown', e => { if (e.key === 'Escape' && !box.hidden) { box.hidden = true; b.focus(); } });
+})();
+</script>
 <script src="auth.js"></script>
 <script src="loan.js"></script>
 <script>/* gentle reveal for the deal-terms sections */

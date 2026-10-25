@@ -23,7 +23,9 @@ tools/
 ```
 
 ```
-site/audit.html  "ChicCheckCar System Audit" (2026-10-25): internal health dashboard (noindex; linked from the leads center header).
+site/audit.html  "ChicCheckCar System Audit" (2026-10-25): internal health dashboard (noindex). Lives in the managers area: the leads center
+                 header button "בדיקת מערכת" opens it full-screen inside the admin (audit.html?embed=1). audit.html shows a lock screen to
+                 anyone who is not the owner or an approved staff account (approvals/<uid>.status == approved).
                  Reads the deployed files (CARS from index.html, specs.js, terms.js), runs the customer flows inside hidden iframes of the
                  real pages (cccLead is stubbed there: no test lead is ever sent), and reads Firestore leads with the team sign-in.
                  Lead merge = copy reqs into the kept doc (fromDoc) + mergedInto on the other doc / req; nothing is deleted; reversible.
