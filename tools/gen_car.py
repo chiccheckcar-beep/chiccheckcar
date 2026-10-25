@@ -275,6 +275,11 @@ function trimSwitch(i){
   L = L.map((l, n) => L.indexOf(l) === n && L.lastIndexOf(l) === n ? (l || fmt(CARS[ix[n]].price)) : [l, CARS[ix[n]].extra && CARS[ix[n]].extra !== l ? CARS[ix[n]].extra : fmt(CARS[ix[n]].price)].filter(Boolean).join(' · '));
   return `<div class="trimsw"><span class="trimsw-l">רמת גימור</span><div class="trimsw-o">${ix.map((j, n) => `<a href="#car${j}" class="${j === i ? 'on' : ''}" ${j === i ? 'aria-current="true"' : ''}><b>${esc(L[n])}</b><small>${fmt(CARS[j].price)}</small></a>`).join('')}</div></div>`;
 }
+// Open-licence photos that need attribution (CC BY-SA). Key = img path in CARS.
+const CREDIT = {
+  'cars/mg-hs-34.webp': 'צילום: M 93, ויקישיתוף, CC BY-SA 3.0 DE (הוסר רקע)',
+  'cars/mg-mg4-34.webp': 'צילום: M 93, ויקישיתוף, CC BY-SA 3.0 DE (הוסר רקע)'
+};
 function show(){
   const m = /^#car(\d+)$/.exec(location.hash);
   const i = m ? +m[1] : -1;
@@ -303,7 +308,7 @@ function show(){
   if (sp.seats) band.push({n:sp.seats, u:'', l:'מושבים'});
   page.innerHTML = `
   <section class="hero">
-    <figure class="stage"><img src="${c.img || 'car-sample.png'}" alt="${esc(full)}"><figcaption>תמונה להמחשה בלבד</figcaption></figure>
+    <figure class="stage"><img src="${c.img || 'car-sample.png'}" alt="${esc(full)}"><figcaption>תמונה להמחשה בלבד${CREDIT[c.img] ? ' · ' + CREDIT[c.img] : ''}</figcaption></figure>
     <div class="info">
       <div class="eyebrow">${esc(c.maker)}</div>
       <h1>${esc(c.model)}</h1>
