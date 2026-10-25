@@ -1052,7 +1052,7 @@ body:has(.adm:not([hidden])) .me-fab,body:has(#gate:not([hidden])) .me-fab{displ
     <label class="gate-ck"><input type="checkbox" id="gateCookie"><span>אני מאשר/ת שהאתר ישמור מידע בסיסי בדפדפן (עוגיות) כדי לפעול כמו שצריך.<button type="button" class="gate-ck-more" id="gateCkMore" aria-expanded="false" aria-controls="gateCkDet">פרטים</button></span></label>
     <p class="gate-ck-det" id="gateCkDet" hidden>נשמרים בדפדפן: סימון שעברתם את מסך הכניסה, והשם ומספר הטלפון שהזנתם כדי למלא מראש את הטופס באתר. הפרטים שאתם משאירים כאן נשלחים אלינו כדי שנוכל לחזור אליכם. אנחנו לא משתמשים בעוגיות פרסום או מעקב.</p>
     <button type="button" class="gate-btn" id="gateGo" disabled>המשך</button>
-    <p class="gate-consent">בלחיצה על "המשך" אתם מסכימים שניצור איתכם קשר בנוגע לרכבים באתר. <a href="#privacy" data-legal="privacy">מדיניות הפרטיות</a> · <a href="#accessibility" data-legal="accessibility">הצהרת נגישות</a></p>
+    <p class="gate-consent">בלחיצה על "המשך" אתם מסכימים שניצור איתכם קשר בנוגע לרכבים באתר. <a href="privacy.html" data-legal="privacy">מדיניות הפרטיות</a> · <a href="#accessibility" data-legal="accessibility">הצהרת נגישות</a></p>
   </div>
   <div class="gate-in" id="gateStep2" hidden>
     <img class="gate-logo" src="logo.png" alt="">
@@ -2735,6 +2735,8 @@ render();
   const KEYS = [['ccc_gate','מעבר מסך הכניסה'],['ccc_name','שם למילוי הטופס'],['ccc_phone','טלפון למילוי הטופס'],['ccc_cart','הרכבים בסל שלי','l'],['ccc_me','הפרטים שלי באזור האישי','l'],['ccc_reqs','הפניות שלי באזור האישי','l']];
   const store = l => { try { return l ? localStorage : sessionStorage; } catch(e) { return null; } };
   let lastFocus = null;
+  // each legal document has its own page (built by tools/gen_legal.py from the windows below)
+  const PAGE = {privacy:'privacy.html', settings:'privacy-settings.html', service:'terms.html', accessibility:'accessibility.html'};
   const get = (k, l) => { try { return store(l).getItem(k); } catch(e) { return null; } };
   function renderSettings(){
     const box = document.getElementById('setList'); box.textContent = '';
@@ -2760,7 +2762,7 @@ render();
   }
   document.addEventListener('click', e => {
     const t = e.target.closest('[data-legal]');
-    if (t){ e.preventDefault(); open(t.dataset.legal); return; }
+    if (t){ e.preventDefault(); const pg = PAGE[t.dataset.legal]; if (pg) location.href = pg; else open(t.dataset.legal); return; }
     if (e.target.closest('.legal [data-close]') || e.target.classList.contains('legal')) close();
   });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && document.querySelector('.legal:not([hidden])')) close(); });
@@ -2771,7 +2773,7 @@ render();
     document.getElementById('setMsg').textContent = 'המידע נמחק מהדפדפן. בכניסה הבאה לאתר יוצג שוב מסך הכניסה.';
   });
   const h = (location.hash || '').slice(1);
-  if (h === 'privacy' || h === 'accessibility' || h === 'settings' || h === 'service') open(h);
+  if (PAGE[h]) location.replace(PAGE[h]);
 })();
 </script>
 <script>

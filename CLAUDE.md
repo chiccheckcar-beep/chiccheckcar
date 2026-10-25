@@ -17,6 +17,8 @@ site/
 tools/
   gen_car.py     python3 tools/gen_car.py site   -> rebuilds site/car.html from CARS in index.html + tools/specs/specs.json
   gen_me.py      python3 tools/gen_me.py site    -> rebuilds site/me.html (copies cccLead / cccDone / okbox from index.html)
+  gen_legal.py   python3 tools/gen_legal.py site -> rebuilds privacy.html, privacy-settings.html, terms.html, accessibility.html
+                 from the legal windows in index.html (the texts live there). Re-run after editing any legal text.
   specs/         Technical specs per model group (sources listed inside).
 ```
 
@@ -88,8 +90,8 @@ Still open:
 
 ## Service terms (owner, 2026-10-25)
 
-- The owner's service agreement (company name ChicCheckCar; contact chiccheckcar@gmail.com, 054-576-2802 — owner 2026-10-25) is shown as the "תנאי שירות" legal window (`#legal-service`, open with index.html#service;
-  footer + side menu links) and the original is downloadable at site/service-agreement.pdf. Text kept as the owner wrote it; site/service-agreement.pdf is the owner's updated PDF (2026-10-25, with logo).
+- The owner's service agreement (company name ChicCheckCar; contact chiccheckcar@gmail.com, 054-576-2802 — owner 2026-10-25) has its own page site/terms.html (GENERATED from the `#legal-service` window by gen_legal.py; index.html#service redirects there;
+  footer + side menu links). Since 2026-10-25 every legal link opens its own page instead of a pop-up window and the original is downloadable at site/service-agreement.pdf. Text kept as the owner wrote it; site/service-agreement.pdf is the owner's updated PDF (2026-10-25, with logo).
 
 ## Owner-supplied material
 
