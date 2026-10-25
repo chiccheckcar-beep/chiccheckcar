@@ -90,6 +90,10 @@ Still open:
 - "אין להמציא ביקורות, נתוני מלאי, מחירים, הנחות או מבצעים שלא סיפקתי"
 - "לא להמציא שום נתון. אם לא ניתן לאמת נתון בוודאות, אל תציג את השורה בכלל באתר. אסור להציג ללקוח 'ממתין לאימות', 'לא ידוע' או placeholder אחר."
 - No images with watermarks, other agencies' logos, or of a different version of the car.
+- (2026-10-25) Public pages never show where data came from: no source links, no "מקורות", no "לפי iCar / נתוני יצרן" labels.
+  tools/specs/specs.json keeps sources + notes for internal use only; gen_car.py strips them (clean(), estimate notes become a
+  neutral "estimated" line). The only credit on the site is the CC BY-SA line for the MG HS / MG4 photos, at the end of the
+  privacy policy (licence requirement, owner's choice).
 
 ## Deal terms (owner, 2026-10-21)
 
