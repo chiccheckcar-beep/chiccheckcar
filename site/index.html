@@ -921,6 +921,28 @@ body:has(.adm:not([hidden])) .me-fab,body:has(#gate:not([hidden])) .me-fab{displ
 #mCart[aria-pressed="true"]{background:var(--s-acc);color:#fff;border-color:var(--s-acc)}
 @media (max-width:800px){.adm-side{position:absolute;top:0;bottom:0;right:0;z-index:2;box-shadow:-12px 0 30px rgba(0,0,0,.14)}.adm-body{position:relative}.adm:not(.side-open) .adm-side{display:none}.adm.side-open .adm-side{display:block}.adm-search{flex:1;min-width:0}.adm-search input{width:100%}.adm-head-l{width:100%}.adm-head,.adm-top-bar{padding-inline:14px}.adm-main{padding:14px 12px 40px}.adm-kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.adm-kpi{padding:12px}.adm-kpi b{font-size:22px}.adm-logo{height:46px}.adm-top-bar{height:64px}.adm-cards{grid-template-columns:1fr}.adm-badge{display:none}.adm-newform{grid-template-columns:1fr}}
 
+/* ===== Leads center in the site's studio design (2026-10-25). #adm beats the admin's own light/dark variables. ===== */
+#adm.adm{--a-bg:#efe9e8;--a-surf:#fbf9f8;--a-ink:#1f1519;--a-mut:#6a5a60;--a-line:rgba(122,42,74,.14);--a-soft:#f4e9ee;--a-acc:#7a2a4a;--a-acc-soft:#f4e9ee;--a-go:#1f1519;color-scheme:light;
+  background:linear-gradient(180deg,#efe9e8,#d9d0cf);color:#1f1519}
+#adm .adm-top-bar,#adm .adm-head{background:rgba(251,249,248,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+#adm .adm-side{background:rgba(251,249,248,.6)}
+#adm .adm-new{background:#1f1519;border-radius:14px;box-shadow:0 10px 24px rgba(31,21,25,.22)}
+#adm .adm-new:hover{background:#7a2a4a}
+#adm .adm-ghost,#adm .adm-x{background:#fff;border-color:transparent;border-radius:14px;box-shadow:0 6px 18px rgba(31,21,25,.08)}
+#adm .adm-ghost:hover,#adm .adm-x:hover{border-color:#7a2a4a}
+#adm .adm-search,#adm .adm-sideq{background:#fff;border-color:transparent;border-radius:14px;box-shadow:0 4px 12px rgba(31,21,25,.05)}
+#adm .adm-kpi{background:#f4e9ee;border:0;border-radius:22px;box-shadow:0 14px 34px rgba(31,21,25,.10);padding:16px 18px}
+#adm .adm-kpi::before{inset-block:16px}
+#adm .adm-kpi b{font-family:"Unbounded",system-ui,sans-serif;font-weight:700;letter-spacing:-.02em}
+#adm .adm-tablewrap{background:#f4e9ee;border:0;border-radius:22px;box-shadow:0 14px 34px rgba(31,21,25,.10)}
+#adm .adm-table th,#adm .adm-simple .adm-table th{background:#f4e9ee}
+#adm .adm-table tbody tr:hover td,#adm .adm-simple .adm-table tbody tr:hover td{background:rgba(255,255,255,.55)}
+#adm .adm-sphone{color:#7a2a4a}
+#adm .adm-nav.on{background:#f4e9ee;color:#7a2a4a}
+#adm .adm-nav.on .adm-nav-n{background:#fff}
+#adm .adm-badge{border-radius:14px}
+#adm .adm-auth{background:#f4e9ee;border:0;border-radius:22px;box-shadow:0 14px 34px rgba(31,21,25,.10)}
+#adm .adm-auth input{background:#fff}
 /* System Audit inside the managers area (2026-10-25) */
 .adm-audit{position:fixed;inset:0;z-index:2147483000;background:linear-gradient(180deg,#efe9e8,#d9d0cf);display:flex;flex-direction:column}
 .adm-audit[hidden]{display:none}
