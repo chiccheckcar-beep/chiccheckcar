@@ -84,6 +84,11 @@ Still open:
 - car.html shows a "רמת גימור" switcher linking the sibling trims.
 - `RECOMMEND` (index -> reason) in index.html drives the "מומלץ" tag. Empty on purpose: no equipment/value data exists yet. Never invent one.
 
+## Service terms (owner, 2026-10-25)
+
+- The owner's AUTO OFFICE service agreement is shown as the "תנאי שירות" legal window (`#legal-service`, open with index.html#service;
+  footer + side menu links) and the original is downloadable at site/service-agreement.pdf. Text kept as the owner wrote it.
+
 ## Owner-supplied material
 
 - Owner instruction (2026-10-20): "כול מה שאני שולח לך תוסיף לטבלה" — every price, car or photo the owner sends is added to the
