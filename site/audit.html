@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>System Audit · ChicCheckCar</title>
+<link rel="icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&family=Unbounded:wght@500;600;700&display=swap">
+<!-- ChicCheckCar System Audit: internal health checks against the live site's real data.
+     Catalog / finance / flows read the deployed files; leads read Firestore through fb.js (team sign-in, read-only
+     except the explicit "merge" action). No test lead is ever written: the lead form is tested with cccLead stubbed. -->
+<style>
+:root{--ink:#0b0b0c;--ink2:#1c1c1f;--paper:#f4f4f2;--card:#fff;--line:#e3e3e0;--line2:#cfcfcb;--mut:#6b6b70;--fail:#b42318;--r:16px}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:Heebo,system-ui,"Segoe UI",Arial,sans-serif;background:var(--paper);color:var(--ink);font-size:14.5px;line-height:1.55}
+button,input{font:inherit}
+.mono{font-family:Unbounded,Heebo,sans-serif;letter-spacing:-.01em;direction:ltr;unicode-bidi:isolate}
+/* top bar */
+.top{background:var(--ink);color:#fff;position:sticky;top:0;z-index:20}
+.top-in{max-width:1240px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px}
+.brand img{height:30px;filter:invert(1)}
+.brand b{font-family:Unbounded,sans-serif;font-weight:600;font-size:15px;letter-spacing:.06em}
+.brand small{display:block;font-size:11px;color:#a5a5aa;letter-spacing:.24em;font-family:Unbounded,sans-serif}
+.who{margin-inline-start:auto;display:flex;align-items:center;gap:10px;font-size:13px;color:#d4d4d8}
+.who .dot{width:8px;height:8px;border-radius:50%;background:#52525b}
+.who .dot.on{background:#fff}
+.lnk{color:#fff;background:none;border:1px solid #3f3f46;border-radius:999px;padding:6px 14px;cursor:pointer;font-size:13px;text-decoration:none}
+.lnk:hover{border-color:#fff}
+.wrap{max-width:1240px;margin:0 auto;padding:22px 20px 60px}
+/* actions */
+.acts{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 22px}
+.btn{border:1px solid var(--ink);background:var(--card);color:var(--ink);border-radius:12px;padding:11px 18px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:background .15s,color .15s}
+.btn:hover{background:var(--ink);color:#fff}
+.btn.pri{background:var(--ink);color:#fff}
+.btn.pri:hover{background:#2a2a2e}
+.btn:disabled{opacity:.45;cursor:progress}
+.btn svg{width:16px;height:16px}
+.run{margin-inline-start:auto;font-size:13px;color:var(--mut);align-self:center}
+/* dashboard */
+.dash{display:grid;grid-template-columns:300px 1fr;gap:18px;margin-bottom:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px}
+.score{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:6px}
+.ring{position:relative;width:170px;height:170px}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring .v{position:absolute;inset:0;display:grid;place-items:center;font-family:Unbounded,sans-serif;font-size:42px;font-weight:600}
+.ring .v small{display:block;font-size:11px;font-family:Heebo;color:var(--mut);font-weight:500;margin-top:-6px}
+.score h2{margin:6px 0 0;font-size:15px}
+.score p{margin:0;color:var(--mut);font-size:12.5px}
+.sys{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.tile{border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;cursor:pointer;background:var(--card);text-align:right;color:inherit}
+.tile:hover{border-color:var(--ink)}
+.tile h3{margin:0;font-size:14px;font-weight:700}
+.tile .n{font-family:Unbounded,sans-serif;font-size:22px;font-weight:600;direction:ltr;text-align:right}
+.tile .s{font-size:12px;color:var(--mut)}
+/* status chip */
+.st{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;border-radius:999px;padding:3px 10px;border:1px solid var(--ink);white-space:nowrap;width:max-content}
+.st::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.st.pass{background:var(--ink);color:#fff}
+.st.warn{background:#fff;color:var(--ink);background-image:repeating-linear-gradient(135deg,transparent 0 5px,rgba(0,0,0,.07) 5px 7px)}
+.st.fail{background:#fff;color:var(--fail);border-color:var(--fail)}
+.st.na{background:#fff;color:var(--mut);border-style:dashed;border-color:var(--line2)}
+.st.run{background:#fff;color:var(--mut);border-color:var(--line2)}
+.st.run::before{animation:pulse 1s infinite}
+@keyframes pulse{50%{opacity:.2}}
+/* sections */
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin:26px 0 16px;overflow-x:auto}
+.tab{background:none;border:0;border-bottom:2px solid transparent;padding:10px 14px;font-weight:700;color:var(--mut);cursor:pointer;white-space:nowrap}
+.tab[aria-selected="true"]{color:var(--ink);border-color:var(--ink)}
+.tab .c{font-family:Unbounded,sans-serif;font-size:11px;margin-inline-start:6px}
+.pane[hidden]{display:none}
+.chk{border:1px solid var(--line);border-radius:14px;background:var(--card);margin-bottom:10px;overflow:hidden}
+.chk>summary{list-style:none;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:13px 16px;cursor:pointer}
+.chk>summary::-webkit-details-marker{display:none}
+.chk>summary b{font-weight:700}
+.chk>summary .d{color:var(--mut);font-size:13px}
+.chk>summary .sys-l{font-size:11.5px;color:var(--mut);letter-spacing:.04em}
+.chk .body{padding:0 16px 16px;border-top:1px solid var(--line)}
+.chk .body p{margin:12px 0 6px}
+.ev{font-size:12.5px;color:var(--mut);margin-top:6px}
+table.t{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px}
+table.t th,table.t td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:right;vertical-align:top}
+table.t th{font-weight:600;color:var(--mut);font-size:12px;background:#fafaf9;position:sticky;top:0}
+.tw{overflow:auto;max-height:420px;border:1px solid var(--line);border-radius:10px;margin-top:10px}
+.tw table.t{margin:0}
+.empty{color:var(--mut);padding:26px;text-align:center;border:1px dashed var(--line2);border-radius:14px;background:var(--card)}
+/* duplicate groups */
+.dup{border:1px solid var(--line);border-radius:14px;background:var(--card);padding:14px;margin-bottom:12px}
+.dup h4{margin:0 0 4px;font-size:14px}
+.dup .why{font-size:12.5px;color:var(--mut);margin-bottom:10px}
+.cols{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(220px,1fr);gap:10px;overflow-x:auto}
+.lead{border:1px solid var(--line2);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:4px;font-size:13px}
+.lead dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:3px 10px}
+.lead dt{color:var(--mut)}
+.lead dd{margin:0;word-break:break-word}
+.lead .btn{margin-top:8px;padding:8px 12px;font-size:12.5px;justify-content:center}
+.lead.merged{opacity:.55}
+/* history */
+.hist{display:flex;align-items:flex-end;gap:6px;height:90px;margin:8px 0 14px;direction:ltr}
+.hist i{flex:1;max-width:26px;background:var(--ink);border-radius:4px 4px 0 0;min-height:3px;position:relative}
+.hist i[data-low]{background:repeating-linear-gradient(135deg,var(--ink) 0 3px,#fff 3px 6px);border:1px solid var(--ink)}
+/* auth */
+.auth{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
+.auth input{border:1px solid var(--line2);border-radius:10px;padding:9px 12px;min-width:200px;background:#fff}
+.note{font-size:12.5px;color:var(--mut)}
+.flowlist{counter-reset:f}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;font-size:13px;z-index:50}
+#frames{position:fixed;left:-20000px;top:0;width:1280px;height:900px;visibility:hidden;pointer-events:none}
+#frames iframe{width:1280px;height:900px;border:0}
+@media (max-width:820px){.dash{grid-template-columns:1fr}.run{width:100%;margin:0}.chk>summary{grid-template-columns:1fr auto}.chk>summary .sys-l{display:none}}
+@media (prefers-reduced-motion:reduce){.st.run::before{animation:none}}
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in">
+  <div class="brand"><img src="logo-wide.png" alt=""><div><b>ChicCheckCar System Audit</b><small>SITE · LEADS · CATALOG · FINANCE</small></div></div>
+  <div class="who"><span class="dot" id="whoDot"></span><span id="whoTxt">בודק התחברות…</span><button class="lnk" id="outBtn" hidden>יציאה</button><a class="lnk" href="index.html" target="_blank" rel="noopener">לאתר ↗</a></div>
+</div></header>
+
+<main class="wrap">
+  <div class="acts">
+    <button class="btn pri" data-run="full"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3l14 9-14 9V3z"/></svg>הרצת בדיקה מלאה</button>
+    <button class="btn" data-run="leads">בדיקת לידים בלבד</button>
+    <button class="btn" data-run="dups">בדיקת כפילויות</button>
+    <button class="btn" data-run="catalog">בדיקת קטלוג הרכבים</button>
+    <span class="run" id="runInfo">עוד לא הורצה בדיקה בדפדפן הזה.</span>
+  </div>
+
+  <section class="dash">
+    <div class="card score">
+      <div class="ring"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" fill="none" stroke="#ececea" stroke-width="10"/><circle id="ringArc" cx="60" cy="60" r="52" fill="none" stroke="#0b0b0c" stroke-width="10" stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="326.7"/></svg><div class="v"><span><span id="scoreV">—</span><small>מתוך 100</small></span></div></div>
+      <h2>ציון תקינות כללי</h2>
+      <p id="scoreSub">הציון מחושב רק מבדיקות שבוצעו בפועל.</p>
+    </div>
+    <div class="card"><div class="sys" id="sysTiles"></div></div>
+  </section>
+
+  <div class="card" id="authCard" hidden>
+    <b>מערכת הלידים דורשת התחברות של הבעלים או נציג מאושר</b>
+    <p class="note" style="margin:4px 0 0">הלידים שמורים ב-Firebase ומוגנים בכללי הגישה של האתר. בלי התחברות, בדיקות הלידים יסומנו "לא זמינה" ולא ייכללו בציון.</p>
+    <form class="auth" id="authForm"><input type="email" id="aEmail" placeholder="אימייל" autocomplete="username" required><input type="password" id="aPw" placeholder="סיסמה" autocomplete="current-password" required><button class="btn pri" type="submit">התחברות</button><span class="note" id="aMsg"></span></form>
+  </div>
+
+  <nav class="tabs" role="tablist" id="tabs">
+    <button class="tab" role="tab" data-p="issues" aria-selected="true">תקלות<span class="c" id="cIssues"></span></button>
+    <button class="tab" role="tab" data-p="leads" aria-selected="false">לידים<span class="c" id="cLeads"></span></button>
+    <button class="tab" role="tab" data-p="catalog" aria-selected="false">קטלוג<span class="c" id="cCatalog"></span></button>
+    <button class="tab" role="tab" data-p="flows" aria-selected="false">תהליכי לקוח<span class="c" id="cFlows"></span></button>
+    <button class="tab" role="tab" data-p="all" aria-selected="false">כל הבדיקות<span class="c" id="cAll"></span></button>
+    <button class="tab" role="tab" data-p="history" aria-selected="false">היסטוריה</button>
+  </nav>
+  <section class="pane" id="p-issues"></section>
+  <section class="pane" id="p-leads" hidden></section>
+  <section class="pane" id="p-catalog" hidden></section>
+  <section class="pane" id="p-flows" hidden></section>
+  <section class="pane" id="p-all" hidden></section>
+  <section class="pane" id="p-history" hidden></section>
+</main>
+<div id="frames" aria-hidden="true"></div>
+
+<script src="fb.js"></script>
+<script src="terms.js"></script>
+<script>
+(function(){
+'use strict';
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const nis = n => '₪' + Math.round(+n || 0).toLocaleString('he-IL');
+const T = window.CCC_TERMS;
+const WA = '972545762802';
+const SYS = {infra:'אתר ותשתית', catalog:'קטלוג רכבים', finance:'מימון ומקדמות', flows:'תהליכי לקוח', leads:'מערכת לידים'};
+const ST = {pass:'תקין', warn:'אזהרה', fail:'תקלה', na:'לא זמינה'};
+const LST = {new:'חדש', work:'בטיפול', meet:'נקבעה פגישה', quote:'הצעת מחיר', uw:'אישור מימון', won:'נסגר', lost:'לא רלוונטי', noans:'אין מענה', cold:'השאיר פרטים'};
+const LSRC = {form:'טופס יצירת קשר', car:'עמוד רכב', cart:'סל', loan:'רכישה זריזה', wa:'וואטסאפ', gate:'מסך כניסה', me:'אזור אישי', finance:'מחשבון מימון', manual:'הוזן ידנית'};
+const stL = s => LST[s] || s || '—', srcL = s => LSRC[s] || s || '—';
+const LS = {get(k, d){ try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch(e){ return d; } }, set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }};
+let checks = [], lastMode = '', running = false, D = null, LEADS = null;
+const toast = m => { const t = document.createElement('div'); t.className = 'toast'; t.textContent = m; document.body.append(t); setTimeout(() => t.remove(), 2600); };
+
+// ---------- one check result ----------
+function add(sys, id, title, status, detail, extra){ checks = checks.filter(c => c.id !== id); checks.push(Object.assign({sys, id, title, status, detail}, extra || {})); }
+
+// ---------- source data: the deployed files ----------
+async function loadSource(){
+  const t0 = performance.now();
+  const r = await fetch('index.html', {cache:'no-store'}); const html = await r.text();
+  const ms = Math.round(performance.now() - t0);
+  const m = html.match(/const CARS = (\[[\s\S]*?\]);\n/); if (!m) throw new Error('CARS not found in index.html');
+  const cars = JSON.parse(m[1]);
+  const V = {}; for (const k of ['VERIFIED_HP','VERIFIED_RANGE','VERIFIED_0100','VERIFIED_L']){ const x = html.match(new RegExp('const ' + k + ' = (\\{.*?\\});')); V[k] = x ? JSON.parse(x[1]) : {}; }
+  const catOrder = (html.match(/const CAT_ORDER = (\[.*?\]);/) || [])[1];
+  if (!window.CCC_SPECS) await new Promise(res => { const s = document.createElement('script'); s.src = 'specs.js?' + Date.now(); s.onload = s.onerror = res; document.head.append(s); });
+  D = {html, ms, cars, V, specs: window.CCC_SPECS || null, catOrder: catOrder ? JSON.parse(catOrder.replace(/'/g, '"')) : []};
+  return D;
+}
+const fullName = c => [c.maker, c.model, c.trim].filter(Boolean).join(' ');
+const gkey = c => [c.maker, c.model, c.fuel, c.cat].join('|');
+
+// ---------- 1. site & infrastructure ----------
+async function checkInfra(){
+  add('infra', 'inf-index', 'דף הבית נטען', D.html.length > 1000 ? 'pass' : 'fail', `index.html נטען ב-${D.ms} מ"ש (${Math.round(D.html.length/1024)} KB).`);
+  const files = ['car.html','me.html','fb.js','terms.js','auth.js','loan.js','specs.js','privacy.html','privacy-settings.html','terms.html','accessibility.html','service-agreement.pdf','logo.png','logo-wide.png','car-sample.png','kframes/k001.jpg','kframes/k156.jpg'];
+  const res = await Promise.all(files.map(f => fetch(f, {method:'HEAD', cache:'no-store'}).then(r => [f, r.status]).catch(() => [f, 0])));
+  const bad = res.filter(([, s]) => s !== 200);
+  add('infra', 'inf-files', 'קבצי האתר זמינים', bad.length ? 'fail' : 'pass', bad.length ? `${bad.length} קבצים לא נטענו.` : `כל ${files.length} קבצי האתר עונים (200).`, {rows: res.map(([f, s]) => [f, s || 'שגיאת רשת']), cols: ['קובץ','סטטוס']});
+  const imgs = [...new Set(D.cars.map(c => c.img).filter(Boolean))];
+  const ir = await Promise.all(imgs.map(f => fetch(f, {method:'HEAD'}).then(r => [f, r.status]).catch(() => [f, 0])));
+  const ib = ir.filter(([, s]) => s !== 200); D.badImgs = new Set(ib.map(x => x[0]));
+  add('infra', 'inf-imgs', 'תמונות הרכבים זמינות', ib.length ? 'fail' : 'pass', ib.length ? `${ib.length} מתוך ${imgs.length} קבצי תמונה לא נטענו.` : `כל ${imgs.length} קבצי התמונה עונים.`, ib.length ? {rows: ib, cols: ['קובץ','סטטוס']} : null);
+  try { await cccFb.init(); add('infra', 'inf-fb', 'חיבור ל-Firebase', 'pass', 'ה-SDK נטען והחיבור לפרויקט chiccheckcar-8003f הצליח.'); }
+  catch(e){ add('infra', 'inf-fb', 'חיבור ל-Firebase', 'fail', 'לא ניתן לטעון את Firebase: ' + (e && e.message || e)); }
+}
+
+// ---------- 2. catalog ----------
+function checkCatalog(onlyDups){
+  const C = D.cars, rows = (list, f) => list.map(f);
+  const by = (f) => { const m = new Map(); C.forEach((c, i) => { const k = f(c); if (!m.has(k)) m.set(k, []); m.get(k).push(i); }); return [...m.values()].filter(v => v.length > 1); };
+  const exact = by(c => [c.maker, c.model, c.trim, c.extra, c.fuel, c.drive, c.price].join('|'));
+  add('catalog', 'cat-dup', 'רכבים כפולים (זהים לגמרי)', exact.length ? 'fail' : 'pass', exact.length ? `${exact.length} קבוצות של רכבים זהים בכל הפרטים, כולל המחיר.` : `אין רכבים כפולים מתוך ${C.length}.`,
+    exact.length ? {rows: exact.flatMap(g => g.map(i => [i, fullName(C[i]), nis(C[i].price)])), cols: ['#','רכב','מחיר']} : null);
+  const ver = by(c => [c.maker, c.model, c.trim, c.fuel].join('|')).filter(g => new Set(g.map(i => C[i].price)).size > 1);
+  add('catalog', 'cat-ver', 'גרסאות כפולות (אותו שם, מחיר שונה)', ver.length ? 'warn' : 'pass', ver.length ? `${ver.length} גרסאות מופיעות יותר מפעם אחת עם מחיר שונה. נדרשת החלטה של הבעלים איזו נשארת.` : 'אין גרסאות כפולות.',
+    ver.length ? {rows: ver.flatMap(g => g.map(i => [i, fullName(C[i]), C[i].extra || '', nis(C[i].price)])), cols: ['#','רכב','פרטים','מחיר']} : null);
+  const keys = by(c => [c.maker, c.model, c.trim, c.price].join('|'));
+  add('catalog', 'cat-key', 'מזהה סל ייחודי לכל רכב', keys.length ? 'fail' : 'pass', keys.length ? `${keys.length} רכבים חולקים את אותו מזהה סל, ולכן הוספה של אחד מהם לסל תסמן גם את השני.` : 'לכל רכב יש מזהה סל ייחודי.',
+    keys.length ? {rows: keys.flatMap(g => g.map(i => [i, fullName(C[i]), nis(C[i].price)])), cols: ['#','רכב','מחיר']} : null);
+  if (onlyDups) return;
+  const noPrice = C.map((c, i) => i).filter(i => !(+C[i].price > 0));
+  add('catalog', 'cat-price', 'רכבים ללא מחיר', noPrice.length ? 'fail' : 'pass', noPrice.length ? `${noPrice.length} רכבים בלי מחיר תקין.` : `לכל ${C.length} הרכבים יש מחיר.`, noPrice.length ? {rows: noPrice.map(i => [i, fullName(C[i])]), cols: ['#','רכב']} : null);
+  const notRound = C.map((c, i) => i).filter(i => +C[i].price > 0 && C[i].price % 500);
+  add('catalog', 'cat-round', 'מחירים מעוגלים ל-000 / 500', notRound.length ? 'warn' : 'pass', notRound.length ? `${notRound.length} מחירים לא מעוגלים לפי כלל הבעלים.` : 'כל המחירים מסתיימים ב-000 או ב-500.', notRound.length ? {rows: notRound.map(i => [i, fullName(C[i]), nis(C[i].price)]), cols: ['#','רכב','מחיר']} : null);
+  const noImg = C.map((c, i) => i).filter(i => !C[i].img || (D.badImgs && D.badImgs.has(C[i].img)));
+  add('catalog', 'cat-img', 'רכבים ללא תמונה', noImg.length ? 'warn' : 'pass', noImg.length ? `${noImg.length} רכבים מוצגים עם תמונת "רכב מכוסה".` : 'לכל הרכבים יש תמונה.', noImg.length ? {rows: noImg.map(i => [i, fullName(C[i]), C[i].img ? 'קובץ חסר' : 'אין תמונה']), cols: ['#','רכב','מצב']} : null);
+  if (!D.specs) add('catalog', 'cat-spec', 'רכבים ללא מפרט טכני', 'na', 'הקובץ specs.js לא נטען, לכן לא ניתן לבדוק מפרטים.');
+  else { const noSpec = C.map((c, i) => i).filter(i => !D.specs[i] || Object.keys(D.specs[i]).length < 3);
+    add('catalog', 'cat-spec', 'רכבים ללא מפרט טכני', noSpec.length ? 'warn' : 'pass', noSpec.length ? `${noSpec.length} רכבים בלי מפרט מלא בעמוד הרכב.` : `לכל ${C.length} הרכבים יש מפרט טכני (${Object.keys(D.specs).length} רשומות).`, noSpec.length ? {rows: noSpec.map(i => [i, fullName(C[i])]), cols: ['#','רכב']} : null); }
+  const req = ['maker','model','fuel','cat'], miss = [];
+  C.forEach((c, i) => { const m = req.filter(k => !String(c[k] || '').trim()); if (!String(c.trim || '').trim()) m.push('trim'); if (m.length) miss.push([i, fullName(c), m.join(', ')]); });
+  add('catalog', 'cat-miss', 'רכבים עם נתונים חסרים', miss.length ? 'warn' : 'pass', miss.length ? `${miss.length} רכבים חסרים שדה (יצרן / דגם / הנעה / קטגוריה / גימור).` : 'לכל הרכבים יש יצרן, דגם, סוג הנעה, קטגוריה ורמת גימור.', miss.length ? {rows: miss, cols: ['#','רכב','שדות חסרים']} : null);
+  const cats = [...new Set(C.map(c => c.cat))], outCat = cats.filter(c => !D.catOrder.includes(c));
+  add('catalog', 'cat-catfilter', 'כל הקטגוריות זמינות בסינון', outCat.length ? 'warn' : 'pass', outCat.length ? `הקטגוריות ${outCat.map(x => '"' + x + '"').join(', ')} לא מופיעות ברשימת הסינון לפי קטגוריה. הרכבים האלה מוצגים ב"כל הקטגוריות", אבל אי אפשר לסנן אליהם.` : 'כל הקטגוריות בקטלוג מופיעות בסינון.',
+    outCat.length ? {rows: C.map((c, i) => [i, fullName(c), c.cat]).filter(r => outCat.includes(r[2])), cols: ['#','רכב','קטגוריה']} : null);
+  const fig = C.map((c, i) => i).filter(i => { const k = String(i); const n = [D.V.VERIFIED_RANGE[k] || D.V.VERIFIED_L[k] || /\d\.\d/.test(C[i].extra || ''), D.V.VERIFIED_0100[k], D.V.VERIFIED_HP[k] || /\d{2,3}\s*כ"ס/.test(C[i].extra || '')].filter(Boolean).length; return n < 3; });
+  add('catalog', 'cat-fig', 'נתוני כרטיס (מנוע / 0-100 / הספק)', fig.length ? 'warn' : 'pass', fig.length ? `${fig.length} כרטיסים מציגים פחות משלושה נתונים (אין מקור מאומת לנתון החסר).` : 'כל הכרטיסים מציגים שלושה נתונים.', fig.length ? {rows: fig.map(i => [i, fullName(C[i])]), cols: ['#','רכב']} : null);
+}
+
+// ---------- 3. finance ----------
+function refDown(c){ const p = +c.price; const com = c.cat === 'מסחרי' || /מסחרי/.test(c.model || ''); const lc = c.maker === 'טויוטה' && /לנד\s*קרוזר|land\s*cruiser/i.test(c.model || '');
+  if (com || lc || p > 400000) return 24900; const ev = c.fuel === 'חשמלי'; if (p <= 200000) return 9900; if (p <= 300000) return ev ? 16900 : 14900; return ev ? 19000 : 16900; }
+function refMonthly(P){ const r = 0.059 / 12, n = 60, B = P * 0.5; return (P - B / Math.pow(1 + r, n)) * r / (1 - Math.pow(1 + r, -n)); }
+function checkFinance(){
+  if (!T){ add('finance', 'fin-terms', 'קובץ תנאי העסקה', 'fail', 'terms.js לא נטען.'); return; }
+  add('finance', 'fin-terms', 'תנאי העסקה', (T.rate === 5.9 && T.months === 60 && T.balloon === 50) ? 'pass' : 'fail', `ריבית ${T.rate}% · ${T.months} תשלומים · בלון ${T.balloon}% (לפי terms.js).`);
+  const bad = []; D.cars.forEach((c, i) => { const d1 = T.downOf(c), d2 = refDown(c), m1 = T.monthlyOf(c.price), m2 = refMonthly(c.price);
+    if (d1 !== d2 || Math.abs(m1 - m2) > 0.5) bad.push([i, fullName(c), nis(c.price), nis(d1) + ' / ' + nis(d2), Math.ceil(m1) + ' / ' + Math.ceil(m2)]); });
+  add('finance', 'fin-cars', 'מקדמה והחזר חודשי לכל רכב', bad.length ? 'fail' : 'pass', bad.length ? `${bad.length} רכבים עם חישוב שונה מהחישוב הבלתי תלוי.` : `${D.cars.length} רכבים נבדקו מול חישוב בלתי תלוי של מדרגות המקדמה ונוסחת שפיצר עם בלון. הכול תואם.`,
+    bad.length ? {rows: bad, cols: ['#','רכב','מחיר','מקדמה (אתר / בדיקה)','חודשי (אתר / בדיקה)']} : null);
+  const edges = [[200000,'',9900],[200001,'',14900],[200001,'חשמלי',16900],[300000,'',14900],[300001,'',16900],[300001,'חשמלי',19000],[400000,'חשמלי',19000],[400001,'',24900]];
+  const eb = edges.filter(([p, f, d]) => T.downOf({price: p, fuel: f, model: '', maker: ''}) !== d);
+  add('finance', 'fin-edges', 'גבולות מדרגות המקדמה', eb.length ? 'fail' : 'pass', eb.length ? `${eb.length} מחירי גבול מקבלים מקדמה שגויה.` : '8 מחירי גבול (200,000 / 300,000 / 400,000 ± 1) מקבלים את המקדמה הנכונה.');
+  const has39 = /3[.,]9\s*%/.test(D.html);
+  add('finance', 'fin-39', 'הריבית 3.9% לא מופיעה באתר', has39 ? 'fail' : 'pass', has39 ? 'נמצא "3.9%" בדף הבית.' : 'לא נמצא "3.9%" בדף הבית.');
+  const disc = D.html.includes('המקדמה משולמת בנוסף למחיר הרכב. תנאי העסקה כפופים לאישור מימון ולהסכם העסקה.');
+  add('finance', 'fin-disc', 'הסתייגות המקדמה מוצגת', disc ? 'pass' : 'warn', disc ? 'נוסח ההסתייגות המחייב מופיע בדף הבית.' : 'נוסח ההסתייגות לא נמצא בדף הבית.');
+}
+
+// ---------- 4. customer flows (inside hidden frames of the real pages) ----------
+function frame(src, ready, timeout){
+  return new Promise(resolve => {
+    const f = document.createElement('iframe'); const errs = []; let done = false;
+    const fin = ok => { if (done) return; done = true; resolve({f, w: f.contentWindow, d: f.contentDocument, ok, errs}); };
+    f.addEventListener('load', () => { try { f.contentWindow.addEventListener('error', e => errs.push(e.message)); } catch(e){}
+      const t0 = Date.now(); (function poll(){ let r = false; try { r = ready(f.contentWindow); } catch(e){} if (r) return fin(true); if (Date.now() - t0 > (timeout || 15000)) return fin(false); setTimeout(poll, 150); })(); });
+    f.src = src; $('frames').append(f);
+  });
+}
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+async function checkFlows(){
+  const F = (n, title, status, detail, extra) => add('flows', 'flow-' + n, n + '. ' + title, status, detail, extra);
+  // 1-4, 7-9 on the home page
+  const H = await frame('index.html', w => w.eval('typeof GROUPS') !== 'undefined' && w.document.querySelectorAll('#grid .car').length > 0, 20000);
+  if (!H.ok){ F(1, 'כניסה לאתר', 'fail', 'דף הבית לא סיים להיטען תוך 20 שניות.' + (H.errs.length ? ' שגיאות: ' + H.errs.join(' | ') : '')); return; }
+  const w = H.w, d = H.d, ev = s => w.eval(s);
+  // never send anything from the test frame
+  const sent = []; w.cccLead = async info => { sent.push(info); return true; }; let doneArg = null; w.cccDone = o => { doneArg = o; };
+  F(1, 'כניסה לאתר', H.errs.length ? 'warn' : 'pass', `דף הבית נטען, מסך הכניסה ${d.getElementById('gate') ? 'קיים' : 'לא נמצא'}.` + (H.errs.length ? ' שגיאות JavaScript: ' + H.errs.join(' | ') : ' בלי שגיאות JavaScript.'));
+  d.getElementById('gate') && d.getElementById('gate').remove();
+  const setF = (q, mk, fu, so) => { d.getElementById('q').value = q || ''; d.getElementById('maker').value = mk || ''; d.getElementById('fuel').value = fu || ''; d.getElementById('sort').value = so || d.getElementById('sort').options[0].value; ev("curCat = ''"); d.getElementById('cats').value = ''; ev('render()'); };
+  const cards = () => [...d.querySelectorAll('#grid .car')];
+  const variants = () => cards().reduce((n, c) => n + (c.querySelectorAll('.uc-trim').length || 1), 0);
+  setF();
+  const nG = ev('GROUPS.length'), nC = ev('CARS.length');
+  const shownV = variants(), shownG = cards().length;
+  const missing = []; if (shownV !== D.cars.length){ const seen = new Set(); cards().forEach(c => { const p = [...c.querySelectorAll('.uc-trim')].map(b => +b.dataset.pick); (p.length ? p : [+c.dataset.i]).forEach(i => seen.add(i)); }); D.cars.forEach((c, i) => { if (!seen.has(i)) missing.push([i, fullName(c)]); }); }
+  F(2, 'טעינת קטלוג הרכבים', (shownV === D.cars.length && nC === D.cars.length) ? 'pass' : 'fail', `${shownG} כרטיסי דגם מציגים ${shownV} גרסאות. במקור הנתונים ${D.cars.length} רכבים.`, missing.length ? {rows: missing, cols: ['#','רכב שלא מוצג']} : null);
+  add('catalog', 'cat-shown', 'כל הרכבים ממקור הנתונים מוצגים בקטלוג', missing.length ? 'fail' : 'pass', missing.length ? `${missing.length} רכבים קיימים בנתונים אבל לא מוצגים.` : `כל ${D.cars.length} הרכבים מוצגים (${shownG} כרטיסי דגם).`, missing.length ? {rows: missing, cols: ['#','רכב']} : null);
+  // 3. search
+  const makers = [...new Set(D.cars.map(c => c.maker))];
+  const qs = makers.map(m => [m, 'יצרן']).concat(D.cars.slice(0, 200).filter((c, i, a) => a.findIndex(x => x.maker === c.maker && x.model === c.model) === i).slice(0, 30).map(c => [c.maker + ' ' + c.model, 'יצרן + דגם']));
+  const sres = qs.map(([q, k]) => { setF(q); return [q, k, cards().length]; }), sFail = sres.filter(r => !r[2]);
+  const EN = {'טויוטה':'Toyota','יונדאי':'Hyundai','קיה':'Kia','סקודה':'Skoda','פולקסווגן':'Volkswagen','מאזדה':'Mazda','ניסאן':'Nissan','סובארו':'Subaru','לקסוס':'Lexus','מרצדס-בנץ':'Mercedes','אאודי':'Audi','וולוו':'Volvo','טסלה':'Tesla','רנו':"Renault","פיג'ו":'Peugeot','סיטרואן':'Citroen'};
+  const enRes = Object.entries(EN).filter(([he]) => makers.includes(he)).map(([he, en]) => { setF(en); return [en, he, cards().length]; });
+  const rev = D.cars.find(c => / /.test(c.model) === false && c.model.length > 2); setF(rev ? rev.model + ' ' + rev.maker : ''); const revN = rev ? cards().length : 1;
+  const enZero = enRes.filter(r => !r[2]);
+  F(3, 'חיפוש רכב לפי יצרן ודגם', sFail.length ? 'fail' : (enZero.length || !revN ? 'warn' : 'pass'),
+    `${sres.length - sFail.length} מתוך ${sres.length} חיפושים בעברית (יצרן, יצרן + דגם) מחזירים תוצאות.` + (enZero.length ? ` חיפוש בשם יצרן באנגלית (${enZero.map(r => r[0]).join(', ')}) מחזיר "אין רכבים מתאימים", כי שמות היצרנים בקטלוג כתובים בעברית.` : '') + (!revN && rev ? ` חיפוש בסדר הפוך ("${rev.model} ${rev.maker}") לא מחזיר תוצאות: החיפוש מחפש את הטקסט ברצף אחד.` : ''),
+    {rows: sres.concat(enRes.map(r => [r[0], 'אנגלית (' + r[1] + ')', r[2]])), cols: ['חיפוש','סוג','כרטיסים']});
+  // 4. filters: fuel + price
+  const fuels = [...new Set(D.cars.map(c => c.fuel).filter(Boolean))], fres = fuels.map(f => { setF('', '', f); const cs = cards(); const wrong = cs.filter(c => (c.querySelector('.uc-badge') || {}).textContent !== f).length; const exp = new Set(D.cars.filter(c => c.fuel === f).map(gkey)).size; return [f, cs.length, exp, wrong]; });
+  const fBad = fres.filter(r => r[1] !== r[2] || r[3]);
+  setF('', '', '', 'asc'); const pr = cards().map(c => +(c.querySelector('.uc-price').textContent.replace(/\D/g, ''))); const sorted = pr.every((p, i) => !i || p >= pr[i - 1]);
+  const hasPriceFilter = !!d.querySelector('#minPrice,#maxPrice,[data-price-filter],input[type=range][id*=price i]');
+  F(4, 'סינון לפי מחיר וסוג הנעה', fBad.length || !sorted ? 'fail' : (hasPriceFilter ? 'pass' : 'warn'),
+    `סינון לפי סוג הנעה: ${fuels.length - fBad.length} מתוך ${fuels.length} סוגים מחזירים בדיוק את הדגמים הנכונים. מיון לפי מחיר (מהזול ליקר) ${sorted ? 'תקין' : 'לא ממוין נכון'}.` + (hasPriceFilter ? '' : ' באתר אין מסנן טווח מחירים, יש רק מיון לפי מחיר.'),
+    {rows: fres, cols: ['סוג הנעה','כרטיסים מוצגים','צפוי','כרטיסים עם תגית שגויה']});
+  // why "no results" can appear
+  const combos = []; makers.forEach(m => fuels.forEach(f => { if (!D.cars.some(c => c.maker === m && c.fuel === f)) combos.push(m + ' + ' + f); }));
+  add('catalog', 'cat-empty', 'מתי מופיעה ההודעה "אין רכבים מתאימים"', (enZero.length || !revN) ? 'warn' : 'pass',
+    'ההודעה מופיעה כשאין אף גרסה שמתאימה לכל המסננים יחד. בבדיקה נמצאו הסיבות האלה:' + (enZero.length ? ' (1) חיפוש באנגלית, כי שמות היצרנים שמורים בעברית;' : '') + (!revN ? ' (2) חיפוש בסדר מילים הפוך (דגם ואז יצרן);' : '') + ` (3) שילוב יצרן + סוג הנעה שאין במלאי (${combos.length} שילובים כאלה, למשל ${combos.slice(0, 3).join(', ')}), וזה תקין.`);
+  setF();
+  // 7. finance calculator
+  const sample = [0, D.cars.findIndex(c => c.fuel === 'חשמלי' && c.price > 200000), D.cars.findIndex(c => c.price > 400000), D.cars.findIndex(c => c.cat === 'מסחרי')].filter(i => i >= 0);
+  const calc = sample.map(i => { const s = d.getElementById('finCar'); s.value = String(i); s.dispatchEvent(new w.Event('change')); const c = D.cars[i];
+    const got = {down: d.getElementById('finDownOut').textContent.replace(/\D/g, ''), mon: d.getElementById('finMonthly').textContent.replace(/\D/g, '')};
+    return [fullName(c), nis(c.price), got.down + ' / ' + T.downOf(c), got.mon + ' / ' + Math.ceil(T.monthlyOf(c.price)), (+got.down === T.downOf(c) && Math.abs(+got.mon - Math.ceil(T.monthlyOf(c.price))) <= 1) ? '✓' : '✕']; });
+  const cBad = calc.filter(r => r[4] !== '✓');
+  F(7, 'חישוב מימון', cBad.length ? 'fail' : 'pass', `מחשבון המימון נבדק עם ${calc.length} רכבים (רגיל, חשמלי מעל 200 אלף, מעל 400 אלף, מסחרי). ${cBad.length ? cBad.length + ' לא תואמים.' : 'המקדמה וההחזר החודשי תואמים את החישוב.'}`, {rows: calc, cols: ['רכב','מחיר','מקדמה (מחשבון / צפוי)','חודשי (מחשבון / צפוי)','']});
+  // 8. lead form (cccLead is stubbed: nothing is sent)
+  const form = d.getElementById('leadForm'); d.getElementById('fName').value = ''; d.getElementById('fPhone').value = '';
+  const blocks = !form.checkValidity();
+  const ci = sample[0]; d.getElementById('fName').value = 'בדיקת מערכת'; d.getElementById('fPhone').value = '0500000000'; d.getElementById('fCar').value = String(ci);
+  sent.length = 0; form.requestSubmit(); await sleep(400);
+  const L0 = sent[0] || {}, waHref = (d.getElementById('waLink') || {}).href || '';
+  const okLead = L0.src === 'form' && L0.req === true && L0.name === 'בדיקת מערכת' && L0.phone === '0500000000' && String(L0.car || '') === fullName(D.cars[ci]);
+  F(8, 'שליחת טופס ליד', blocks && okLead && doneArg ? 'pass' : 'fail',
+    `טופס ריק ${blocks ? 'נחסם' : 'לא נחסם'}. בשליחה עם פרטים, הטופס מעביר לשמירה: מקור "${esc(L0.src || '—')}", שם, טלפון ורכב "${esc(L0.car || '—')}"${okLead ? ' — הכול נכון' : ' — לא תואם'}. ${doneArg ? 'הודעת האישור ללקוח הופעלה.' : 'הודעת האישור לא הופעלה.'} הבדיקה לא שלחה ליד אמיתי (השמירה הוחלפה בהדמיה).`);
+  form.reset && form.reset();
+  // 9. WhatsApp
+  const waLinks = [...d.querySelectorAll('a[href*="wa.me"]')].map(a => a.getAttribute('href')).concat(waHref ? [waHref] : []);
+  const waBad = waLinks.filter(h => !h.includes('wa.me/' + WA));
+  const waText = waHref.includes('text=') && decodeURIComponent(waHref.split('text=')[1] || '').includes('0500000000');
+  // 11. leads center entry
+  const adm = !!d.getElementById('admApp') && !!d.querySelector('[data-admin]');
+  H.f.remove();
+  // 5-6, 9 on car pages
+  const pick = [0, Math.floor(D.cars.length / 2), D.cars.length - 1];
+  const cp = [];
+  for (const i of pick){
+    const P = await frame('car.html#car' + i, w2 => !!w2.document.querySelector('.pricebox'), 15000);
+    const c = D.cars[i];
+    if (!P.ok){ cp.push([i, fullName(c), 'לא נטען', '', '', '']); P.f.remove(); continue; }
+    const pb = P.d.querySelector('.pricebox').textContent.replace(/\s+/g, ' ');
+    const priceOk = pb.includes(nis(c.price).replace('₪', '')), monOk = pb.includes(Math.ceil(T.monthlyOf(c.price)).toLocaleString('he-IL'));
+    const specN = P.d.querySelectorAll('.group dl .r').length, sib = P.d.querySelectorAll('.trimsw-o a').length, expSib = D.cars.filter(x => gkey(x) === gkey(c)).length;
+    const wa = (P.d.getElementById('waTop') || {}).href || ''; waLinks.push(wa);
+    const cartBtn = !!P.d.getElementById('cartBtn');
+    cp.push([i, fullName(c), priceOk && monOk ? '✓' : '✕', specN, (expSib < 2 ? !sib : sib === expSib) ? '✓' : '✕ (' + sib + '/' + expSib + ')', cartBtn ? '✓' : '✕', P.errs.length ? P.errs.join(' | ') : '']);
+    P.f.remove();
+  }
+  const cpBad = cp.filter(r => r[2] !== '✓' || !(r[3] > 0) || String(r[4]).startsWith('✕') || r[6]);
+  F(5, 'פתיחת כרטיס רכב', cpBad.length ? 'fail' : 'pass', `${cp.length} עמודי רכב נפתחו (ראשון, אמצעי, אחרון). ${cpBad.length ? cpBad.length + ' עם בעיה.' : 'מחיר, החזר חודשי, מפרט ובחירת רמת גימור תקינים.'}`, {rows: cp.map(r => r.slice(0, 5).concat([r[6] || ''])), cols: ['#','רכב','מחיר והחזר','שורות מפרט','רמות גימור','שגיאות']});
+  // 6. cart: verified without adding anything (adding a car sends a lead and needs a customer account)
+  const keyDup = checks.find(c => c.id === 'cat-key');
+  const cartOk = cp.every(r => r[5] === '✓') && keyDup && keyDup.status === 'pass';
+  F(6, 'הוספת רכב לסל', cartOk ? 'pass' : 'fail', `כפתור הסל קיים בכרטיסי הקטלוג ובעמודי הרכב, ולכל רכב יש מזהה סל ייחודי${keyDup && keyDup.status !== 'pass' ? ' (נמצאו מזהים כפולים)' : ''}. ההוספה עצמה לא הופעלה: היא דורשת חשבון לקוח ושולחת ליד אמיתי.`);
+  const waAll = waLinks.filter(Boolean), waB = waAll.filter(h => !h.includes('wa.me/' + WA));
+  F(9, 'שליחת פנייה דרך WhatsApp', waB.length || !waText ? 'fail' : 'pass', `${waAll.length} קישורי WhatsApp נבדקו בדף הבית ובעמודי הרכב. ${waB.length ? waB.length + ' לא מפנים למספר ' + WA + '.' : 'כולם מפנים למספר 054-576-2802.'} ${waText ? 'ההודעה המוכנה מטופס הליד כוללת את פרטי הלקוח.' : 'ההודעה המוכנה מטופס הליד לא כוללת את פרטי הלקוח.'} הקישורים לא נפתחו.`);
+  // 10. personal area
+  const M = await frame('me.html', w3 => !!w3.document.getElementById('pCart') || !!w3.document.getElementById('pReq'), 15000);
+  const tabs = M.ok ? ['pCart','pReq','pInfo'].filter(id => M.d.getElementById(id)).length : 0;
+  F(10, 'כניסה לאזור האישי', M.ok && tabs === 3 && !M.errs.length ? 'pass' : (M.ok ? 'warn' : 'fail'), M.ok ? `האזור האישי נטען עם ${tabs} מתוך 3 לשוניות (סל, פניות, פרטים).` + (M.errs.length ? ' שגיאות: ' + M.errs.join(' | ') : '') : 'האזור האישי לא נטען.');
+  M.f.remove();
+  // 11. leads center
+  const u = await cccFb.current().catch(() => null);
+  F(11, 'כניסה למערכת הלידים', adm ? (u && !u.isAnonymous ? 'pass' : 'warn') : 'fail', adm ? ('מסך הניהול (index.html#admin) קיים ונפתח. ' + (u && !u.isAnonymous ? 'מחובר כ-' + esc(u.email) + '.' : 'לא בוצעה התחברות בדפדפן הזה, לכן הכניסה עצמה לא נבדקה.')) : 'מסך הניהול לא נמצא בדף הבית.');
+}
+
+// ---------- 5. leads (Firestore, read-only) ----------
+const normPhone = p => { let s = String(p || '').replace(/\D/g, ''); if (s.startsWith('972')) s = '0' + s.slice(3); return s; };
+async function loadLeads(){
+  const u = await cccFb.current().catch(() => null);
+  if (!u || u.isAnonymous) return {err: 'auth'};
+  const {db} = await cccFb.init();
+  try {
+    const all = await db.collection('leads').get();
+    let admin = null; try { admin = await db.collection('leads').orderBy('ts', 'desc').limit(1000).get(); } catch(e) {}
+    const docs = all.docs.map(d => Object.assign({_id: d.id}, d.data() || {}));
+    return {u, db, docs, adminIds: admin ? new Set(admin.docs.map(d => d.id)) : null};
+  } catch(e){ return {err: (e && e.code) === 'permission-denied' ? 'perm' : 'net', msg: e && e.message}; }
+}
+function flatReqs(docs){
+  const R = [];
+  docs.forEach(x => { if (x.mergedInto) return; const rq = Array.isArray(x.reqs) ? x.reqs : [];
+    if (!rq.length) R.push({doc: x._id, rid: null, ts: x.ts, src: x.src, car: x.car || '', name: x.name || '', phone: normPhone(x.phone), status: x.status, cold: true});
+    rq.forEach(q => { if (q.mergedInto) return; R.push({doc: x._id, rid: q.rid, ts: q.ts, src: q.src, car: q.car || '', name: q.name || x.name || '', phone: normPhone(q.phone || x.phone), status: q.status || x.status, detail: q.detail}); }); });
+  return R;
+}
+async function checkLeads(onlyDups){
+  const L = await loadLeads(); LEADS = L;
+  const na = (why) => { ['ld-avail','ld-dphone','ld-dphonecar','ld-repeat','ld-nophone','ld-noname','ld-nocar','ld-notsaved','ld-admin'].forEach(id => checks = checks.filter(c => c.id !== id)); add('leads', 'ld-avail', 'גישה לנתוני הלידים', 'na', why); };
+  if (L.err === 'auth'){ $('authCard').hidden = false; return na('לא בוצעה התחברות של הבעלים או נציג מאושר בדפדפן הזה. התחברו בכרטיס למעלה ואז הריצו שוב.'); }
+  if (L.err === 'perm') return na('המשתמש המחובר אינו מורשה לקרוא לידים (כללי הגישה של Firebase). רק הבעלים או נציג שאושר יכולים.');
+  if (L.err) return na('הקריאה מ-Firebase נכשלה: ' + (L.msg || 'שגיאת רשת'));
+  $('authCard').hidden = true;
+  const docs = L.docs, R = flatReqs(docs);
+  add('leads', 'ld-avail', 'גישה לנתוני הלידים', 'pass', `נקראו ${docs.length} רשומות לקוח ו-${R.length} פניות מ-Firebase (קריאה בלבד).`);
+  // duplicates by phone across customers (different browsers / devices)
+  const byPhone = new Map(); docs.filter(x => !x.mergedInto).forEach(x => { const ps = new Set([normPhone(x.phone)].concat((x.reqs || []).map(q => normPhone(q.phone)))); ps.forEach(p => { if (!p) return; if (!byPhone.has(p)) byPhone.set(p, new Set()); byPhone.get(p).add(x._id); }); });
+  const dPhone = [...byPhone.entries()].filter(([, s]) => s.size > 1).map(([p, s]) => ({phone: p, docs: [...s]}));
+  add('leads', 'ld-dphone', 'לידים כפולים לפי מספר טלפון', dPhone.length ? 'warn' : 'pass', dPhone.length ? `${dPhone.length} מספרי טלפון מופיעים אצל יותר מלקוח אחד (בדרך כלל אותו אדם מכמה מכשירים). אפשר למזג למטה.` : 'אין מספר טלפון שמופיע אצל יותר מלקוח אחד.', {groups: dPhone, kind: 'phone'});
+  // duplicates by phone + car
+  const pc = new Map(); R.forEach(r => { if (!r.phone || !r.car) return; const k = r.phone + '|' + r.car.trim(); if (!pc.has(k)) pc.set(k, []); pc.get(k).push(r); });
+  const dPC = [...pc.entries()].filter(([, v]) => v.length > 1).map(([k, v]) => ({key: k, reqs: v}));
+  add('leads', 'ld-dphonecar', 'לידים כפולים לפי טלפון ורכב', dPC.length ? 'warn' : 'pass', dPC.length ? `${dPC.length} צירופים של טלפון + רכב חוזרים יותר מפעם אחת (${dPC.reduce((n, g) => n + g.reqs.length, 0)} פניות).` : 'אין פנייה כפולה על אותו רכב מאותו טלפון.', {groups: dPC, kind: 'phonecar'});
+  // sent more than once (same customer, same car and source within 10 minutes)
+  const rep = []; docs.forEach(x => { if (x.mergedInto) return; const rq = (x.reqs || []).filter(q => !q.mergedInto).slice().sort((a, b) => String(a.ts).localeCompare(String(b.ts)));
+    rq.forEach((q, i) => { const p = rq[i - 1]; if (p && p.car === q.car && p.src === q.src && (new Date(q.ts) - new Date(p.ts)) < 10 * 60000) rep.push({doc: x._id, first: p, again: q, name: x.name, phone: x.phone}); }); });
+  add('leads', 'ld-repeat', 'לידים שנשלחו יותר מפעם אחת', rep.length ? 'warn' : 'pass', rep.length ? `${rep.length} פניות נשלחו שוב תוך פחות מ-10 דקות מאותו לקוח, על אותו רכב ומאותו מקור (למשל לחיצה כפולה).` : 'לא נמצאה שליחה חוזרת של אותה פנייה.', {groups: rep, kind: 'repeat'});
+  if (onlyDups) return renderAll();
+  const noPhone = R.filter(r => !r.phone), noName = R.filter(r => !r.name.trim());
+  const leadRow = r => [r.name || '—', r.phone || '—', r.car || '—', srcL(r.src), fmtTs(r.ts), r.doc.slice(0, 8)];
+  const cols = ['שם','טלפון','רכב','מקור','זמן','לקוח'];
+  add('leads', 'ld-nophone', 'לידים ללא מספר טלפון', noPhone.length ? 'warn' : 'pass', noPhone.length ? `${noPhone.length} פניות בלי טלפון. אי אפשר לחזור אליהן בשיחה.` : 'לכל הפניות יש מספר טלפון.', noPhone.length ? {rows: noPhone.map(leadRow), cols} : null);
+  add('leads', 'ld-noname', 'לידים ללא שם', noName.length ? 'warn' : 'pass', noName.length ? `${noName.length} פניות בלי שם.` : 'לכל הפניות יש שם.', noName.length ? {rows: noName.map(leadRow), cols} : null);
+  const noCar = R.filter(r => !r.car && !r.cold), carSrc = noCar.filter(r => ['car','cart','wa'].includes(r.src));
+  add('leads', 'ld-nocar', 'לידים שלא משויכים לרכב', carSrc.length ? 'warn' : 'pass', `${noCar.length} פניות בלי רכב. ${carSrc.length ? carSrc.length + ' מהן הגיעו מעמוד רכב / סל / וואטסאפ ואמורות לכלול רכב.' : 'כולן מטופס כללי, בדיקת זכאות או מסך הכניסה, שבהם בחירת רכב אינה חובה.'}`, noCar.length ? {rows: noCar.map(leadRow), cols} : null);
+  // not saved: requests this browser recorded locally that are missing in Firestore
+  const local = LS.get('ccc_reqs', []), rids = new Set(); docs.forEach(x => (x.reqs || []).forEach(q => rids.add(q.rid)));
+  const lost = (Array.isArray(local) ? local : []).filter(q => q.rid && !rids.has(q.rid));
+  add('leads', 'ld-notsaved', 'לידים שלא נשמרו', lost.length ? 'fail' : 'pass', `נבדקו ${local.length} פניות ששמורות ביומן המקומי של הדפדפן הזה. ${lost.length ? lost.length + ' מהן לא נמצאו ב-Firebase.' : 'כולן נמצאו ב-Firebase.'} אפשר לבדוק רק את הפניות שנשלחו מהדפדפן הזה; פניות שלא הגיעו מדפדפנים של לקוחות לא נראות מכאן.`, lost.length ? {rows: lost.map(q => [fmtTs(q.ts), srcL(q.src), (q.cars || []).join(', '), q.rid]), cols: ['זמן','מקור','רכבים','מזהה']} : null);
+  // not reaching the admin list
+  const noTs = docs.filter(x => !x.ts), out = L.adminIds ? docs.filter(x => !x.mergedInto && !L.adminIds.has(x._id)) : null;
+  add('leads', 'ld-admin', 'לידים שלא מגיעים למערכת הניהול', out === null ? 'na' : (out.length ? 'fail' : 'pass'),
+    out === null ? 'לא ניתן היה להריץ את שאילתת מערכת הניהול.' : (out.length ? `${out.length} רשומות קיימות ב-Firebase אבל לא מופיעות ברשימת הניהול` + (noTs.length ? ` (${noTs.length} מהן בלי שדה זמן, ולכן השאילתה לא מחזירה אותן).` : ' (מעבר למגבלה של 1,000 הרשומות האחרונות).') : `כל ${docs.length} הרשומות מופיעות ברשימה של מערכת הניהול.`),
+    out && out.length ? {rows: out.map(x => [x.name || '—', normPhone(x.phone) || '—', x.ts ? fmtTs(x.ts) : 'אין זמן', x._id.slice(0, 8)]), cols: ['שם','טלפון','זמן','לקוח']} : null);
+}
+const fmtTs = t => { if (!t) return ''; const d = new Date(t); return isNaN(d) ? String(t) : d.toLocaleString('he-IL', {day:'2-digit', month:'2-digit', year:'2-digit', hour:'2-digit', minute:'2-digit'}); };
+
+// ---------- merge (explicit, confirmed, reversible; never deletes) ----------
+async function mergeDocs(targetId, otherIds){
+  const db = LEADS.db, ref = id => db.collection('leads').doc(id);
+  await db.runTransaction(async tx => {
+    const tSnap = await tx.get(ref(targetId)); const t = tSnap.data() || {};
+    const others = []; for (const id of otherIds){ const s = await tx.get(ref(id)); others.push([id, s.data() || {}]); }
+    let reqs = Array.isArray(t.reqs) ? t.reqs.slice() : []; const have = new Set(reqs.map(q => q.rid));
+    let hist = Array.isArray(t.history) ? t.history.slice() : [];
+    for (const [id, o] of others){
+      (o.reqs || []).forEach(q => { if (!have.has(q.rid)){ reqs.push(Object.assign({}, q, {fromDoc: id})); have.add(q.rid); } });
+      if (!(o.reqs || []).length) reqs.push({rid: 'm' + id.slice(0, 10), ts: o.ts || new Date().toISOString(), src: o.src || 'gate', car: o.car || '', detail: o.last || 'רשומה שמוזגה', name: o.name || '', phone: o.phone || '', city: o.city || '', status: o.status || 'cold', note: '', fromDoc: id});
+      hist = hist.concat((o.history || []).map(h => Object.assign({}, h, {fromDoc: id})));
+    }
+    reqs.sort((a, b) => String(a.ts).localeCompare(String(b.ts)));
+    hist.sort((a, b) => String(a.ts).localeCompare(String(b.ts)));
+    tx.update(ref(targetId), {reqs, history: hist.slice(-80), mergedFrom: Array.from(new Set((t.mergedFrom || []).concat(otherIds)))});
+    const now = new Date().toISOString(), by = (LEADS.u && LEADS.u.email) || '';
+    for (const [id] of others) tx.update(ref(id), {mergedInto: targetId, mergedAt: now, mergedBy: by});
+  });
+}
+async function unmerge(docId){
+  const db = LEADS.db, ref = db.collection('leads').doc(docId);
+  await db.runTransaction(async tx => { const s = await tx.get(ref); const o = s.data() || {}; const tId = o.mergedInto; if (!tId) return;
+    const tRef = db.collection('leads').doc(tId), t = (await tx.get(tRef)).data() || {};
+    tx.update(tRef, {reqs: (t.reqs || []).filter(q => q.fromDoc !== docId), history: (t.history || []).filter(h => h.fromDoc !== docId), mergedFrom: (t.mergedFrom || []).filter(x => x !== docId)});
+    tx.update(ref, {mergedInto: firebase.firestore.FieldValue.delete(), mergedAt: firebase.firestore.FieldValue.delete(), mergedBy: firebase.firestore.FieldValue.delete()}); });
+}
+async function mergeReqs(docId, keepRid, dupRids){
+  const db = LEADS.db, ref = db.collection('leads').doc(docId);
+  await db.runTransaction(async tx => { const o = (await tx.get(ref)).data() || {};
+    tx.update(ref, {reqs: (o.reqs || []).map(q => dupRids.includes(q.rid) ? Object.assign({}, q, {mergedInto: keepRid}) : q)}); });
+}
+
+// ---------- rendering ----------
+function statusOf(sysKey){ const cs = checks.filter(c => c.sys === sysKey); if (!cs.length) return null; if (cs.every(c => c.status === 'na')) return 'na'; if (cs.some(c => c.status === 'fail')) return 'fail'; if (cs.some(c => c.status === 'warn')) return 'warn'; return 'pass'; }
+function score(){ const s = checks.filter(c => c.status !== 'na'); if (!s.length) return null; return Math.round(100 * s.reduce((n, c) => n + (c.status === 'pass' ? 1 : c.status === 'warn' ? .6 : 0), 0) / s.length); }
+const chip = s => `<span class="st ${s}">${ST[s] || s}</span>`;
+function tableHtml(rows, cols){ if (!rows || !rows.length) return ''; return `<div class="tw"><table class="t"><thead><tr>${cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr>${r.map(v => `<td>${esc(v)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`; }
+function checkHtml(c, open){ return `<details class="chk"${open ? ' open' : ''}><summary>${chip(c.status)}<span><b>${esc(c.title)}</b><br><span class="d">${esc(c.detail)}</span></span><span class="sys-l">${SYS[c.sys]}</span></summary>${c.rows ? `<div class="body">${tableHtml(c.rows, c.cols)}</div>` : ''}</details>`; }
+function leadCard(x, opts){ const rq = (x.reqs || []).filter(q => !q.mergedInto);
+  return `<div class="lead${x.mergedInto ? ' merged' : ''}"><b>${esc(x.name || 'ללא שם')}</b><dl>
+    <dt>טלפון</dt><dd class="mono">${esc(normPhone(x.phone) || '—')}</dd><dt>עיר</dt><dd>${esc(x.city || '—')}</dd>
+    <dt>פניות</dt><dd>${rq.length}</dd><dt>רכבים</dt><dd>${esc([...new Set(rq.map(q => q.car).filter(Boolean))].join(', ') || x.car || '—')}</dd>
+    <dt>אחרון</dt><dd>${fmtTs(x.ts)}</dd><dt>סטטוס</dt><dd>${esc(stL(x.status))}</dd><dt>מזהה</dt><dd class="mono">${esc(x._id.slice(0, 10))}</dd></dl>
+    ${opts || ''}</div>`; }
+function leadsPane(){
+  const cs = checks.filter(c => c.sys === 'leads'); if (!cs.length) return '<div class="empty">הריצו "בדיקת לידים בלבד" או בדיקה מלאה.</div>';
+  let h = cs.filter(c => !c.groups).map(c => checkHtml(c)).join('');
+  if (!LEADS || LEADS.err) return h;
+  const byId = Object.fromEntries(LEADS.docs.map(x => [x._id, x]));
+  const g1 = (checks.find(c => c.id === 'ld-dphone') || {}).groups || [];
+  h += `<h3 style="margin:22px 0 8px">כפילויות לפי טלפון · ${g1.length}</h3>` + (g1.length ? g1.map(g => `<div class="dup"><h4 class="mono">${esc(g.phone)}</h4><div class="why">אותו מספר טלפון מופיע אצל ${g.docs.length} לקוחות. בחרו את הרשומה שתישאר; הפניות של האחרות יועתקו אליה והן יוסתרו ממערכת הניהול (לא יימחקו, ואפשר לבטל).</div><div class="cols">${g.docs.map(id => leadCard(byId[id], `<button class="btn" data-merge="${id}" data-others="${g.docs.filter(x => x !== id).join(',')}">מיזוג לתוך הרשומה הזו</button>`)).join('')}</div></div>`).join('') : '<div class="empty">אין כפילויות לפי טלפון.</div>');
+  const g2 = (checks.find(c => c.id === 'ld-dphonecar') || {}).groups || [];
+  h += `<h3 style="margin:22px 0 8px">כפילויות לפי טלפון ורכב · ${g2.length}</h3>` + (g2.length ? g2.map(g => { const docsIn = [...new Set(g.reqs.map(r => r.doc))]; const same = docsIn.length === 1;
+    return `<div class="dup"><h4>${esc(g.reqs[0].car)} · <span class="mono">${esc(g.reqs[0].phone)}</span></h4><div class="why">${g.reqs.length} פניות על אותו רכב מאותו טלפון${same ? ', אצל אותו לקוח' : ', אצל ' + docsIn.length + ' לקוחות'}.</div><div class="cols">${g.reqs.map((r, k) => `<div class="lead"><b>${esc(r.name || 'ללא שם')}</b><dl><dt>זמן</dt><dd>${fmtTs(r.ts)}</dd><dt>מקור</dt><dd>${esc(srcL(r.src))}</dd><dt>סטטוס</dt><dd>${esc(stL(r.status))}</dd><dt>פרטים</dt><dd>${esc(r.detail || '')}</dd></dl>${same && r.rid ? `<button class="btn" data-keep="${r.rid}" data-doc="${r.doc}" data-dups="${g.reqs.filter(x => x.rid !== r.rid).map(x => x.rid).join(',')}">להשאיר את זו, למזג את השאר</button>` : (!same && k === 0 ? `<button class="btn" data-merge="${r.doc}" data-others="${docsIn.filter(x => x !== r.doc).join(',')}">מיזוג הלקוחות לרשומה הזו</button>` : '')}</div>`).join('')}</div></div>`; }).join('') : '<div class="empty">אין כפילויות לפי טלפון ורכב.</div>');
+  const g3 = (checks.find(c => c.id === 'ld-repeat') || {}).groups || [];
+  h += `<h3 style="margin:22px 0 8px">פניות שנשלחו שוב · ${g3.length}</h3>` + (g3.length ? g3.map(g => `<div class="dup"><h4>${esc(g.name || 'ללא שם')} · ${esc(g.first.car || 'ללא רכב')}</h4><div class="why">נשלחה שוב אחרי ${Math.max(1, Math.round((new Date(g.again.ts) - new Date(g.first.ts)) / 60000))} דקות, מאותו מקור (${esc(srcL(g.first.src))}).</div><div class="cols">${[g.first, g.again].map(q => `<div class="lead"><dl><dt>זמן</dt><dd>${fmtTs(q.ts)}</dd><dt>סטטוס</dt><dd>${esc(stL(q.status))}</dd><dt>פרטים</dt><dd>${esc(q.detail || '')}</dd></dl></div>`).join('')}</div><button class="btn" style="margin-top:10px" data-keep="${g.first.rid}" data-doc="${g.doc}" data-dups="${g.again.rid}">מיזוג (להשאיר את הראשונה)</button></div>`).join('') : '<div class="empty">אין פניות שנשלחו שוב.</div>');
+  const merged = LEADS.docs.filter(x => x.mergedInto);
+  if (merged.length) h += `<h3 style="margin:22px 0 8px">רשומות שמוזגו · ${merged.length}</h3><div class="cols">${merged.map(x => leadCard(x, `<div class="note">מוזגה לתוך ${esc(x.mergedInto.slice(0, 10))} · ${fmtTs(x.mergedAt)}</div><button class="btn" data-unmerge="${x._id}">ביטול המיזוג</button>`)).join('')}</div>`;
+  return h;
+}
+function renderAll(){
+  const sc = score(); $('scoreV').textContent = sc === null ? '—' : sc; $('ringArc').style.strokeDashoffset = sc === null ? 326.7 : 326.7 * (1 - sc / 100);
+  const na = checks.filter(c => c.status === 'na').length;
+  $('scoreSub').textContent = sc === null ? 'הציון מחושב רק מבדיקות שבוצעו בפועל.' : `${checks.length - na} בדיקות נכללו בציון` + (na ? ` · ${na} לא זמינות ולא נכללו` : '');
+  $('sysTiles').innerHTML = Object.entries(SYS).map(([k, l]) => { const s = statusOf(k), cs = checks.filter(c => c.sys === k);
+    return `<button class="tile" data-goto="${k === 'leads' ? 'leads' : k === 'catalog' ? 'catalog' : k === 'flows' ? 'flows' : 'all'}"><h3>${l}</h3>${s ? chip(s) : '<span class="st na">לא נבדק</span>'}<span class="n">${cs.filter(c => c.status === 'pass').length}/${cs.filter(c => c.status !== 'na').length || 0}</span><span class="s">${cs.length ? cs.filter(c => c.status === 'fail').length + ' תקלות · ' + cs.filter(c => c.status === 'warn').length + ' אזהרות' : 'הריצו בדיקה'}</span></button>`; }).join('');
+  const iss = checks.filter(c => c.status === 'fail' || c.status === 'warn').sort((a, b) => (a.status === 'fail' ? 0 : 1) - (b.status === 'fail' ? 0 : 1));
+  const nas = checks.filter(c => c.status === 'na');
+  $('p-issues').innerHTML = (checks.length ? (iss.length ? iss.map(c => checkHtml(c)).join('') : '<div class="empty">אין תקלות או אזהרות בבדיקה האחרונה.</div>') : '<div class="empty">הריצו בדיקה כדי לראות תקלות.</div>') + (nas.length ? `<h3 style="margin:22px 0 8px">בדיקות שלא בוצעו</h3>` + nas.map(c => checkHtml(c)).join('') : '');
+  $('p-leads').innerHTML = leadsPane();
+  $('p-catalog').innerHTML = checks.filter(c => c.sys === 'catalog' || c.sys === 'finance').map(c => checkHtml(c)).join('') || '<div class="empty">הריצו "בדיקת קטלוג הרכבים" או בדיקה מלאה.</div>';
+  $('p-flows').innerHTML = checks.filter(c => c.sys === 'flows').sort((a, b) => parseInt(a.title) - parseInt(b.title)).map(c => checkHtml(c)).join('') || '<div class="empty">תהליכי הלקוח נבדקים בבדיקה המלאה.</div>';
+  $('p-all').innerHTML = Object.keys(SYS).map(k => { const cs = checks.filter(c => c.sys === k); return cs.length ? `<h3 style="margin:18px 0 8px">${SYS[k]}</h3>` + cs.map(c => checkHtml(c)).join('') : ''; }).join('') || '<div class="empty">עוד לא הורצו בדיקות.</div>';
+  $('cIssues').textContent = checks.length ? iss.length : ''; $('cLeads').textContent = cnt('leads'); $('cCatalog').textContent = cnt('catalog'); $('cFlows').textContent = cnt('flows'); $('cAll').textContent = checks.length || '';
+  renderHistory();
+}
+const cnt = k => { const cs = checks.filter(c => c.sys === k && (c.status === 'fail' || c.status === 'warn')); return cs.length ? cs.length : ''; };
+function renderHistory(){
+  const H = LS.get('ccc_audit_history', []);
+  if (!H.length){ $('p-history').innerHTML = '<div class="empty">אין עדיין היסטוריית בדיקות בדפדפן הזה.</div>'; return; }
+  const last = H.slice(-30);
+  $('p-history').innerHTML = `<div class="card"><b>ציון לאורך זמן</b> <span class="note">(${last.length} בדיקות אחרונות, נשמר בדפדפן הזה)</span><div class="hist">${last.map(h => `<i style="height:${h.score === null ? 3 : Math.max(4, h.score)}%" ${h.score !== null && h.score < 80 ? 'data-low' : ''} title="${fmtTs(h.ts)} · ${h.score ?? '—'}"></i>`).join('')}</div>
+    <div class="tw"><table class="t"><thead><tr><th>זמן</th><th>סוג</th><th>ציון</th><th>תקלות</th><th>אזהרות</th><th>לא זמינות</th><th>משך</th></tr></thead><tbody>${H.slice().reverse().map(h => `<tr><td>${fmtTs(h.ts)}</td><td>${esc(h.mode)}</td><td class="mono">${h.score ?? '—'}</td><td>${h.fail}</td><td>${h.warn}</td><td>${h.na}</td><td>${(h.ms / 1000).toFixed(1)} ש׳</td></tr>`).join('')}</tbody></table></div></div>`;
+}
+
+// ---------- runs ----------
+const MODES = {full:'בדיקה מלאה', leads:'לידים', dups:'כפילויות', catalog:'קטלוג'};
+async function run(mode){
+  if (running) return; running = true; lastMode = mode; const t0 = performance.now();
+  document.querySelectorAll('[data-run]').forEach(b => b.disabled = true);
+  const step = s => { $('runInfo').innerHTML = '<span class="st run">רץ</span> ' + esc(s); };
+  try {
+    if (mode === 'full') checks = []; else checks = checks.filter(c => mode === 'leads' ? c.sys !== 'leads' : mode === 'catalog' ? !['catalog','finance'].includes(c.sys) : !['cat-dup','cat-ver','cat-key','ld-dphone','ld-dphonecar','ld-repeat'].includes(c.id));
+    if (mode !== 'leads'){ step('טוען את נתוני האתר…'); await loadSource(); }
+    if (mode === 'full'){ step('בודק קבצים ותמונות…'); await checkInfra(); }
+    if (mode === 'full' || mode === 'catalog'){ step('סורק את קטלוג הרכבים…'); if (!D.badImgs && mode === 'catalog') await checkInfra().then(() => checks = checks.filter(c => c.sys !== 'infra')); checkCatalog(false); step('בודק מימון ומקדמות…'); checkFinance(); }
+    if (mode === 'dups'){ checkCatalog(true); }
+    if (mode === 'full' || mode === 'leads' || mode === 'dups'){ step('קורא לידים מ-Firebase…'); await checkLeads(mode === 'dups'); }
+    if (mode === 'full'){ step('מריץ את תהליכי הלקוח בדפי האתר…'); await checkFlows(); }
+  } catch(e){ add('infra', 'run-err', 'הבדיקה נעצרה', 'fail', String(e && e.message || e)); }
+  const ms = Math.round(performance.now() - t0), sc = score();
+  const H = LS.get('ccc_audit_history', []); H.push({ts: new Date().toISOString(), mode: MODES[mode], score: sc, fail: checks.filter(c => c.status === 'fail').length, warn: checks.filter(c => c.status === 'warn').length, na: checks.filter(c => c.status === 'na').length, ms}); LS.set('ccc_audit_history', H.slice(-50));
+  LS.set('ccc_audit_last', {ts: new Date().toISOString(), mode, checks: checks.map(c => Object.assign({}, c, {groups: undefined}))});
+  $('runInfo').textContent = `${MODES[mode]} הסתיימה ב-${fmtTs(new Date().toISOString())} · ${(ms / 1000).toFixed(1)} שניות`;
+  document.querySelectorAll('[data-run]').forEach(b => b.disabled = false); running = false; renderAll();
+}
+
+// ---------- events ----------
+document.addEventListener('click', async e => {
+  const r = e.target.closest('[data-run]'); if (r) return run(r.dataset.run);
+  const t = e.target.closest('.tab'); if (t){ document.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-selected', String(x === t))); document.querySelectorAll('.pane').forEach(p => p.hidden = p.id !== 'p-' + t.dataset.p); return; }
+  const g = e.target.closest('[data-goto]'); if (g){ document.querySelector('.tab[data-p="' + g.dataset.goto + '"]').click(); document.getElementById('tabs').scrollIntoView({behavior:'smooth'}); return; }
+  const m = e.target.closest('[data-merge]');
+  if (m){ const others = m.dataset.others.split(',').filter(Boolean); if (!confirm(`למזג ${others.length} רשומות לתוך הרשומה הזו?\n\nהפניות שלהן יועתקו לרשומה הזו, והן יוסתרו ממערכת הניהול. שום ליד לא יימחק, ואפשר לבטל את המיזוג.`)) return;
+    m.disabled = true; try { await mergeDocs(m.dataset.merge, others); toast('המיזוג בוצע'); await checkLeads(false); renderAll(); } catch(err){ toast('המיזוג נכשל: ' + (err.code || err.message)); m.disabled = false; } return; }
+  const k = e.target.closest('[data-keep]');
+  if (k){ const dups = k.dataset.dups.split(',').filter(Boolean); if (!confirm(`להשאיר את הפנייה הזו ולמזג לתוכה ${dups.length} פניות זהות?\n\nהפניות הכפולות יסומנו כממוזגות ויוסתרו ממערכת הניהול. הן לא יימחקו.`)) return;
+    k.disabled = true; try { await mergeReqs(k.dataset.doc, k.dataset.keep, dups); toast('הפניות מוזגו'); await checkLeads(false); renderAll(); } catch(err){ toast('המיזוג נכשל: ' + (err.code || err.message)); k.disabled = false; } return; }
+  const u = e.target.closest('[data-unmerge]');
+  if (u){ if (!confirm('לבטל את המיזוג ולהחזיר את הרשומה למערכת הניהול?')) return; u.disabled = true;
+    try { await unmerge(u.dataset.unmerge); toast('המיזוג בוטל'); await checkLeads(false); renderAll(); } catch(err){ toast('הביטול נכשל: ' + (err.code || err.message)); u.disabled = false; } return; }
+});
+$('authForm').addEventListener('submit', async e => { e.preventDefault(); $('aMsg').textContent = 'מתחבר…';
+  try { await cccFb.signIn($('aEmail').value.trim(), $('aPw').value); $('aMsg').textContent = ''; $('aPw').value = ''; await who(); run('leads'); }
+  catch(err){ $('aMsg').textContent = 'ההתחברות נכשלה: ' + (err.code === 'auth/invalid-credential' || err.code === 'auth/wrong-password' ? 'אימייל או סיסמה שגויים' : (err.code || err.message)); } });
+$('outBtn').addEventListener('click', async () => { await cccFb.signOut(); LEADS = null; checks = checks.filter(c => c.sys !== 'leads'); await who(); renderAll(); });
+async function who(){
+  let u = null; try { u = await cccFb.current(); } catch(e) {}
+  const on = !!(u && !u.isAnonymous);
+  $('whoDot').classList.toggle('on', on); $('whoTxt').textContent = on ? (u.email + (cccFb.isOwnerUser(u) ? ' · בעלים' : ' · נציג')) : 'לא מחובר · הלידים לא זמינים';
+  $('outBtn').hidden = !on; $('authCard').hidden = on;
+}
+// restore the last run so the dashboard is never empty after a reload (clearly dated)
+(function(){ const L = LS.get('ccc_audit_last', null); if (L && Array.isArray(L.checks)){ checks = L.checks; $('runInfo').textContent = `מוצגות תוצאות הבדיקה האחרונה (${MODES[L.mode] || ''}, ${fmtTs(L.ts)}). הריצו שוב לעדכון.`; } renderAll(); })();
+who();
+})();
+</script>
+</body>
+</html>

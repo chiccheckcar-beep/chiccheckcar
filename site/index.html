@@ -1115,7 +1115,7 @@ body:has(.adm:not([hidden])) .me-fab,body:has(#gate:not([hidden])) .me-fab{displ
       <div class="adm-head-l">
         <label class="adm-search"><span aria-hidden="true">⌕</span><input type="search" id="admSearch" placeholder="חיפוש"></label>
         <button type="button" class="adm-ghost adm-danger" id="admDelSel" hidden>מחיקה</button>
-        <button type="button" class="adm-ghost" id="admCsv">ייצוא</button>
+        <a class="adm-ghost" href="audit.html" target="_blank" rel="noopener" style="text-decoration:none">בדיקת מערכת</a><button type="button" class="adm-ghost" id="admCsv">ייצוא</button>
         <button type="button" class="adm-new" id="admNew"><span aria-hidden="true">+</span> חדש</button>
       </div>
     </div>
@@ -1608,7 +1608,8 @@ function render(){
   GROUPS.forEach((ix, g) => { const hit = ix.filter(i => ok(CARS[i])); if (!hit.length) return;
     if (q && !hit.includes(selOf(g))) SEL[g] = hit[0];   // a search that names a trim opens the card on that trim
     list.push(g); });
-  const lo = g => CARS[GROUPS[g][0]].price, hi = g => CARS[GROUPS[g][GROUPS[g].length - 1]].price;
+  // sort by the price the card shows (the selected trim; the cheapest unless a search or a click picked another)
+  const lo = g => CARS[selOf(g)].price, hi = lo;
   list.sort((a,b)=> so==='name' ? fullName(CARS[GROUPS[a][0]]).localeCompare(fullName(CARS[GROUPS[b][0]]),'he') : so==='desc' ? hi(b)-hi(a) : lo(a)-lo(b));
   const nv = list.reduce((n, g) => n + GROUPS[g].length, 0);
   $('count').textContent = `מציגים ${list.length} דגמים (${nv} גרסאות) מתוך ${GROUPS.length} דגמים`;
@@ -2052,7 +2053,8 @@ $('grid').addEventListener('change', e => {
     if (listening) return; listening = true;
     unsub = db.collection('leads').orderBy('ts','desc').limit(1000).onSnapshot(snap => { loadErr = '';
       raw = {}; snap.docs.forEach(d => raw[d.id] = d.data() || {});
-      rows = snap.docs.flatMap(d => { const x = d.data() || {}, rq = Array.isArray(x.reqs) ? x.reqs : [];
+      // leads merged in the System Audit (audit.html) stay in the database but are not listed twice
+      rows = snap.docs.filter(d => !(d.data() || {}).mergedInto).flatMap(d => { const x = d.data() || {}, rq = (Array.isArray(x.reqs) ? x.reqs : []).filter(q => !q.mergedInto);
         if (!rq.length) return [Object.assign({}, x, {id: d.id, _doc: d.id})];
         return rq.map(q => Object.assign({}, x, {loan: null, car: '', last: ''}, q, {id: d.id + '~' + q.rid, _doc: d.id, _rid: q.rid, name: q.name || x.name, phone: q.phone || x.phone, city: q.city || x.city, last: q.detail, status: q.status || 'new', note: q.note || '', unseen: !!q.unseen, ts: q.ts})); })
         .sort((a, b) => String(b.ts || '').localeCompare(String(a.ts || '')));

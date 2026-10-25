@@ -22,6 +22,14 @@ tools/
   specs/         Technical specs per model group (sources listed inside).
 ```
 
+```
+site/audit.html  "ChicCheckCar System Audit" (2026-10-25): internal health dashboard (noindex; linked from the leads center header).
+                 Reads the deployed files (CARS from index.html, specs.js, terms.js), runs the customer flows inside hidden iframes of the
+                 real pages (cccLead is stubbed there: no test lead is ever sent), and reads Firestore leads with the team sign-in.
+                 Lead merge = copy reqs into the kept doc (fromDoc) + mergedInto on the other doc / req; nothing is deleted; reversible.
+                 The leads center (index.html listen()) skips docs/reqs that have mergedInto. History is per browser (localStorage).
+```
+
 After editing index.html (CARS, cccLead, cccDone, okbox styles) always re-run both generators.
 WARNING: card figures (VERIFIED_HP / VERIFIED_RANGE / VERIFIED_0100 / VERIFIED_L in index.html) and specs.json "rows" are keyed by the
 car's INDEX in CARS. Append new cars at the end. If you ever remove or reorder cars, remap those keys (see commit "Fix card figures
