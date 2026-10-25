@@ -86,8 +86,8 @@ Still open:
 
 ## Service terms (owner, 2026-10-25)
 
-- The owner's AUTO OFFICE service agreement is shown as the "תנאי שירות" legal window (`#legal-service`, open with index.html#service;
-  footer + side menu links) and the original is downloadable at site/service-agreement.pdf. Text kept as the owner wrote it.
+- The owner's service agreement (company name ChicCheckCar; contact chiccheckcar@gmail.com, 054-576-2802 — owner 2026-10-25) is shown as the "תנאי שירות" legal window (`#legal-service`, open with index.html#service;
+  footer + side menu links) and the original is downloadable at site/service-agreement.pdf. Text kept as the owner wrote it; site/service-agreement.pdf is rebuilt from that text (Chromium print) with the ChicCheckCar name.
 
 ## Owner-supplied material
 
@@ -111,5 +111,5 @@ Still open:
 ## Open items
 
 - Real car photos (owner to supply), business details for the footer (name, company no., address),
-  WhatsApp number (currently 972545762802 inside wa.me links), accessibility-coordinator details in the accessibility statement.
+  WhatsApp number 972545762802 (confirmed by the owner 2026-10-25), accessibility-coordinator details in the accessibility statement.
 - Design: studio theme — ink #1f1519, accent #7a2a4a, soft pink #f4e9ee, bg #efe9e8→#d9d0cf, fonts Heebo + Unbounded.
