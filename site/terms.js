@@ -39,13 +39,13 @@
     method: 'ריבית שנתית נומינלית 5.9% (0.4917% לחודש), 60 תשלומים חודשיים שווים לפי לוח שפיצר, על מלוא מחיר הרכב. בלון של 50% ממחיר הרכב משולם עם התשלום האחרון. המקדמה משולמת בנוסף ואינה מקטינה את סכום המימון. לא כולל עמלות, ביטוח ואגרות.'});
 })();
 
-// 2026-10-25: catalog prices were rounded up to the next thousand. Saved carts store "maker|model|trim|price" keys,
+// 2026-10-25: catalog prices were rounded up to the next 500. Saved carts store "maker|model|trim|price" keys,
 // so update old keys once to the rounded price (otherwise those cars would drop out of the customer's cart).
 try {
   const cart = JSON.parse(localStorage.getItem('ccc_cart') || '[]');
   if (Array.isArray(cart)) {
     const fixed = cart.map(k => { const p = String(k).split('|'); const n = +p[p.length - 1];
-      if (p.length >= 4 && n > 0 && n % 1000) { p[p.length - 1] = String(Math.ceil(n / 1000) * 1000); return p.join('|'); } return k; });
+      if (p.length >= 4 && n > 0 && n % 500) { p[p.length - 1] = String(Math.ceil(n / 500) * 500); return p.join('|'); } return k; });
     if (fixed.some((k, i) => k !== cart[i])) localStorage.setItem('ccc_cart', JSON.stringify(fixed));
   }
 } catch (e) {}
