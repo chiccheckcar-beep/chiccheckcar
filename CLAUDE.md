@@ -37,6 +37,9 @@ WARNING: card figures (VERIFIED_HP / VERIFIED_RANGE / VERIFIED_0100 / VERIFIED_L
 car's INDEX in CARS. Append new cars at the end. If you ever remove or reorder cars, remap those keys (see commit "Fix card figures
 after duplicate removal").
 
+Domain (2026-10-28): www.chiccheckcar.co.il (registered at Internic; DNS: A @ -> 185.199.108-111.153, CNAME www -> chiccheckcar-beep.github.io).
+The custom domain is set by the owner in GitHub repo Settings -> Pages (the Pages API is blocked from Claude sessions; the Actions deploy ignores CNAME files).
+
 Preview locally: `cd site && python3 -m http.server 8080` then open http://localhost:8080 (use a server, not file://, so CSS masks load).
 
 ## Data layer — Firebase
