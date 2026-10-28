@@ -354,11 +354,12 @@ function show(){
   document.getElementById('finWa').onclick = e => { let t = ''; try { t = decodeURIComponent(e.currentTarget.href.split('text=')[1] || ''); } catch(_) {} window.cccLead({src:'finance', car: full, detail: t.replace(/^שלום, /, '') || 'שלח חישוב מימון על ' + carTxt}); };
   document.getElementById('leadForm').addEventListener('submit', async e => {
     e.preventDefault();
+    const btn = e.target.querySelector('[type=submit]'); if (btn.disabled) return; btn.disabled = true;   // no double send
     const okP = window.cccLead({src:'car', req: true, name: document.getElementById('fName').value.trim(), phone: document.getElementById('fPhone').value.trim(), car: full, detail: 'השאיר פרטים בעמוד הרכב על ' + carTxt});
     const msg = `שלום, אני ${document.getElementById('fName').value.trim()}. טלפון: ${document.getElementById('fPhone').value.trim()}. רכב שמעניין אותי: ${carTxt}.`;
     const a = document.getElementById('waLink');
     a.href = 'https://wa.me/972545762802?text=' + encodeURIComponent(msg);
-    const ok = await okP; a.hidden = ok;
+    const ok = await okP; a.hidden = ok; btn.disabled = false;
     window.cccDone({ok, phone: document.getElementById('fPhone').value.trim(), wa: a.href});
   });
   // finance calculator

@@ -204,10 +204,14 @@ window.cccLead = async function(info){
   // every request the customer sends also goes to "הפניות שלי" in this browser, even if it can't reach the leads center
   const rid = info.req ? Date.now().toString(36) + Math.random().toString(36).slice(2,6) : null;
   if (info.req){ try { const L = JSON.parse(localStorage.getItem('ccc_reqs') || '[]'); L.push({rid, ts: new Date().toISOString(), src: info.src, cars: info.cars || (info.car ? String(info.car).split(', ') : []), amount: info.loan ? info.loan.amount : 0, trade: !!(info.loan && info.loan.trade)}); localStorage.setItem('ccc_reqs', JSON.stringify(L.slice(-30))); } catch(e) {} }
-  try {
+  // Saves run one at a time in this page (a double click or two quick actions can't overwrite each other),
+  // and each save is a Firestore transaction (a team update at the same moment can't be lost either).
+  const save = async () => {
     const [db, user] = await Promise.all([claude.use('db'), claude.use('user')]); if (!db || !user) return false;
     const id = await user.id(); if (!id) return false;
-    const ref = db.collection('leads').doc(id), ex = await ref.get(), cur = ex.exists ? (ex.data() || {}) : {};
+    const ref = db.collection('leads').doc(id);
+    return db.runTransaction(async tx => {
+    const ex = await tx.get(ref), cur = ex.exists ? (ex.data() || {}) : {};
     let saved = {}; try { saved = JSON.parse(localStorage.getItem('ccc_me') || '{}') || {}; } catch(e) {}
     let sn = '', sp = ''; try { sn = sessionStorage.getItem('ccc_name') || ''; sp = sessionStorage.getItem('ccc_phone') || ''; } catch(e) {}
     const name = String(info.name || cur.name || saved.name || sn || '').slice(0,60);
@@ -231,9 +235,13 @@ window.cccLead = async function(info){
       data.reqs = (Array.isArray(cur.reqs) ? cur.reqs : []).concat([rq]).slice(-60);
       data.unseen = true; if (ex.exists && (!cur.status || ['cold','lost','noans'].includes(cur.status))) data.status = 'new';
     }
-    if (ex.exists) await ref.update(data); else await ref.set(Object.assign({status: info.req ? 'new' : 'cold', car: ''}, data));
+    if (ex.exists) tx.update(ref, data); else tx.set(ref, Object.assign({status: info.req ? 'new' : 'cold', car: ''}, data));
     return true;
-  } catch(e) { return false; }
+    });
+  };
+  const job = (window.__cccLeadQ || Promise.resolve()).then(save, save);
+  window.__cccLeadQ = job.catch(() => false);
+  try { return !!(await job); } catch(e) { return false; }
 };
 // Confirmation after a request: "received" only when it really reached the leads center; otherwise ask to finish in WhatsApp.
 window.cccDone = function({ok, phone, wa, title, text}){
@@ -377,11 +385,12 @@ function show(){
   document.getElementById('finWa').onclick = e => { let t = ''; try { t = decodeURIComponent(e.currentTarget.href.split('text=')[1] || ''); } catch(_) {} window.cccLead({src:'finance', car: full, detail: t.replace(/^שלום, /, '') || 'שלח חישוב מימון על ' + carTxt}); };
   document.getElementById('leadForm').addEventListener('submit', async e => {
     e.preventDefault();
+    const btn = e.target.querySelector('[type=submit]'); if (btn.disabled) return; btn.disabled = true;   // no double send
     const okP = window.cccLead({src:'car', req: true, name: document.getElementById('fName').value.trim(), phone: document.getElementById('fPhone').value.trim(), car: full, detail: 'השאיר פרטים בעמוד הרכב על ' + carTxt});
     const msg = `שלום, אני ${document.getElementById('fName').value.trim()}. טלפון: ${document.getElementById('fPhone').value.trim()}. רכב שמעניין אותי: ${carTxt}.`;
     const a = document.getElementById('waLink');
     a.href = 'https://wa.me/972545762802?text=' + encodeURIComponent(msg);
-    const ok = await okP; a.hidden = ok;
+    const ok = await okP; a.hidden = ok; btn.disabled = false;
     window.cccDone({ok, phone: document.getElementById('fPhone').value.trim(), wa: a.href});
   });
   // finance calculator

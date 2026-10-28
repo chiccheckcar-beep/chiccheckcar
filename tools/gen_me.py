@@ -146,7 +146,7 @@ __OKCSS__
       <p class="msg" id="iMsg" role="status" hidden></p>
       <button type="submit" class="btn block">שמירת הפרטים</button>
     </form>
-    <div class="priv"><span>🔒 החשבון נשמר בדפדפן הזה. הסיסמה נשמרת מוצפנת ולא נשלחת לשום מקום.</span><button type="button" class="link2" id="iOut">יציאה מהחשבון</button><button type="button" class="link" id="iClear">מחיקת החשבון, הסל והפניות מהדפדפן</button></div>
+    <div class="priv"><span>🔒 החשבון שלך שמור בשרת מאובטח ואפשר להיכנס אליו מכל מכשיר. הסיסמה מוצפנת, ואנחנו לא רואים אותה.</span><button type="button" class="link2" id="iOut">יציאה מהחשבון</button><button type="button" class="link" id="iClear">מחיקת החשבון, הסל והפניות מהדפדפן</button></div>
   </section>
 </main>
 <footer>ChicCheckCar · <a href="index.html#privacy">מדיניות פרטיות</a> · <a href="index.html#settings">הגדרות פרטיות</a> · <a href="index.html#accessibility">הצהרת נגישות</a></footer>

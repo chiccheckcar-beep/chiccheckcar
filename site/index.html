@@ -1467,7 +1467,7 @@ body:has(.adm:not([hidden])) .me-fab,body:has(#gate:not([hidden])) .me-fab{displ
           <button type="submit" class="me-primary">שמירת הפרטים</button>
         </form>
         <div class="me-privacy">
-          <p><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M6 11h12v10H6zM8.5 11V7.5a3.5 3.5 0 0 1 7 0V11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg> הפרטים נשמרים רק בדפדפן הזה, וממלאים מראש את הטפסים באתר.</p>
+          <p><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M6 11h12v10H6zM8.5 11V7.5a3.5 3.5 0 0 1 7 0V11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg> הפרטים נשמרים בחשבון שלכם וממלאים מראש את הטפסים באתר.</p>
           <button type="button" class="me-link" id="miClear">מחיקת הפרטים והסל מהדפדפן</button>
         </div>
       </div>
@@ -1519,10 +1519,14 @@ window.cccLead = async function(info){
   // every request the customer sends also goes to "הפניות שלי" in this browser, even if it can't reach the leads center
   const rid = info.req ? Date.now().toString(36) + Math.random().toString(36).slice(2,6) : null;
   if (info.req){ try { const L = JSON.parse(localStorage.getItem('ccc_reqs') || '[]'); L.push({rid, ts: new Date().toISOString(), src: info.src, cars: info.cars || (info.car ? String(info.car).split(', ') : []), amount: info.loan ? info.loan.amount : 0, trade: !!(info.loan && info.loan.trade)}); localStorage.setItem('ccc_reqs', JSON.stringify(L.slice(-30))); } catch(e) {} }
-  try {
+  // Saves run one at a time in this page (a double click or two quick actions can't overwrite each other),
+  // and each save is a Firestore transaction (a team update at the same moment can't be lost either).
+  const save = async () => {
     const [db, user] = await Promise.all([claude.use('db'), claude.use('user')]); if (!db || !user) return false;
     const id = await user.id(); if (!id) return false;
-    const ref = db.collection('leads').doc(id), ex = await ref.get(), cur = ex.exists ? (ex.data() || {}) : {};
+    const ref = db.collection('leads').doc(id);
+    return db.runTransaction(async tx => {
+    const ex = await tx.get(ref), cur = ex.exists ? (ex.data() || {}) : {};
     let saved = {}; try { saved = JSON.parse(localStorage.getItem('ccc_me') || '{}') || {}; } catch(e) {}
     let sn = '', sp = ''; try { sn = sessionStorage.getItem('ccc_name') || ''; sp = sessionStorage.getItem('ccc_phone') || ''; } catch(e) {}
     const name = String(info.name || cur.name || saved.name || sn || '').slice(0,60);
@@ -1546,9 +1550,13 @@ window.cccLead = async function(info){
       data.reqs = (Array.isArray(cur.reqs) ? cur.reqs : []).concat([rq]).slice(-60);
       data.unseen = true; if (ex.exists && (!cur.status || ['cold','lost','noans'].includes(cur.status))) data.status = 'new';
     }
-    if (ex.exists) await ref.update(data); else await ref.set(Object.assign({status: info.req ? 'new' : 'cold', car: ''}, data));
+    if (ex.exists) tx.update(ref, data); else tx.set(ref, Object.assign({status: info.req ? 'new' : 'cold', car: ''}, data));
     return true;
-  } catch(e) { return false; }
+    });
+  };
+  const job = (window.__cccLeadQ || Promise.resolve()).then(save, save);
+  window.__cccLeadQ = job.catch(() => false);
+  try { return !!(await job); } catch(e) { return false; }
 };
 // Confirmation after a request: "received" only when it really reached the leads center; otherwise ask to finish in WhatsApp.
 window.cccDone = function({ok, phone, wa, title, text}){
@@ -2492,10 +2500,13 @@ $('grid').addEventListener('change', e => {
     try {
       const r = rows.find(x => x.id === id), docId = r ? r._doc : id;
       if (r && r._rid){
-        const ref = db.collection('leads').doc(docId), snap = await ref.get(), cur = snap.exists ? (snap.data() || {}) : {};
-        const reqs = (Array.isArray(cur.reqs) ? cur.reqs : []).map(q => q.rid === r._rid ? Object.assign({}, q, data) : q);
-        const docPatch = {reqs}; if ('unseen' in data && !reqs.some(q => q.unseen)) docPatch.unseen = false;
-        await ref.update(docPatch);
+        // transaction: a customer sending a new request at the same moment is not overwritten
+        const ref = db.collection('leads').doc(docId);
+        await db.runTransaction(async tx => {
+          const snap = await tx.get(ref), cur = snap.exists ? (snap.data() || {}) : {};
+          const reqs = (Array.isArray(cur.reqs) ? cur.reqs : []).map(q => q.rid === r._rid ? Object.assign({}, q, data) : q);
+          const docPatch = {reqs}; if ('unseen' in data && !reqs.some(q => q.unseen)) docPatch.unseen = false;
+          tx.update(ref, docPatch); });
       } else await db.collection('leads').doc(docId).update(data);
     } catch(e){ toast('השמירה נכשלה, נסו שוב.'); }
   }
@@ -2667,15 +2678,15 @@ render();
     <li><b>במסך הכניסה:</b> עיר, שם פרטי ומספר טלפון.</li>
     <li><b>בטופס הפנייה ובעמודי הרכבים:</b> שם מלא, טלפון והרכב שמעניין אתכם.</li>
     <li><b>בבקשה לבדיקת זכאות למימון:</b> שם מלא, מספר תעודת זהות, תאריך לידה, טלפון נייד, אימייל, סוג תעסוקה (שכיר או עצמאי), הכנסה חודשית נטו, הבנק שלכם וסכום המימון המבוקש. אם יש לכם רכב לטרייד-אין: מספר הרכב, היצרן והדגם, שנת העלייה לכביש והקילומטראז'. המידע נמסר רק אם תאשרו זאת בסוף הטופס.</li>
-    <li><b>בפתיחת חשבון באזור האישי:</b> שם מלא, שם משתמש, תעודת זהות, תאריך לידה, טלפון נייד, אימייל ועיר (לא חובה). הפרטים האלה, בלי הסיסמה, מגיעים אלינו כדי שנוכל לחזור אליכם. הסיסמה נשמרת רק בדפדפן שלכם, מוצפנת, ואינה נשלחת אלינו.</li>
+    <li><b>בפתיחת חשבון באזור האישי:</b> שם מלא, שם משתמש, תעודת זהות, תאריך לידה, טלפון נייד, אימייל ועיר (לא חובה). הפרטים האלה, בלי הסיסמה, מגיעים אלינו כדי שנוכל לחזור אליכם. הסיסמה מנוהלת בשירות ההזדהות של Google Firebase ונשמרת שם מוצפנת. אנחנו לא רואים אותה ואין לנו גישה אליה.</li>
     <li><b>בפעולות באתר:</b> כשאתם מוסיפים רכב לסל, שולחים בקשה, שולחים חישוב מימון או פותחים שיחת וואטסאפ מהאתר, אנחנו שומרים את הפעולה ואת הרכב, כדי שהנציג ידע במה התעניינתם. הנתונים נשמרים במערכת הפניות שלנו וגלויים רק לנו ולנציגים שמטפלים בפנייה.</li>
   </ul>
   <h3>למה אנחנו משתמשים במידע</h3>
   <p>כדי לחזור אליכם בנוגע לרכבים שמעניינים אתכם, לתת הצעת מחיר ומימון, ולשפר את השירות. האישור שנתתם במסך הכניסה מתייחס לפנייה שלכם בלבד. לא נשלח לכם דיוור שיווקי כללי בלי הסכמה נפרדת ומפורשת, ותוכלו לבטל הסכמה כזו בכל עת.</p>
   <h3>העברת מידע לאחרים</h3>
-  <p>לא נמכור את הפרטים שלכם ולא נעביר אותם לצד שלישי לצורכי שיווק. אם תבקשו בדיקת מימון, נעביר לגוף המממן רק את מה שנדרש לבדיקה, ורק בהסכמתכם. האתר מתארח בפלטפורמה חיצונית, והפרטים שנמסרים במסך הכניסה נשמרים בה ונגישים רק לנו.</p>
+  <p>לא נמכור את הפרטים שלכם ולא נעביר אותם לצד שלישי לצורכי שיווק. אם תבקשו בדיקת מימון, נעביר לגוף המממן רק את מה שנדרש לבדיקה, ורק בהסכמתכם. האתר מתארח ב-GitHub Pages. הפרטים שנמסרים באתר (במסך הכניסה, בטפסים, באזור האישי ובבקשת המימון) נשמרים במאגר מאובטח בשירות Google Firebase של חברת Google, שמשמש אותנו כספק אחסון בלבד. הגישה אליהם מוגבלת לנו ולנציגים המורשים שלנו.</p>
   <h3>עוגיות ואחסון בדפדפן</h3>
-  <p>האתר משתמש באחסון הכרחי בדפדפן, כדי לפעול כמו שצריך. אם תוסיפו רכבים לסל או תשמרו פרטים באזור האישי, המידע הזה יישמר בדפדפן שלכם בלבד עד שתמחקו אותו (באזור האישי או בהגדרות הפרטיות). אין באתר עוגיות פרסום, פיקסלים או כלי מדידה ומעקב. ספק האחסון של האתר עשוי להשתמש בעוגיות טכניות משלו, שאינן בשליטתנו.</p>
+  <p>האתר משתמש באחסון הכרחי בדפדפן, כדי לפעול כמו שצריך. אם תוסיפו רכבים לסל או תשמרו פרטים באזור האישי, המידע הזה יישמר גם בדפדפן שלכם עד שתמחקו אותו (באזור האישי או בהגדרות הפרטיות). אם פתחתם חשבון, הפרטים והבקשות שמורים גם בחשבון שלכם, כדי שתוכלו להיכנס מכל מכשיר, ושירות ההזדהות של Firebase שומר בדפדפן נתון התחברות טכני כדי שתישארו מחוברים. אין באתר עוגיות פרסום, פיקסלים או כלי מדידה ומעקב. ספק האחסון של האתר עשוי להשתמש בעוגיות טכניות משלו, שאינן בשליטתנו.</p>
   <div class="legal-tbl"><table>
     <thead><tr><th>שם</th><th>סוג</th><th>קטגוריה</th><th>מטרה</th><th>משך שמירה</th></tr></thead>
     <tbody>
@@ -2686,7 +2697,7 @@ render();
   </table></div>
   <p>אפשר לראות ולמחוק את המידע הזה בכל רגע דרך "הגדרות פרטיות" בתחתית האתר.</p>
   <h3>אבטחה ושמירת מידע</h3>
-  <p>הגישה לפרטים שנמסרים באתר מוגבלת לנו בלבד. נשמור אותם רק כל עוד הם נחוצים לטיפול בפנייה שלכם או כפי שהחוק מחייב.</p>
+  <p>הגישה לפרטים שנמסרים באתר מוגבלת לנו ולנציגים המורשים שלנו, בכניסה עם סיסמה. כל לקוח יכול לראות רק את הפרטים והבקשות שלו. נשמור אותם רק כל עוד הם נחוצים לטיפול בפנייה שלכם או כפי שהחוק מחייב.</p>
   <h3>הזכויות שלכם</h3>
   <p>אתם רשאים לבקש לעיין במידע שלכם, לתקן מידע לא נכון, למחוק מידע שכבר אינו נחוץ, ולהתנגד לשימוש בו לשיווק. אפשר לפנות אלינו בכפתור הוואטסאפ באתר, ונענה בתוך זמן סביר וללא עלות.</p>
   <h3>קרדיט לתמונות</h3>
