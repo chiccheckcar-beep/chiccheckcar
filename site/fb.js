@@ -63,8 +63,11 @@
     return (await auth.createUserWithEmailAndPassword(email, pw)).user;
   }
   // staff / owner sign-in used by the admin area
+  // New-request e-mail to the owner through EmailJS (free plan). Empty publicKey = off. Only name, phone, car and request type
+  // are sent (never ID number, income or bank). Fill these three from the owner's EmailJS account to turn it on.
+  const NOTIFY = {serviceId: '', templateId: '', publicKey: ''};
   window.cccFb = {
-    OWNER, CFG, init, isOwnerUser, customerRegister,
+    OWNER, CFG, NOTIFY, init, isOwnerUser, customerRegister,
     async resetPassword(email){ const {auth} = await init(); auth.languageCode = 'he'; await auth.sendPasswordResetEmail(email); },
     async onAuth(cb){ const {auth} = await init(); return auth.onAuthStateChanged(cb); },
     async current(){ const {auth} = await init(); return auth.currentUser; },

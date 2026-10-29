@@ -1558,7 +1558,17 @@ window.cccLead = async function(info){
   };
   const job = (window.__cccLeadQ || Promise.resolve()).then(save, save);
   window.__cccLeadQ = job.catch(() => false);
-  try { return !!(await job); } catch(e) { return false; }
+  let ok = false; try { ok = !!(await job); } catch(e) { ok = false; }
+  // e-mail the owner about a new request (only after it was saved; never blocks or fails the customer's request)
+  try { const N = window.cccFb && window.cccFb.NOTIFY;
+    if (ok && info.req && N && N.publicKey && N.serviceId && N.templateId){
+      const T = {form: 'טופס יצירת קשר', car: 'עמוד רכב', cart: 'סל', loan: 'בקשת מימון (רכישה זריזה)'};
+      fetch('https://api.emailjs.com/api/v1.0/email/send', {method: 'POST', headers: {'Content-Type': 'application/json'}, keepalive: true,
+        body: JSON.stringify({service_id: N.serviceId, template_id: N.templateId, user_id: N.publicKey, template_params: {
+          name: String(info.name || '').slice(0,60), phone: String(info.phone || '').slice(0,20), car: String(info.car || '').slice(0,300),
+          type: T[info.src] || info.src, time: new Date().toLocaleString('he-IL'), link: 'https://www.chiccheckcar.co.il/index.html#admin'}})}).catch(() => {});
+    } } catch(e) {}
+  return ok;
 };
 // Confirmation after a request: "received" only when it really reached the leads center; otherwise ask to finish in WhatsApp.
 window.cccDone = function({ok, phone, wa, title, text}){

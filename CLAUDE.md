@@ -63,6 +63,8 @@ Preview locally: `cd site && python3 -m http.server 8080` then open http://local
 Lead saving (2026-10-28): cccLead runs one save at a time per page (window.__cccLeadQ) and each save is a Firestore
 transaction (read + write of leads/<uid> together); the admin save() of a request is a transaction too. So a double click,
 two quick actions or a team update at the same moment can't overwrite a request. car.html locks its submit button while sending.
+New-request e-mail (2026-10-29): after a request is saved, cccLead posts name / phone / car / type to EmailJS
+(api.emailjs.com) using cccFb.NOTIFY {serviceId, templateId, publicKey} in fb.js. Empty publicKey = off. Never sends ID, income or bank.
 Data shapes:
 - `leads/<customerUid>` doc: {name, phone, city, status, src, ts, history[], reqs[], loan, profile, unseen, last}.
   Each customer request is an item in `reqs[]` {rid, ts, src, car, detail, name, phone, city, status, note, unseen, loan?};
