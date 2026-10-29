@@ -80,6 +80,9 @@ Personal area (me.html) lists requests from the server (leads/<uid>.reqs; local-
 Purchase process: 12 stages in terms.js (CCC_STAGES / CCC_STAGE_LABEL). The team sets the stage per request in the leads-center
 drawer ("שלב בתהליך הרכישה") -> progress/<customerUid> {reqs: {<rid>: {stage, result, ts, by, log[]}}}; customers can only read it.
 No stage yet = stage 2 ("waiting for review").
+Status -> stage sync (owner, 2026-10-29): when the owner changes a request's status, syncStage() moves the customer's stage forward only
+(work/meet/quote -> 5, uw -> 6, won -> 9); 'lost' sets result 'closed' (customer sees "הבקשה נסגרה"), an active status reopens it;
+noans / cold don't change what the customer sees. The leads CSV export prefixes values starting with = + - @ with ' (no Excel formulas).
 firestore.rules (2026-10-25) adds `progress` and stops customers from setting team-only fields (status other than new/cold,
 merge marks, test flag). THE OWNER MUST PUBLISH IT in Firebase console; until then stages cannot be saved and the audit flags it.
 Audit "אזור אישי" tab: metrics + checks + a full end-to-end test with a temporary test customer (separate Firebase app, doc

@@ -210,8 +210,8 @@ __DONE__
   }
   function tlHtml(q){
     const S = window.CCC_STAGES, L = window.CCC_STAGE_LABEL; if (!S) return '';
-    const p = prog && prog.reqs && prog.reqs[q.rid], stage = p && p.stage ? +p.stage : 2, res = p && p.result, stop = stage === 7 && res === 'rejected';
-    const last = stop ? 7 : 12, all = openTl.has(q.rid), upto = all ? last : Math.min(last, stage + 1);
+    const p = prog && prog.reqs && prog.reqs[q.rid], stage = p && p.stage ? +p.stage : 2, res = p && p.result, stop = (stage === 7 && res === 'rejected') || res === 'closed';
+    const last = stop ? stage : 12, all = openTl.has(q.rid), upto = all ? last : Math.min(last, stage + 1);
     const items = []; for (let n = 1; n <= upto; n++){
       const cls = n < stage ? 'done' : n === stage ? (stop ? 'stop' : (stage === 12 ? 'done' : 'cur')) : '';
       const when = p && Array.isArray(p.log) ? (p.log.slice().reverse().find(x => +x.stage === n) || {}).ts : (n === 1 ? q.ts : null);
@@ -225,7 +225,7 @@ __DONE__
     const note = remoteState === 'err' ? '<div class="req-warn">לא הצלחנו לטעון כרגע את הסטטוס העדכני של הבקשות מהמערכת. רעננו את העמוד בעוד רגע.</div>' : '';
     P.innerHTML = note + '<div class="reqs">' + list.map(q => {
       const p = prog && prog.reqs && prog.reqs[q.rid], stage = p && p.stage ? +p.stage : 2;
-      const s = q.saved === false ? ['לא נשמרה במערכת', '#b3261e'] : q.saved === null ? ['הבקשה נשלחה', '#7a2a4a'] : [window.CCC_STAGE_LABEL ? window.CCC_STAGE_LABEL(stage, p && p.result) : (CST[q.status] || CST.new)[0], stage === 7 && p && p.result === 'rejected' ? '#b3261e' : '#7a2a4a'];
+      const s = q.saved === false ? ['לא נשמרה במערכת', '#b3261e'] : q.saved === null ? ['הבקשה נשלחה', '#7a2a4a'] : [window.CCC_STAGE_LABEL ? window.CCC_STAGE_LABEL(stage, p && p.result) : (CST[q.status] || CST.new)[0], stage === 7 && p && p.result === 'rejected' ? '#b3261e' : p && p.result === 'closed' ? '#6a5a60' : '#7a2a4a'];
       return '<div class="req"><div class="req-top"><span class="st" style="--c:' + s[1] + '">' + esc(s[0]) + '</span><span class="req-no">#' + esc(String(q.rid || '').toUpperCase()) + '</span></div>' +
         '<b>' + esc(RT[q.src] || 'בקשה') + '</b>' + (q.saved === false ? '<div class="req-warn">הבקשה נשמרה רק בדפדפן הזה ולא הגיעה אלינו. שלחו אותה שוב, או פנו אלינו בוואטסאפ 054-576-2802.</div>' : '') +
         dealHtml(q) + (q.saved ? tlHtml(q) : '') + '</div>'; }).join('') + '</div>';

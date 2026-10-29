@@ -2520,14 +2520,31 @@ $('grid').addEventListener('change', e => {
           const reqs = (Array.isArray(cur.reqs) ? cur.reqs : []).map(q => q.rid === r._rid ? Object.assign({}, q, data) : q);
           const docPatch = {reqs}; if ('unseen' in data && !reqs.some(q => q.unseen)) docPatch.unseen = false;
           tx.update(ref, docPatch); });
+        if ('status' in data) await syncStage(r, data.status);
       } else await db.collection('leads').doc(docId).update(data);
     } catch(e){ toast('השמירה נכשלה, נסו שוב.'); }
+  }
+  // The lead status also moves the purchase stage the customer sees (owner, 2026-10-29). Only forward; "לא רלוונטי" closes the request
+  // for the customer ("הבקשה נסגרה"), and moving it back to an active status reopens it. "אין מענה" / "לקוח קר" don't change what the customer sees.
+  const STATUS_STAGE = {work: 5, meet: 5, quote: 5, uw: 6, won: 9};
+  async function syncStage(r, status){
+    if (!owner || !r || !r._rid) return;
+    const p = ((PROG[r._doc] || {}).reqs || {})[r._rid] || null, cur = p && p.stage ? +p.stage : 2, curRes = (p && p.result) || null;
+    let stage = cur, result = curRes;
+    if (status === 'lost') result = 'closed';
+    else { if (curRes === 'closed') result = null; const to = STATUS_STAGE[status]; if (to && to > cur){ stage = to; result = null; } }
+    if (stage === cur && result === curRes) return;
+    const ts = new Date().toISOString(); let by = ''; try { by = ((await cccFb.current()) || {}).email || ''; } catch(_) {}
+    try { await db.collection('progress').doc(r._doc).set({updatedAt: ts, reqs: {[r._rid]: {stage, result, ts, by, log: firebase.firestore.FieldValue.arrayUnion({stage, result, ts, by})}}}, {merge: true});
+      toast('הסטטוס נשמר. הלקוח רואה עכשיו: "' + window.CCC_STAGE_LABEL(stage, result) + '".'); }
+    catch(e){ toast('הסטטוס נשמר, אבל השלב שהלקוח רואה לא עודכן. אפשר לעדכן אותו ידנית בפרטי הלקוח.'); }
   }
   function toast(m){ const n = $a('admToast'); n.textContent = m; n.hidden = false; setTimeout(() => n.hidden = true, 2500); }
 
   async function exportCsv(){
     const head = ['שם','טלפון','עיר','רכב','מקור','סטטוס','הערה','עדכון אחרון','היסטוריית פעולות','סכום מימון','ת"ז','תאריך לידה','אימייל','תעסוקה','הכנסה נטו','בנק','טרייד-אין: מספר רכב','טרייד-אין: דגם','טרייד-אין: שנה','טרייד-אין: ק"מ'];
-    const esc = v => '"' + String(v ?? '').replace(/"/g,'""') + '"';
+    // a value a customer typed that starts with = + - @ could run as a formula in Excel: prefix it with ' so it stays plain text
+    const esc = v => { let t = String(v ?? ''); if (/^[=+\-@\t\r]/.test(t)) t = "'" + t; return '"' + t.replace(/"/g,'""') + '"'; };
     const lines = [head.map(esc).join(',')].concat(filtered().map(r => [r.name, r.phone, r.city, r.car, srcL(r.src), SL[st(r)], r.note, when(r.ts), hist(r).map(x => when(x.ts) + ' ' + (x.detail || srcL(x.src))).join(' | '), ...(r.loan ? [r.loan.amount, r.loan.idn, r.loan.dob ? r.loan.dob.split('-').reverse().join('/') : '', r.loan.email, r.loan.emp, r.loan.income, r.loan.bank, ...(r.loan.trade ? [r.loan.trade.plate, r.loan.trade.model, r.loan.trade.year, r.loan.trade.km] : ['','','',''])] : ['','','','','','','','','','',''])].map(esc).join(',')));
     try { const dl = await claude.use('downloads'); if (!dl) throw 0; await dl.save({filename: 'leads-chiccheckcar.csv', data: '﻿' + lines.join('\r\n')}); }
     catch(e){ toast('לא ניתן להוריד את הקובץ מהתצוגה הזו.'); }

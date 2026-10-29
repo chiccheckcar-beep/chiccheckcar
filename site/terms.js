@@ -68,4 +68,4 @@ window.CCC_STAGES = [
   'הרכב מוכן למסירה',
   'הרכב נמסר ללקוח'
 ];
-window.CCC_STAGE_LABEL = (n, result) => n === 7 ? (result === 'rejected' ? 'המימון נדחה' : result === 'approved' ? 'המימון אושר' : 'החלטת המימון') : (window.CCC_STAGES[n] || '');
+window.CCC_STAGE_LABEL = (n, result) => result === 'closed' ? 'הבקשה נסגרה' : n === 7 ? (result === 'rejected' ? 'המימון נדחה' : result === 'approved' ? 'המימון אושר' : 'החלטת המימון') : (window.CCC_STAGES[n] || '');
