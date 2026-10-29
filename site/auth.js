@@ -38,7 +38,7 @@
       put(Object.assign(keepLocal(get()), {name: d.name || get().name, phone: d.phone || get().phone, city: d.city || get().city, email: p.email || acct.email, username: p.username || get().username}));
     } catch(e) {}
   }
-  if (window.cccFb) cccFb.onAuth(u => { const was = acct; acct = u && !u.isAnonymous ? u : null; readyRes();
+  if (window.cccFb) cccFb.onAuth(u => { const was = acct; acct = u && !u.isAnonymous && !(cccFb.isOwnerUser && cccFb.isOwnerUser(u)) ? u : null;   // a manager signed in on this browser is not a customer account readyRes();
     if (acct && (!was || was.uid !== acct.uid)) pullProfile().then(() => document.dispatchEvent(new CustomEvent('ccc-signed-in')));
     if (!acct && was) document.dispatchEvent(new CustomEvent('ccc-signed-out')); }).catch(() => readyRes());
   else readyRes();
