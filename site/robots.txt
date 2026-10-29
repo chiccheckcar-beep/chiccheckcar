@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /audit.html
+
+Sitemap: https://www.chiccheckcar.co.il/sitemap.xml
