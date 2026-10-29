@@ -287,7 +287,7 @@ function show(){
     return;
   }
   const full = [c.maker, c.model, c.trim].filter(Boolean).join(' ');
-  document.title = full + ' · ChicCheckCar';
+  document.title = full + " - מחיר, מפרט ומימון | צ'יק צ'אק רכב";
   const st = STATS[i];
   const sp = SPECS[i] || {};
   const grp = (title, rows) => { const rr = rows.filter(r => r[1]); return rr.length ? `<div class="group"><h3>${title}</h3><dl>${rr.map(([k,v]) => `<div class="r"><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl></div>` : ''; };
