@@ -327,6 +327,7 @@ function show(){
       <div class="pricebox">
         <div class="from">החל מ-</div>
         <div class="big">${fmt(c.price)}</div>
+        <div class="mon"><span class="addon">המחיר אינו כולל אגרת רישוי</span></div>
         <div class="mon">החזר חודשי משוער <b>${fmtM(monthlyOf(c.price))}</b></div>
         <div class="mon">מקדמה <b>${fmt(TERMS.downOf(c))}</b> <span class="addon">בנוסף למחיר הרכב</span></div>
         <p class="plan-note">${TERMS.months} תשלומים · ריבית שנתית ${TERMS.rate}% · בלון ${TERMS.balloon}% ממחיר הרכב. ההחזר משוער עד לאישור הצעה פרטנית. המקדמה משולמת בנוסף למחיר הרכב. תנאי העסקה כפופים לאישור מימון ולהסכם העסקה.</p>
@@ -366,7 +367,7 @@ function show(){
         <a class="btn solid-w" href="#offer" id="finCta">לקבלת הצעת מימון</a>
         <a class="btn ghost-w" id="finWa" target="_blank" rel="noopener">שליחת החישוב בוואטסאפ</a>
         <p class="fin-note" id="finMethod"></p>
-        <p class="fin-note">ההחזר משוער בלבד עד לאישור הצעה פרטנית. המקדמה משולמת בנוסף למחיר הרכב. תנאי העסקה כפופים לאישור מימון ולהסכם העסקה.</p>
+        <p class="fin-note">ההחזר משוער בלבד עד לאישור הצעה פרטנית. המחיר אינו כולל אגרת רישוי. המקדמה משולמת בנוסף למחיר הרכב. תנאי העסקה כפופים לאישור מימון ולהסכם העסקה.</p>
       </div>
     </div>
   </section>

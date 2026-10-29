@@ -1262,7 +1262,7 @@ body:has(.adm:not([hidden])) .me-fab,body:has(#gate:not([hidden])) .me-fab{displ
       <div class="dp-one"><span>מקדמה</span><b>₪24,900</b></div>
     </article>
   </div>
-  <p class="cc-note">המקדמה משולמת בנוסף למחיר הרכב. תנאי העסקה כפופים לאישור מימון ולהסכם העסקה.</p>
+  <p class="cc-note">המחירים אינם כוללים אגרת רישוי. המקדמה משולמת בנוסף למחיר הרכב. תנאי העסקה כפופים לאישור מימון ולהסכם העסקה.</p>
   <a class="btn" href="#catalog">לצפייה ברכבים ובהצעות המימון</a>
 </div></section>
 
@@ -1309,7 +1309,7 @@ body:has(.adm:not([hidden])) .me-fab,body:has(#gate:not([hidden])) .me-fab{displ
       <a class="btn gold" id="finCta" href="#form">לקבלת הצעת מימון</a>
       <a class="btn ghost" id="finWa" target="_blank" rel="noopener">שליחת החישוב בוואטסאפ</a>
       <p class="fin-note" id="finMethod"></p>
-      <p class="fin-note">ההחזר משוער בלבד עד לאישור הצעה פרטנית. המקדמה משולמת בנוסף למחיר הרכב. תנאי העסקה כפופים לאישור מימון ולהסכם העסקה.</p>
+      <p class="fin-note">ההחזר משוער בלבד עד לאישור הצעה פרטנית. המחיר אינו כולל אגרת רישוי. המקדמה משולמת בנוסף למחיר הרכב. תנאי העסקה כפופים לאישור מימון ולהסכם העסקה.</p>
     </div>
   </div>
 </div></section>
@@ -1654,6 +1654,7 @@ function cardHtml(g){
       <div class="uc-body">
         <div class="uc-lbl">מחיר${multi ? ` · ${esc1(labels[ix.indexOf(i)])}` : ''}</div>
         <div class="uc-price">החל מ- ${fmt(c.price)}</div>
+        <div class="uc-lbl">לא כולל אגרת רישוי</div>
         ${specsHtml(c, i)}
         <div class="uc-btn">החזר חודשי משוער ${fmtM(monthlyOf(c.price))}</div>
         ${multi ? `<div class="uc-acts"><button type="button" class="uc-cmp" data-cmp="${g}">השווה רמות גימור</button><button type="button" class="uc-go" data-go="${i}">בחר גרסה והמשך</button></div>` : ''}

@@ -118,6 +118,8 @@ Still open:
 - Down payment is paid ON TOP of the car price. Tiers: <=200k 9,900; <=300k 14,900 (EV 16,900); <=400k 16,900 (EV 19,000);
   >400k, commercial (cat 'מסחרי') and Toyota Land Cruiser 24,900. Only fuel 'חשמלי' counts as EV (hybrids/PHEV = non-EV).
 - Required disclaimer: "המקדמה משולמת בנוסף למחיר הרכב. תנאי העסקה כפופים לאישור מימון ולהסכם העסקה."
+- (owner, 2026-10-29) Prices do not include the licence fee: every card ("לא כולל אגרת רישוי"), every car page price box
+  ("המחיר אינו כולל אגרת רישוי") and the finance notes say so.
 - End-of-term options: never promise a swap without extra payment.
 
 ## Catalog: one card per model (2026-10-22)
