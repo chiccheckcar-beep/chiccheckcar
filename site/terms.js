@@ -1,4 +1,4 @@
-/* ChicCheckCar deal terms: one source for every page (catalog cards, car page, finance calculator, personal area).
+/* Chick Chack Car deal terms: one source for every page (catalog cards, car page, finance calculator, personal area).
    Owner's rules, 2026-10-21. Change the numbers here only. */
 (function(){
   const T = {

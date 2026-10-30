@@ -1,4 +1,4 @@
-/* Firebase connection for ChicCheckCar.
+/* Firebase connection for Chick Chack Car.
    The site was built on the claude.ai runtime (window.claude.use('db' | 'user' | 'downloads')).
    This file provides the same calls on top of Firebase, so the rest of the site works unchanged.
    - db        -> Firestore (compat API: collection().doc().get/set/update/delete, onSnapshot, orderBy, limit)

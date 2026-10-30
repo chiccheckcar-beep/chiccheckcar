@@ -14,9 +14,9 @@ page = r'''<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>ChicCheckCar</title>
+<title>Chick Chack Car</title>
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"><link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png"><link rel="icon" type="image/png" sizes="192x192" href="icon-192.png"><link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="description" content="פרטי הרכב, מחיר, נתונים טכניים ותשלום חודשי משוער · ChicCheckCar">
+<meta name="description" content="פרטי הרכב, מחיר, נתונים טכניים ותשלום חודשי משוער · Chick Chack Car">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&family=Unbounded:wght@600;700&display=swap">
 <style>
@@ -205,7 +205,7 @@ footer a{color:#e8c7d4 !important}
   </div>
 </div>
 
-<footer><div class="wrap">ChicCheckCar · המחירים לפי המחירון שלנו ועשויים להשתנות. התמונות להמחשה בלבד.<br><a href="index.html#privacy" style="color:inherit">מדיניות פרטיות ועוגיות</a> · <a href="index.html#settings" style="color:inherit">הגדרות פרטיות</a> · <a href="index.html#accessibility" style="color:inherit">הצהרת נגישות</a></div></footer>
+<footer><div class="wrap">Chick Chack Car · המחירים לפי המחירון שלנו ועשויים להשתנות. התמונות להמחשה בלבד.<br><a href="index.html#privacy" style="color:inherit">מדיניות פרטיות ועוגיות</a> · <a href="index.html#settings" style="color:inherit">הגדרות פרטיות</a> · <a href="index.html#accessibility" style="color:inherit">הצהרת נגישות</a></div></footer>
 
 <script src="fb.js"></script>
 <script src="terms.js"></script>
@@ -221,7 +221,7 @@ window.cccDone = function({ok, phone, wa, title, text}){
   ic.innerHTML = ok ? icOk : icWa; ic.classList.toggle('warn', !ok);
   document.getElementById('okT').textContent = title || (ok ? 'פנייתכם התקבלה' : 'עוד צעד אחד');
   document.getElementById('okP').textContent = text || (ok
-    ? 'תודה! נציג של ChicCheckCar יחזור אליכם בהקדם' + (phone ? ' למספר ' + phone : '') + '.'
+    ? 'תודה! נציג של Chick Chack Car יחזור אליכם בהקדם' + (phone ? ' למספר ' + phone : '') + '.'
     : 'כדי שהפנייה תגיע אלינו, לחצו על הכפתור ושלחו את ההודעה בוואטסאפ. ההודעה כבר מוכנה עם הפרטים שלכם.');
   w.hidden = !wa; if (wa){ w.href = wa; w.textContent = ok ? 'רוצים מענה מהיר? שלחו גם בוואטסאפ' : 'שליחת הפנייה בוואטסאפ'; w.classList.toggle('soft', ok); }
   box.hidden = false; (ok ? box.querySelector('.okbox-close') : w).focus();
@@ -251,7 +251,7 @@ function show(){
   const c = CARS[i];
   const page = document.getElementById('page');
   if (!c) {
-    document.title = 'ChicCheckCar';
+    document.title = 'Chick Chack Car';
     page.innerHTML = '<div class="missing"><h1>הרכב לא נמצא</h1><p><a class="btn" href="index.html#catalog">חזרה לקטלוג</a></p></div>';
     return;
   }
@@ -460,11 +460,11 @@ for k, idx in groups.items():
     head = ('<title>' + H.escape(title, quote=False) + '</title>\n'
         + '<meta name="description" content="' + H.escape(desc) + '">\n'
         + '<link rel="canonical" href="' + url + '">\n'
-        + '<meta property="og:type" content="product"><meta property="og:site_name" content="ChicCheckCar">'
+        + '<meta property="og:type" content="product"><meta property="og:site_name" content="Chick Chack Car">'
         + '<meta property="og:title" content="' + H.escape(title) + '"><meta property="og:description" content="' + H.escape(desc) + '">'
         + '<meta property="og:url" content="' + url + '"><meta property="og:image" content="' + img + '">\n'
         + '<script>if (!/^#car\\d+$/.test(location.hash)) history.replaceState(null, "", "#car' + str(first) + '");</script>')
-    pg = page.replace('<title>ChicCheckCar</title>', head, 1)
+    pg = page.replace('<title>Chick Chack Car</title>', head, 1)
     pg = re.sub(r'<meta name="description" content="פרטי הרכב[^"]*">\n', '', pg, count=1)
     open(f"{site}/car-{slugs[k]}.html", 'w', encoding='utf-8').write(pg)
     pages.append(url)

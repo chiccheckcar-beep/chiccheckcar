@@ -1,4 +1,4 @@
-/* ChicCheckCar — financing eligibility request (4 steps). Shared by index.html and car.html.
+/* Chick Chack Car — financing eligibility request (4 steps). Shared by index.html and car.html.
    Needs window.cccLead / window.cccDone from the host page. Does NOT decide eligibility: it collects the request for a finance rep. */
 (function(){
   const BANKS = ['בנק הפועלים','בנק לאומי','בנק דיסקונט','בנק מזרחי טפחות','הבנק הבינלאומי','בנק מרכנתיל','בנק ירושלים','בנק מסד','בנק יהב','וואן זירו','אחר'];
@@ -80,7 +80,7 @@
   root.setAttribute('role','dialog'); root.setAttribute('aria-modal','true'); root.setAttribute('aria-labelledby','lnStep');
   root.innerHTML = `<div class="ln-bg" data-ln-close></div>
   <div class="ln-sheet">
-    <div class="ln-top"><img class="ln-logo" src="logo-wide.png" alt="ChicCheckCar"><button type="button" class="ln-x" data-ln-close aria-label="סגירה">×</button></div>
+    <div class="ln-top"><img class="ln-logo" src="logo-wide.png" alt="Chick Chack Car"><button type="button" class="ln-x" data-ln-close aria-label="סגירה">×</button></div>
     <div class="ln-body"><div class="ln-prog" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><div id="lnPane"></div></div>
     <div class="ln-foot"><button type="button" class="ln-next" id="lnNext">המשך</button><button type="button" class="ln-back" id="lnBack" aria-label="חזרה לשלב הקודם">›</button></div>
   </div>`;
@@ -145,7 +145,7 @@
       P.innerHTML = head(5, 'בדקו שהכול נכון ושלחו') + `<div class="ln-box"><dl class="ln-sum">
         ${row('רכב', d.car)}${row('סכום מימון', d.amount ? nis(d.amount) : '')}${row('שם', d.name)}${row('ת"ז', d.idn)}${row('תאריך לידה', dobTxt(d.dob))}${row('טלפון', d.phone)}${row('אימייל', d.email)}
         ${row('תעסוקה', d.emp)}${row('הכנסה נטו', d.income ? nis(d.income) : '')}${row('בנק', d.bank)}${row('טרייד-אין', T ? T.model + ' · ' + T.year + ' · ' + Number(T.km).toLocaleString('he-IL') + ' ק"מ · מס׳ ' + T.plate : 'ללא')}</dl>
-        <label class="ln-ck"><input type="checkbox" id="lnOk" ${d.agree ? 'checked' : ''}><span>אני מאשר/ת ש-ChicCheckCar תשמור את הפרטים, תחזור אליי בנוגע למימון, ותעביר לגוף המממן רק את מה שנדרש לבדיקה. <a href="index.html#privacy" target="_blank" rel="noopener">מדיניות הפרטיות</a></span></label><p class="ln-err" data-e="agree"></p></div>`;
+        <label class="ln-ck"><input type="checkbox" id="lnOk" ${d.agree ? 'checked' : ''}><span>אני מאשר/ת ש-Chick Chack Car תשמור את הפרטים, תחזור אליי בנוגע למימון, ותעביר לגוף המממן רק את מה שנדרש לבדיקה. <a href="index.html#privacy" target="_blank" rel="noopener">מדיניות הפרטיות</a></span></label><p class="ln-err" data-e="agree"></p></div>`;
       const ok = $('#lnOk'); const sync = () => { d.agree = ok.checked; $('#lnNext').disabled = !ok.checked; }; ok.addEventListener('change', sync); sync();
     } else $('#lnNext').disabled = false;
     const f = step === 4 ? null : P.querySelector('input:not([type=range]),select,[data-emp]'); if (f && step > 1) setTimeout(() => f.focus(), 50);

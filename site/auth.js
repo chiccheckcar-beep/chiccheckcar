@@ -1,4 +1,4 @@
-/* ChicCheckCar — customer account (registration, sign-in, password reset). Shared by index.html, car.html and me.html.
+/* Chick Chack Car — customer account (registration, sign-in, password reset). Shared by index.html, car.html and me.html.
    Since 2026-10-25 the account is a Firebase Auth email/password account (see fb.js): the same login works on every device,
    and the customer's data lives in Firestore leads/<uid> (readable only by the customer and the team, see firestore.rules).
    Registering upgrades the visitor's anonymous session, so the uid (and the lead document) does not change.
@@ -109,7 +109,7 @@
   root.setAttribute('role','dialog'); root.setAttribute('aria-modal','true'); root.setAttribute('aria-labelledby','auT');
   root.innerHTML = `<div class="au-bg" data-au-close></div><div class="au-card">
     <button type="button" class="au-x" data-au-close aria-label="סגירה">×</button>
-    <span class="au-logo" role="img" aria-label="ChicCheckCar"></span>
+    <span class="au-logo" role="img" aria-label="Chick Chack Car"></span>
     <h2 id="auT">האזור האישי</h2>
     <p class="au-sub" id="auSub"></p>
     <div class="au-tabs" role="tablist"><button type="button" data-au-tab="reg">פתיחת חשבון</button><button type="button" data-au-tab="login">כניסה</button></div>
@@ -122,7 +122,7 @@
       <p class="au-sec">פרטי כניסה</p>
       ${F('auUser','שם משתמש','dir="ltr" autocomplete="username" autocapitalize="off" spellcheck="false"')}
       <div class="au-two"><div>${F('auPw','סיסמה','type="password" dir="ltr" autocomplete="new-password"','(8+ תווים)')}</div><div>${F('auPw2','אימות סיסמה','type="password" dir="ltr" autocomplete="new-password"')}</div></div>
-      <label class="au-ck"><input type="checkbox" id="auOk"><span>אני מאשר/ת ש-ChicCheckCar תשמור את הפרטים ותחזור אליי בנוגע לרכבים שבחרתי. <a href="index.html#privacy" target="_blank" rel="noopener">מדיניות הפרטיות</a></span></label>
+      <label class="au-ck"><input type="checkbox" id="auOk"><span>אני מאשר/ת ש-Chick Chack Car תשמור את הפרטים ותחזור אליי בנוגע לרכבים שבחרתי. <a href="index.html#privacy" target="_blank" rel="noopener">מדיניות הפרטיות</a></span></label>
       <p class="au-err" id="auErr" role="alert"></p>
       <button type="submit" class="au-go">פתיחת חשבון והמשך</button>
     </form>
@@ -140,7 +140,7 @@
       <button type="submit" class="au-go">שליחת קישור לאיפוס</button>
       <button type="button" class="au-link" data-au-tab="login">חזרה לכניסה</button>
     </form>
-    <p class="au-note">החשבון שמור במערכת של ChicCheckCar ופועל מכל מכשיר. הסיסמה מנוהלת באמצעות Firebase ואיננו רואים אותה.</p>
+    <p class="au-note">החשבון שמור במערכת של Chick Chack Car ופועל מכל מכשיר. הסיסמה מנוהלת באמצעות Firebase ואיננו רואים אותה.</p>
   </div>`;
   document.body.appendChild(root);
   const $ = id => document.getElementById(id);

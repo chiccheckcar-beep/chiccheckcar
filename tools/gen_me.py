@@ -16,7 +16,7 @@ page = r'''<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>האזור האישי · ChicCheckCar</title>
+<title>האזור האישי · Chick Chack Car</title>
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"><link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png"><link rel="icon" type="image/png" sizes="192x192" href="icon-192.png"><link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&family=Unbounded:wght@600;700&display=swap">
@@ -125,7 +125,7 @@ __OKCSS__
 </style>
 </head>
 <body>
-<header class="top"><div class="wrap"><a href="index.html" aria-label="ChicCheckCar, לעמוד הראשי"><span class="logo" role="img" aria-label="ChicCheckCar"></span></a><a class="back" href="index.html#catalog">לקטלוג הרכבים ←</a></div></header>
+<header class="top"><div class="wrap"><a href="index.html" aria-label="Chick Chack Car, לעמוד הראשי"><span class="logo" role="img" aria-label="Chick Chack Car"></span></a><a class="back" href="index.html#catalog">לקטלוג הרכבים ←</a></div></header>
 <main class="wrap">
   <section class="hero"><span class="av" id="av" aria-hidden="true">?</span><div><small id="hi">שלום</small><h1>האזור האישי</h1></div></section>
   <nav class="tabs" aria-label="האזור האישי"><a href="#cart" data-tab="cart">הסל שלי <b id="nCart"></b></a><a href="#req" data-tab="req">הפניות שלי <b id="nReq"></b></a><a href="#info" data-tab="info">הפרטים שלי</a></nav>
@@ -149,7 +149,7 @@ __OKCSS__
     <div class="priv"><span>🔒 החשבון שלך שמור בשרת מאובטח ואפשר להיכנס אליו מכל מכשיר. הסיסמה מוצפנת, ואנחנו לא רואים אותה.</span><button type="button" class="link2" id="iOut">יציאה מהחשבון</button><button type="button" class="link" id="iClear">מחיקת החשבון, הסל והפניות מהדפדפן</button></div>
   </section>
 </main>
-<footer>ChicCheckCar · <a href="index.html#privacy">מדיניות פרטיות</a> · <a href="index.html#settings">הגדרות פרטיות</a> · <a href="index.html#accessibility">הצהרת נגישות</a></footer>
+<footer>Chick Chack Car · <a href="index.html#privacy">מדיניות פרטיות</a> · <a href="index.html#settings">הגדרות פרטיות</a> · <a href="index.html#accessibility">הצהרת נגישות</a></footer>
 __OKHTML__
 <script src="fb.js"></script>
 <script src="terms.js"></script>

@@ -1,6 +1,8 @@
 # ChicCheckCar — car-sales website
 
-Hebrew (RTL) car-sales site for the owner's dealership. Built originally as a claude.ai artifact and exported here unchanged.
+Hebrew (RTL) car-sales site for the owner's dealership. Brand name (owner, 2026-10-30): "Chick Chack Car" / צ'יק צ'אק רכב
+everywhere in text and in the logo (logo.png / logo-wide.png / embedded --logo-m mask: CCC mark + "Chick Chack Car" in Outfit ~450).
+Unchanged on purpose: the e-mail chiccheckcar@gmail.com, the domain chiccheckcar.co.il and code identifiers (ccc_*, cccFb, ...). Built originally as a claude.ai artifact and exported here unchanged.
 
 ## Structure
 
