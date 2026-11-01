@@ -570,6 +570,8 @@ footer p,footer .legal-links button,footer .legal-links a{color:#d9d0cf !importa
 .car.uc:hover{box-shadow:0 22px 44px rgba(31,21,25,.18) !important}
 .uc-top{position:relative;background:transparent;padding:14px 16px 16px}
 .uc-top .imgbox{background:transparent !important;aspect-ratio:16/10}
+.uc-rec{color:#f3c6d8;margin-inline-end:6px}
+.uc-rec::after{content:"·";margin-inline-start:6px;color:#fff}
 .uc-badge{position:absolute;top:12px;inset-inline-end:12px;z-index:2;font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--s-ink);color:#fff}
 .uc-name{margin-top:6px;min-height:68px}
 .uc-name .maker{margin:0 !important;padding:0 !important;text-align:right;font-size:11px}
@@ -1702,6 +1704,8 @@ const GROUP_OF = {}; GROUPS.forEach((ix, g) => ix.forEach(i => GROUP_OF[i] = g))
 // Recommended trim per model: index -> reason. Set only when real data (equipment / value for money) supports it.
 // No such data exists in the catalog yet, so no trim is marked.
 const RECOMMEND = {};
+// Cars the owner chose to feature first in the catalog, in this order (owner, 2026-11-01). Shown first in every sort, with a "מומלץ" tag.
+const FEATURED = [200];   // Lynk & Co 02 PRO
 const esc1 = s => String(s ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 function trimLabels(ix){
   let L = ix.map(i => (CARS[i].trim || CARS[i].extra || '').trim());
@@ -1719,7 +1723,7 @@ function cardHtml(g){
   return `
     <div class="car uc${multi ? ' multi' : ''}" role="button" tabindex="0" data-g="${g}" data-i="${i}" aria-label="פרטים על ${esc1(fullName(c))}">
       <div class="uc-top">
-        ${c.fuel ? `<span class="uc-badge">${c.fuel}</span>` : ''}
+        ${c.fuel || ix.some(j => FEATURED.includes(j)) ? `<span class="uc-badge">${ix.some(j => FEATURED.includes(j)) ? '<b class="uc-rec">מומלץ</b>' : ''}${c.fuel || ''}</span>` : ''}
         <button type="button" class="uc-cart" data-cart="${i}" aria-pressed="false" aria-label="הוספה לסל: ${esc1(fullName(c))}"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="9.5" cy="19.5" r="1.5" fill="currentColor"/><circle cx="17" cy="19.5" r="1.5" fill="currentColor"/><path d="M2.5 3.5h2.2l2.4 11.1a1.5 1.5 0 0 0 1.5 1.2h8.7a1.5 1.5 0 0 0 1.5-1.1L21 7.5H5.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <div class="imgbox"><img class="cimg" id="img${i}" src="${c.img || 'car-sample.png'}" alt="${c.img ? esc1(fullName(c)) : 'תמונה להמחשה'}" loading="lazy" onerror="this.parentNode.classList.add('noimg')"><div class="ph"><span class="ph-maker">${c.maker}</span><b>${c.model}</b></div></div>
         <div class="uc-name"><div class="maker">${c.maker}</div><div class="model">${c.maker} ${c.model}</div>${multi ? `<div class="ctrim">${ix.length} רמות גימור</div>` : (c.trim ? `<div class="ctrim">${c.trim}</div>` : '')}</div>
@@ -1752,7 +1756,8 @@ function render(){
     list.push(g); });
   // sort by the price the card shows (the selected trim; the cheapest unless a search or a click picked another)
   const lo = g => CARS[selOf(g)].price, hi = lo;
-  list.sort((a,b)=> so==='name' ? fullName(CARS[GROUPS[a][0]]).localeCompare(fullName(CARS[GROUPS[b][0]]),'he') : so==='desc' ? hi(b)-hi(a) : lo(a)-lo(b));
+  const fr = g => { const k = GROUPS[g].map(i => FEATURED.indexOf(i)).filter(x => x >= 0); return k.length ? Math.min(...k) : 1e9; };
+  list.sort((a,b)=> (fr(a) - fr(b)) || (so==='name' ? fullName(CARS[GROUPS[a][0]]).localeCompare(fullName(CARS[GROUPS[b][0]]),'he') : so==='desc' ? hi(b)-hi(a) : lo(a)-lo(b)));
   const nv = list.reduce((n, g) => n + GROUPS[g].length, 0);
   $('count').textContent = `מציגים ${list.length} דגמים (${nv} גרסאות) מתוך ${GROUPS.length} דגמים`;
   $('grid').innerHTML = list.map(cardHtml).join('');
