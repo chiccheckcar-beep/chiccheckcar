@@ -155,6 +155,15 @@ Still open:
 
 ## Owner-supplied material
 
+- Keyword "מאיר המלך" (owner, 2026-11-01): when the owner sends a car with this keyword, first collect EVERYTHING about that exact
+  car (same maker, model, trim, engine/battery, model year as sold in Israel) and only then publish it. Required before publishing:
+  name, trim (רמת גימור), range (EV) or fuel consumption, horsepower, a full technical spec (drive, engine/motor, battery, gearbox,
+  0-100, seats, trunk, dimensions where verifiable), price and monthly payment. Price comes ONLY from the owner (rounded up to 500);
+  technical data may be completed from the internet (importer / manufacturer / reliable Israeli car sites), never invented — a figure
+  that can't be verified for that exact trim is left out. Monthly payment and down payment come from terms.js (unless the owner
+  gives a down payment). Add the car at the END of CARS, its photo in the catalog style, specs.json group, VERIFIED_* figures,
+  re-run gen_car.py + gen_me.py, test the card / car page / calculator, then report to the owner what was found and from where.
+
 - Owner instruction (2026-10-20): "כול מה שאני שולח לך תוסיף לטבלה" — every price, car or photo the owner sends is added to the
   catalog (CARS in index.html) and logged in docs/price-report-icar-2026.md (prices) with the date and "נמסר ע"י הבעלים" as source.
   Re-run both generators after any CARS change.
