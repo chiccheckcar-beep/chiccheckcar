@@ -231,30 +231,47 @@ input,select{background:rgba(255,255,255,.35)}
 .gate-ad-btn{position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;cursor:pointer;overflow:hidden;font:inherit;color:#1f1519;
   background:linear-gradient(180deg,#bcd2e2 0%,#d6e1ec 30%,#eef0f5 55%,#f3f2f7 100%)}
 .gate-ad-btn:focus-visible{outline:3px solid #7a2a4a;outline-offset:-6px}
-.pa-photo{position:absolute;left:0;bottom:0;width:100%;height:50%;object-fit:cover;object-position:50% 66%;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 16%);mask-image:linear-gradient(to bottom,transparent 0,#000 16%)}
+.pa-photo{position:absolute;left:0;bottom:0;width:100%;height:45%;object-fit:cover;object-position:50% 72%;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 16%);mask-image:linear-gradient(to bottom,transparent 0,#000 16%)}
 .pa-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;text-align:center;
-  padding:clamp(24px,5.5vh,72px) 20px 0;gap:clamp(2px,.8vh,8px)}
+  padding:clamp(20px,4vh,56px) 20px 0;gap:clamp(2px,.6vh,6px)}
 .pa-tag{display:inline-block;background:#7a2a4a;color:#fff;font-weight:800;font-size:clamp(14px,1.6vw,22px);letter-spacing:.02em;padding:.45em 1.2em;border-radius:999px;box-shadow:0 8px 22px rgba(122,42,74,.35)}
-.pa-model{font-family:"Unbounded",system-ui,"Segoe UI",Arial,sans-serif;font-weight:700;font-size:clamp(26px,min(4.4vw,7vh),68px);line-height:1.05;letter-spacing:.01em;margin-top:.25em;white-space:nowrap}
+.pa-model{font-family:"Unbounded",system-ui,"Segoe UI",Arial,sans-serif;font-weight:700;font-size:clamp(24px,min(4vw,6.2vh),60px);line-height:1.05;letter-spacing:.01em;margin-top:.25em;white-space:nowrap}
 .pa-model b{color:#7a2a4a}
 .pa-sub{font-size:clamp(15px,1.7vw,24px);font-weight:600;color:#4a3b41;margin-top:.4em}
 .pa-price{display:flex;align-items:flex-start;gap:.08em;font-family:"Unbounded",system-ui,"Segoe UI",Arial,sans-serif;font-weight:700;line-height:.95}
-.pa-num{font-size:clamp(52px,min(7.5vw,13vh),130px);letter-spacing:-.02em}
-.pa-cur{font-size:clamp(24px,3.4vw,56px);margin-top:.18em}
-.pa-per{font-size:clamp(16px,1.8vw,26px);font-weight:700;color:#4a3b41;margin-top:-.1em}
-.pa-cta{margin-top:clamp(10px,2.2vh,26px);background:#1f1519;color:#fff;font-weight:800;font-size:clamp(16px,1.6vw,22px);padding:.85em 2.4em;border-radius:999px;box-shadow:0 12px 28px rgba(31,21,25,.35);transition:transform .2s}
+.pa-num{font-size:clamp(40px,min(6vw,9.5vh),100px);letter-spacing:-.02em}
+.pa-cur{font-size:clamp(22px,min(3vw,5vh),50px);margin-top:.18em}
+.pa-stats{display:flex;gap:clamp(18px,3vw,48px);margin-top:.5em}
+.pa-stat{display:flex;flex-direction:column;align-items:center;line-height:1.15}
+.pa-stat b{font-family:"Unbounded",system-ui,"Segoe UI",Arial,sans-serif;font-size:clamp(20px,min(2.4vw,4vh),38px);font-weight:700}
+.pa-stat b small{font-family:Heebo,system-ui,sans-serif;font-size:.55em;font-weight:700}
+.pa-stat i{font-style:normal;font-size:clamp(12px,1.1vw,16px);color:#4a3b41;font-weight:600}
+.pa-from{font-size:clamp(14px,1.5vw,22px);font-weight:700;color:#4a3b41;margin-top:.6em}
+.pa-star{font-size:.45em;margin-top:.1em}
+.pa-cta{margin-top:clamp(8px,1.6vh,20px);background:#1f1519;color:#fff;font-weight:800;font-size:clamp(16px,1.6vw,22px);padding:.85em 2.4em;border-radius:999px;box-shadow:0 12px 28px rgba(31,21,25,.35);transition:transform .2s}
 .gate-ad-btn:hover .pa-cta{transform:translateY(-2px)}
+@media (min-aspect-ratio: 4/5){
+  .pa-photo{height:56%;object-position:50% 61%;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 5%);mask-image:linear-gradient(to bottom,transparent 0,#000 5%)}
+  .pa-text{padding-top:max(16px,2.5vh);gap:2px}
+  .pa-model{font-size:clamp(22px,min(3.6vw,5vh),52px)}
+  .pa-num{font-size:clamp(36px,min(5.4vw,8vh),84px)}
+  .pa-stat b{font-size:clamp(18px,min(2.2vw,3.4vh),32px)}
+  .pa-from{margin-top:.3em}
+  .pa-cta{margin-top:6px;padding:.7em 2.2em}
+}
 /* wide screens (computer, iPad landscape): text on the sky, car below */
 /* portrait (phone, iPad portrait): the car sits at the bottom, wider than the screen so it fills it; text above on the sky */
 @media (max-aspect-ratio: 4/5){
-  .pa-photo{height:auto;width:150%;left:50%;transform:translateX(-50%);bottom:calc(-4% + 40px);object-fit:contain;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 22%);mask-image:linear-gradient(to bottom,transparent 0,#000 22%)}
+  .pa-photo{height:auto !important;width:150%;left:50%;transform:translateX(-50%);bottom:calc(-4% + 40px);object-fit:contain;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 22%);mask-image:linear-gradient(to bottom,transparent 0,#000 22%)}
   .pa-text{padding-top:calc(72px + env(safe-area-inset-top,0px))}
   .pa-tag{font-size:clamp(14px,3.8vw,20px)}
   .pa-model{font-size:clamp(24px,8vw,48px)}
   .pa-sub{font-size:clamp(15px,4.4vw,22px)}
-  .pa-num{font-size:clamp(56px,19vw,120px)}
-  .pa-cur{font-size:clamp(24px,7vw,46px)}
-  .pa-per{font-size:clamp(16px,4.6vw,24px)}
+  .pa-num{font-size:clamp(44px,15vw,100px)}
+  .pa-cur{font-size:clamp(22px,6vw,40px)}
+  .pa-stat b{font-size:clamp(20px,6vw,34px)}
+  .pa-stat i{font-size:clamp(12px,3.4vw,16px)}
+  .pa-from{font-size:clamp(14px,4vw,20px)}
   .pa-cta{font-size:clamp(16px,4.6vw,22px)}
 }
 .gate-ad-wrap .gate-fine{position:absolute;left:0;right:0;bottom:calc(8px + env(safe-area-inset-bottom,0px));z-index:2;padding:0 16px;color:#3a2f33;text-shadow:0 0 6px rgba(255,255,255,.9);pointer-events:none}
@@ -1131,18 +1148,22 @@ body:has(.adm:not([hidden])) .me-fab,body:has(#gate:not([hidden])) .me-fab{displ
 <div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
   <button type="button" class="gate-x" id="gateSkip" aria-label="סגירה וכניסה לאתר">×</button>
   <div class="gate-ad-wrap" id="gateStep1">
-    <button type="button" class="gate-ad-btn" id="gateAdGo" aria-label="מבצעים לסוף שנה: Lynk & Co 02 PRO במחיר מבצע 1,890 שקלים בחודש. השאירו פרטים">
+    <button type="button" class="gate-ad-btn" id="gateAdGo" aria-label="מבצעים לסוף שנה: Lynk & Co 02 PRO, קרוסאובר חשמלי משפחתי, טווח של עד 465 ק״מ בדגם HALO, מנוע חשמלי בהספק 272 כ״ס, מחיר החל מ-159,900 שקלים. השאירו פרטים">
       <img class="pa-photo" src="promo-lynk-02-bg.webp" alt="" aria-hidden="true">
       <span class="pa-text" aria-hidden="true">
         <span class="pa-tag">מבצעים לסוף שנה</span>
         <span class="pa-model" dir="ltr">LYNK &amp; CO <b>02 PRO</b></span>
-        <span class="pa-sub">במחיר מבצע</span>
-        <span class="pa-price"><span class="pa-num" dir="ltr">1,890</span><span class="pa-cur">₪</span></span>
-        <span class="pa-per">בחודש</span>
+        <span class="pa-sub">קרוסאובר חשמלי משפחתי</span>
+        <span class="pa-stats">
+          <span class="pa-stat"><b>עד 465 <small>ק״מ</small></b><i>טווח (דגם HALO)</i></span>
+          <span class="pa-stat"><b>272 <small>כ״ס</small></b><i>מנוע חשמלי</i></span>
+        </span>
+        <span class="pa-from">מחיר החל מ-</span>
+        <span class="pa-price" dir="ltr"><span class="pa-cur">₪</span><span class="pa-num">159,900</span><span class="pa-star">*</span></span>
         <span class="pa-cta">השאירו פרטים</span>
       </span>
     </button>
-    <p class="gate-fine">המחיר החודשי כפוף לתנאי המבצע. תנאי העסקה כפופים לאישור מימון ולהסכם העסקה. התמונה להמחשה בלבד.</p>
+    <p class="gate-fine">* המחיר אינו כולל אגרות רישוי בשנה הראשונה בסך 2,450 ₪ (דגם PRO). תנאי העסקה כפופים להסכם העסקה. התמונה להמחשה בלבד.</p>
   </div>
   <div class="gate-in" id="gateForm" hidden>
       <img class="gate-logo" src="logo.png" alt="Chick Chack Car">
@@ -1960,7 +1981,7 @@ $('grid').addEventListener('change', e => {
     const lead = { name: nm.value.trim().slice(0,40), phone: digits() };
     try { sessionStorage.setItem('ccc_name', lead.name); sessionStorage.setItem('ccc_phone', lead.phone); } catch(e) {}
     go.disabled = true; go.textContent = 'שולחים…';
-    const ok = await window.cccLead({src:'promo', req: true, name: lead.name, phone: lead.phone, car: 'Lynk & Co 02 PRO', detail: 'השאיר פרטים במודעת Lynk & Co 02 PRO במסך הכניסה (1,890 ₪ בחודש, מבצעים לקראת סוף שנה)'});
+    const ok = await window.cccLead({src:'promo', req: true, name: lead.name, phone: lead.phone, car: 'Lynk & Co 02 PRO', detail: 'השאיר פרטים במודעת Lynk & Co 02 PRO במסך הכניסה (מבצעים לסוף שנה, החל מ-159,900 ₪)'});
     if (!ok){
       const msg = 'שלום, אני ' + lead.name + '. טלפון: ' + lead.phone + '. אשמח לפרטים על Lynk & Co 02 PRO במבצע.';
       document.getElementById('gateMsg').textContent = 'עוד צעד אחד';
