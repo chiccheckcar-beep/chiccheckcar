@@ -226,16 +226,38 @@ input,select{background:rgba(255,255,255,.35)}
 /* the ad fills the whole screen; X (gate-x) stays on top */
 .gate-ad-wrap{position:fixed;inset:0;z-index:1;animation:gateIn .7s ease both}
 .gate-ad-wrap[hidden]{display:none}
-.gate-ad-btn{position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;background:#000;cursor:pointer;overflow:hidden}
-.gate-ad-btn:focus-visible{outline:3px solid #fff;outline-offset:-6px}
-.gate-ad-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(28px) brightness(.55);transform:scale(1.15)}
-.gate-ad{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
-.gate-ad-cta{display:none}
+.gate:has(#gateStep1:not([hidden])) .gate-x{background:rgba(31,21,25,.8);border-color:transparent;color:#fff}
+/* Lynk & Co ad, built in the page (owner, 2026-11-01): the photo is the background, the text is live and scales to the screen */
+.gate-ad-btn{position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;cursor:pointer;overflow:hidden;font:inherit;color:#1f1519;
+  background:linear-gradient(180deg,#bcd2e2 0%,#d6e1ec 30%,#eef0f5 55%,#f3f2f7 100%)}
+.gate-ad-btn:focus-visible{outline:3px solid #7a2a4a;outline-offset:-6px}
+.pa-photo{position:absolute;left:0;bottom:0;width:100%;height:50%;object-fit:cover;object-position:50% 66%;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 16%);mask-image:linear-gradient(to bottom,transparent 0,#000 16%)}
+.pa-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;text-align:center;
+  padding:clamp(24px,5.5vh,72px) 20px 0;gap:clamp(2px,.8vh,8px)}
+.pa-tag{display:inline-block;background:#7a2a4a;color:#fff;font-weight:800;font-size:clamp(14px,1.6vw,22px);letter-spacing:.02em;padding:.45em 1.2em;border-radius:999px;box-shadow:0 8px 22px rgba(122,42,74,.35)}
+.pa-model{font-family:"Unbounded",system-ui,"Segoe UI",Arial,sans-serif;font-weight:700;font-size:clamp(26px,min(4.4vw,7vh),68px);line-height:1.05;letter-spacing:.01em;margin-top:.25em;white-space:nowrap}
+.pa-model b{color:#7a2a4a}
+.pa-sub{font-size:clamp(15px,1.7vw,24px);font-weight:600;color:#4a3b41;margin-top:.4em}
+.pa-price{display:flex;align-items:flex-start;gap:.08em;font-family:"Unbounded",system-ui,"Segoe UI",Arial,sans-serif;font-weight:700;line-height:.95}
+.pa-num{font-size:clamp(52px,min(7.5vw,13vh),130px);letter-spacing:-.02em}
+.pa-cur{font-size:clamp(24px,3.4vw,56px);margin-top:.18em}
+.pa-per{font-size:clamp(16px,1.8vw,26px);font-weight:700;color:#4a3b41;margin-top:-.1em}
+.pa-cta{margin-top:clamp(10px,2.2vh,26px);background:#1f1519;color:#fff;font-weight:800;font-size:clamp(16px,1.6vw,22px);padding:.85em 2.4em;border-radius:999px;box-shadow:0 12px 28px rgba(31,21,25,.35);transition:transform .2s}
+.gate-ad-btn:hover .pa-cta{transform:translateY(-2px)}
+/* wide screens (computer, iPad landscape): text on the sky, car below */
+/* portrait (phone, iPad portrait): the car sits at the bottom, wider than the screen so it fills it; text above on the sky */
 @media (max-aspect-ratio: 4/5){
-  .gate-ad{height:calc(100% - 150px);top:56px}
-  .gate-ad-cta{display:block;position:absolute;left:50%;bottom:calc(64px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:#000;color:#fff;border:2px solid #fff;border-radius:999px;padding:14px 34px;font-size:20px;font-weight:800;white-space:nowrap;box-shadow:0 0 24px rgba(255,255,255,.35)}
+  .pa-photo{height:auto;width:150%;left:50%;transform:translateX(-50%);bottom:calc(-4% + 40px);object-fit:contain;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 22%);mask-image:linear-gradient(to bottom,transparent 0,#000 22%)}
+  .pa-text{padding-top:calc(72px + env(safe-area-inset-top,0px))}
+  .pa-tag{font-size:clamp(14px,3.8vw,20px)}
+  .pa-model{font-size:clamp(24px,8vw,48px)}
+  .pa-sub{font-size:clamp(15px,4.4vw,22px)}
+  .pa-num{font-size:clamp(56px,19vw,120px)}
+  .pa-cur{font-size:clamp(24px,7vw,46px)}
+  .pa-per{font-size:clamp(16px,4.6vw,24px)}
+  .pa-cta{font-size:clamp(16px,4.6vw,22px)}
 }
-.gate-ad-wrap .gate-fine{position:absolute;left:0;right:0;bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:2;padding:0 16px;color:#d0d0d0;text-shadow:0 1px 3px #000;pointer-events:none}
+.gate-ad-wrap .gate-fine{position:absolute;left:0;right:0;bottom:calc(8px + env(safe-area-inset-bottom,0px));z-index:2;padding:0 16px;color:#3a2f33;text-shadow:0 0 6px rgba(255,255,255,.9);pointer-events:none}
 .gate-lead{margin:-8px 0 0;color:#cfcfcf;font-size:15px;line-height:1.6}
 .gate-fine{margin:0;color:#777;font-size:11px;line-height:1.5;text-align:center}
 a.gate-btn{display:block;text-decoration:none;text-align:center}
@@ -1109,16 +1131,16 @@ body:has(.adm:not([hidden])) .me-fab,body:has(#gate:not([hidden])) .me-fab{displ
 <div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
   <button type="button" class="gate-x" id="gateSkip" aria-label="סגירה וכניסה לאתר">×</button>
   <div class="gate-ad-wrap" id="gateStep1">
-    <button type="button" class="gate-ad-btn" id="gateAdGo" aria-label="Lynk & Co 02 PRO ב-1,890 ₪ בחודש, במבצעים לקראת סוף שנה. השאירו פרטים">
-      <picture>
-        <source media="(max-aspect-ratio: 4/5)" srcset="promo-lynk-02-pro-tall.webp">
-        <img class="gate-ad-bg" src="promo-lynk-02-pro.webp" alt="" aria-hidden="true">
-      </picture>
-      <picture>
-        <source media="(max-aspect-ratio: 4/5)" srcset="promo-lynk-02-pro-tall.webp">
-        <img class="gate-ad" src="promo-lynk-02-pro.webp" alt="Lynk & Co 02 PRO ב-1,890 ₪ בחודש, במבצעים לקראת סוף שנה. השאירו פרטים">
-      </picture>
-      <span class="gate-ad-cta" aria-hidden="true">השאירו פרטים «</span>
+    <button type="button" class="gate-ad-btn" id="gateAdGo" aria-label="מבצעים לסוף שנה: Lynk & Co 02 PRO במחיר מבצע 1,890 שקלים בחודש. השאירו פרטים">
+      <img class="pa-photo" src="promo-lynk-02-bg.webp" alt="" aria-hidden="true">
+      <span class="pa-text" aria-hidden="true">
+        <span class="pa-tag">מבצעים לסוף שנה</span>
+        <span class="pa-model" dir="ltr">LYNK &amp; CO <b>02 PRO</b></span>
+        <span class="pa-sub">במחיר מבצע</span>
+        <span class="pa-price"><span class="pa-num" dir="ltr">1,890</span><span class="pa-cur">₪</span></span>
+        <span class="pa-per">בחודש</span>
+        <span class="pa-cta">השאירו פרטים</span>
+      </span>
     </button>
     <p class="gate-fine">המחיר החודשי כפוף לתנאי המבצע. תנאי העסקה כפופים לאישור מימון ולהסכם העסקה. התמונה להמחשה בלבד.</p>
   </div>
