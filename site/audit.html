@@ -314,7 +314,7 @@ function checkCatalog(onlyDups){
 
 // ---------- 3. finance ----------
 function refDown(c){ if (c && +c.down > 0) return +c.down; const p = +c.price; const com = c.cat === 'מסחרי' || /מסחרי/.test(c.model || ''); const lc = c.maker === 'טויוטה' && /לנד\s*קרוזר|land\s*cruiser/i.test(c.model || '');
-  if (com || lc || p > 400000) return 24900; const ev = c.fuel === 'חשמלי'; if (p <= 200000) return 9900; if (p <= 300000) return ev ? 16900 : 14900; return ev ? 19000 : 16900; }
+  if (com || lc || p > 400000) return 24900; const ev = c.fuel === 'חשמלי'; if (p <= 200000) return 14900; if (p <= 300000) return ev ? 16900 : 14900; return ev ? 19000 : 16900; }
 function refMonthly(P){ const r = 0.059 / 12, n = 60, B = P * 0.5; return (P - B / Math.pow(1 + r, n)) * r / (1 - Math.pow(1 + r, -n)); }
 function checkFinance(){
   if (!T){ add('finance', 'fin-terms', 'קובץ תנאי העסקה', 'fail', 'terms.js לא נטען.'); return; }
@@ -323,7 +323,7 @@ function checkFinance(){
     if (d1 !== d2 || Math.abs(m1 - m2) > 0.5) bad.push([i, fullName(c), nis(c.price), nis(d1) + ' / ' + nis(d2), Math.ceil(m1) + ' / ' + Math.ceil(m2)]); });
   add('finance', 'fin-cars', 'מקדמה והחזר חודשי לכל רכב', bad.length ? 'fail' : 'pass', bad.length ? `${bad.length} רכבים עם חישוב שונה מהחישוב הבלתי תלוי.` : `${D.cars.length} רכבים נבדקו מול חישוב בלתי תלוי של מדרגות המקדמה ונוסחת שפיצר עם בלון. הכול תואם.`,
     bad.length ? {rows: bad, cols: ['#','רכב','מחיר','מקדמה (אתר / בדיקה)','חודשי (אתר / בדיקה)']} : null);
-  const edges = [[200000,'',9900],[200001,'',14900],[200001,'חשמלי',16900],[300000,'',14900],[300001,'',16900],[300001,'חשמלי',19000],[400000,'חשמלי',19000],[400001,'',24900]];
+  const edges = [[200000,'',14900],[200001,'',14900],[200001,'חשמלי',16900],[300000,'',14900],[300001,'',16900],[300001,'חשמלי',19000],[400000,'חשמלי',19000],[400001,'',24900]];
   const eb = edges.filter(([p, f, d]) => T.downOf({price: p, fuel: f, model: '', maker: ''}) !== d);
   add('finance', 'fin-edges', 'גבולות מדרגות המקדמה', eb.length ? 'fail' : 'pass', eb.length ? `${eb.length} מחירי גבול מקבלים מקדמה שגויה.` : '8 מחירי גבול (200,000 / 300,000 / 400,000 ± 1) מקבלים את המקדמה הנכונה.');
   const has39 = /3[.,]9\s*%/.test(D.html);

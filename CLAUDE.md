@@ -129,7 +129,7 @@ Still open:
 - `site/terms.js` is the single source of deal terms for every page (cards, car page, calculator, personal area). Change numbers there only.
 - Finance: 5.9% annual nominal, 60 payments, 50% balloon, full car price financed (Spitzer). The monthly payment is always labelled "משוער".
   Never show 3.9% anywhere.
-- Down payment is paid ON TOP of the car price. Tiers: <=200k 9,900; <=300k 14,900 (EV 16,900); <=400k 16,900 (EV 19,000);
+- Down payment is paid ON TOP of the car price. Tiers: <=200k 14,900 (owner, 2026-11-01; was 9,900); <=300k 14,900 (EV 16,900); <=400k 16,900 (EV 19,000);
   >400k, commercial (cat 'מסחרי') and Toyota Land Cruiser 24,900. Only fuel 'חשמלי' counts as EV (hybrids/PHEV = non-EV).
 - Required disclaimer: "המקדמה משולמת בנוסף למחיר הרכב. תנאי העסקה כפופים לאישור מימון ולהסכם העסקה."
 - (owner, 2026-10-29) Prices do not include the licence fee: every card ("לא כולל אגרת רישוי"), every car page price box

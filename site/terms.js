@@ -9,7 +9,7 @@
   // Down payment tiers. Paid on top of the car price (not part of it).
   // Only a fully electric car ("חשמלי") uses the electric column; hybrid / plug-in hybrid / mild hybrid count as non-electric.
   const TIERS = [
-    {max: 200000, fuel: 9900,  ev: 9900},
+    {max: 200000, fuel: 14900, ev: 14900},   // owner, 2026-11-01: 9,900 -> 14,900
     {max: 300000, fuel: 14900, ev: 16900},
     {max: 400000, fuel: 16900, ev: 19000}
   ];
