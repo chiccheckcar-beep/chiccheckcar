@@ -297,6 +297,7 @@ function show(){
     ${grp('זהות הרכב', [['חברה',c.maker],['דגם',c.model],['רמת גימור',c.trim],['פרטים נוספים',c.extra],['קילומטראז׳','0']])}
     ${grp('מנוע וביצועים', [['סוג מנוע', sp.engine || c.fuel],['הספק',sp.power],['תאוצה 0-100 קמ"ש',sp.accel],['תיבת הילוכים',sp.gearbox],['סוג הנעה', sp.drive || (c.drive ? c.drive.toUpperCase() : '')]])}
     ${grp('שימוש יומיומי', [[/טווח|קוט/.test(sp.consumption||'') ? 'טווח / צריכה' : 'צריכת דלק', sp.consumption],['מספר מושבים',sp.seats],['נפח תא מטען',sp.trunk]])}
+    ${grp('טעינה, מידות ומשקל', [['סוללה',sp.battery],['טעינה',sp.charging],['מידות (אורך × רוחב × גובה)',sp.dims],['בסיס גלגלים',sp.wheelbase],['משקל עצמי',sp.weight],['צמיגים',sp.tyres],['כריות אוויר',sp.airbags]])}
   </div>
   ${sp.note ? `<p class="approx">${esc(sp.note)}</p>` : ''}
   <section id="finance">
@@ -407,7 +408,7 @@ def clean(v):
 SPECS = {}
 for g in spec['groups']:
     for r in g['rows']:
-        SPECS[str(r)] = {k: clean(g[k]) for k in ('drive','engine','power','accel','gearbox','consumption','seats','trunk') if k in g}
+        SPECS[str(r)] = {k: clean(g[k]) for k in ('drive','engine','power','accel','gearbox','consumption','seats','trunk','battery','charging','dims','wheelbase','weight','tyres','airbags') if k in g}
         if 'הערכה' in str(g.get('note', '')): SPECS[str(r)]['note'] = ESTIMATE_NOTE
 lead_js = html[html.index('window.cccLead = async function(info){'):html.index('\n};', html.index('window.cccLead = async function(info){'))+3]
 page = page.replace('__LEAD__', lead_js)
