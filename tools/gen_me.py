@@ -168,7 +168,7 @@ __DONE__
   const idxOf = k => CARS.findIndex(c => keyOf(c) === k);
   const me = () => { const d = LS.get('ccc_me', {}); let n = d.name, p = d.phone; try { n = n || sessionStorage.getItem('ccc_name') || ''; p = p || sessionStorage.getItem('ccc_phone') || ''; } catch(e){} return {name: n || '', phone: p || '', city: d.city || ''}; };
   const CST = {new:['הפנייה התקבלה','#2f6fed'], work:['נציג מטפל בפנייה','#e08a00'], meet:['נקבעה פגישה','#7c4ddb'], quote:['נשלחה אליך הצעת מחיר','#0c97b8'], uw:['בתהליך אישור מימון','#c2417a'], won:['העסקה נסגרה','#18965a'], lost:['הפנייה נסגרה','#8b9098'], noans:['ניסינו להשיג אותך','#d64545']};
-  const RT = {form:'פנייה בטופס יצירת קשר', car:'פנייה מעמוד רכב', cart:'בקשת הצעה על רכבים מהסל', loan:'בקשה לבדיקת זכאות למימון'};
+  const RT = {promo:'בקשת פרטים על Lynk & Co 02 PRO', form:'פנייה בטופס יצירת קשר', car:'פנייה מעמוד רכב', cart:'בקשת הצעה על רכבים מהסל', loan:'בקשה לבדיקת זכאות למימון'};
   const ic = '<svg viewBox="0 0 24 24" width="56" height="56" aria-hidden="true"><circle cx="9.5" cy="19.5" r="1.5" fill="currentColor"/><circle cx="17" cy="19.5" r="1.5" fill="currentColor"/><path d="M2.5 3.5h2.2l2.4 11.1a1.5 1.5 0 0 0 1.5 1.2h8.7a1.5 1.5 0 0 0 1.5-1.1L21 7.5H5.6" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   let cart = LS.get('ccc_cart', []).filter(k => idxOf(k) >= 0), remote = null, prog = null, remoteState = 'loading', remoteTries = 0, tab = 'cart'; const openTl = new Set();
 
