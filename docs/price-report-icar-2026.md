@@ -463,3 +463,10 @@
 | 197 | צ'רי | FX EV | Noble TT | 173,990 | 174,000 |
 | 198 | צ'רי | FX EV | Comfort | 164,990 | 165,000 |
 | 199 | צ'רי | טיגו 7 PRO | Sense | 159,990 | 160,000 |
+
+## 2026-11-01 — added by the owner
+| Car | Price | Down payment | Source |
+|---|---|---|---|
+| Lynk & Co 02 PRO (חשמלי) | ₪162,000 | ₪7,900 (set by the owner for this car, instead of the tier) | נמסר ע"י הבעלים |
+Also supplied by the owner: 272 hp (shown on the card). The year-end ad on the entry screen uses the owner's promo price "החל מ-₪159,900",
+licence fees 2,450 ₪ in the first year (PRO) and a 465 km range for the HALO version (not shown for PRO in the catalog).

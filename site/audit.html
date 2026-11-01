@@ -313,7 +313,7 @@ function checkCatalog(onlyDups){
 }
 
 // ---------- 3. finance ----------
-function refDown(c){ const p = +c.price; const com = c.cat === 'מסחרי' || /מסחרי/.test(c.model || ''); const lc = c.maker === 'טויוטה' && /לנד\s*קרוזר|land\s*cruiser/i.test(c.model || '');
+function refDown(c){ if (c && +c.down > 0) return +c.down; const p = +c.price; const com = c.cat === 'מסחרי' || /מסחרי/.test(c.model || ''); const lc = c.maker === 'טויוטה' && /לנד\s*קרוזר|land\s*cruiser/i.test(c.model || '');
   if (com || lc || p > 400000) return 24900; const ev = c.fuel === 'חשמלי'; if (p <= 200000) return 9900; if (p <= 300000) return ev ? 16900 : 14900; return ev ? 19000 : 16900; }
 function refMonthly(P){ const r = 0.059 / 12, n = 60, B = P * 0.5; return (P - B / Math.pow(1 + r, n)) * r / (1 - Math.pow(1 + r, -n)); }
 function checkFinance(){

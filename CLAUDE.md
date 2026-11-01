@@ -135,6 +135,8 @@ Still open:
 - (owner, 2026-10-29) Prices do not include the licence fee: every card ("לא כולל אגרת רישוי"), every car page price box
   ("המחיר אינו כולל אגרת רישוי") and the finance notes say so.
 - End-of-term options: never promise a swap without extra payment.
+- Per-car down payment (owner, 2026-11-01): a car may carry `down` in CARS; terms.js downOf() returns it before the tiers
+  (audit refDown too). Used for Lynk & Co 02 PRO (index 200): price 162,000, down 7,900, 272 hp (owner). No photo yet.
 
 ## Catalog: one card per model (2026-10-22)
 

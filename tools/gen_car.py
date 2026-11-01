@@ -2,7 +2,7 @@ import re, json, sys
 site = sys.argv[1]
 html = open(f'{site}/index.html', encoding='utf-8').read()
 cars = json.loads(re.search(r'const CARS\s*=\s*(\[.*?\]);', html, re.S).group(1))
-cars = [{k: c.get(k,'') for k in ('maker','model','trim','extra','fuel','drive','price','cat','img')} for c in cars]
+cars = [{k: c.get(k,'') for k in ('maker','model','trim','extra','fuel','drive','price','cat','img','down') if k in c or k != 'down'} for c in cars]
 atto = [{"n":"448","u":"כ\"ס","l":"הספק מרבי"},{"n":"3.9","u":"שנ'","l":"תאוצה 0–100 קמ\"ש"},{"n":"470","u":"ק\"מ","l":"טווח חשמלי WLTP"},{"n":"17.8","u":"קוט\"ש/100 ק\"מ","l":"צריכת חשמל WLTP"}]
 mg3 = [{"n":"194","u":"כ\"ס","l":"הספק מרבי"},{"n":"22.7","u":"ק\"מ/ל","l":"צריכת דלק משולבת"},{"n":"5","u":"","l":"מושבים"},{"n":"293","u":"ליטר","l":"נפח תא מטען"}]
 stats = {}
@@ -428,7 +428,7 @@ def monthly(price):
     r, n, B = RATE / 100 / 12, MONTHS, price * BALLOON / 100
     return math.ceil((price - B / (1 + r) ** n) * r / (1 - (1 + r) ** -n))
 FUEL_SLUG = {'בנזין': 'petrol', 'דיזל': 'diesel', 'הייבריד': 'hybrid', 'חשמלי': 'electric', 'מייל הייבריד': 'mhev', 'פלאג אין הייבריד': 'phev'}
-NO_IMG_SLUG = {('MG', 'S9'): 'mg-s9', ('איסוזו', 'D-MAX'): 'isuzu-dmax', ('אומודה', '7'): 'omoda-7', ("צ'רי", 'אריזו 8'): 'chery-arrizo8', ('מרצדס-בנץ', 'A-Class'): 'mercedes-a-class'}
+NO_IMG_SLUG = {('Lynk & Co', '02'): 'lynkco-02', ('MG', 'S9'): 'mg-s9', ('איסוזו', 'D-MAX'): 'isuzu-dmax', ('אומודה', '7'): 'omoda-7', ("צ'רי", 'אריזו 8'): 'chery-arrizo8', ('מרצדס-בנץ', 'A-Class'): 'mercedes-a-class'}
 groups = {}
 for i, c in enumerate(cars): groups.setdefault((c['maker'], c['model'], c['fuel'], c['cat']), []).append(i)
 base = {}

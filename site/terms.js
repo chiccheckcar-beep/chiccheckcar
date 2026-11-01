@@ -19,6 +19,7 @@
   const isLandCruiser = c => !!c && c.maker === 'טויוטה' && /לנד\s*קרוזר|land\s*cruiser/i.test(c.model || '');
   // c = {price, fuel, cat, model, maker}; returns the down payment in NIS
   function downOf(c){
+    if (c && +c.down > 0) return +c.down;   // a down payment the owner set for this car (CARS[i].down) wins over the tiers
     const p = +c.price || 0;
     if (isCommercial(c) || isLandCruiser(c) || p > 400000) return TOP;
     const t = TIERS.find(t => p <= t.max);
