@@ -132,11 +132,12 @@ Still open:
 - Down payment is paid ON TOP of the car price. Tiers: <=200k 14,900 (owner, 2026-11-01; was 9,900); <=300k 14,900 (EV 16,900); <=400k 16,900 (EV 19,000);
   >400k, commercial (cat 'מסחרי') and Toyota Land Cruiser 24,900. Only fuel 'חשמלי' counts as EV (hybrids/PHEV = non-EV).
 - Required disclaimer: "המקדמה משולמת בנוסף למחיר הרכב. תנאי העסקה כפופים לאישור מימון ולהסכם העסקה."
-- (owner, 2026-10-29) Prices do not include the licence fee: every card ("לא כולל אגרת רישוי"), every car page price box
-  ("המחיר אינו כולל אגרת רישוי") and the finance notes say so.
+- (owner, 2026-11-01, replaces 2026-10-29) All catalog prices were raised by 3,000 and now INCLUDE the licence fee: cards say
+  "כולל אגרת רישוי", car pages "המחיר כולל אגרת רישוי", finance notes likewise. Saved carts are moved once (terms.js, ccc_px3000).
+  New prices the owner sends: ask whether they already include the licence fee.
 - End-of-term options: never promise a swap without extra payment.
 - Per-car down payment (owner, 2026-11-01): a car may carry `down` in CARS; terms.js downOf() returns it before the tiers
-  (audit refDown too). Used for Lynk & Co 02 PRO (index 200): price 162,000, down 7,900, 272 hp (owner). No photo yet.
+  (audit refDown too). Used for Lynk & Co 02 PRO (index 200): price 165,000 (162,000 + 3,000), down 7,900, 272 hp (owner).
 
 ## Catalog: one card per model (2026-10-22)
 
