@@ -116,6 +116,14 @@ Still open:
   neutral "estimated" line). The only credit on the site is the CC BY-SA line for the MG HS / MG4 photos, at the end of the
   privacy policy (licence requirement, owner's choice).
 
+## Entry screen = Lynk & Co ad (owner, 2026-11-01)
+
+- The gate (#gate in index.html) shows a full-screen ad built in the page: photo site/promo-lynk-02-bg.webp + live text
+  (מבצעים לסוף שנה · LYNK & CO 02 PRO · קרוסאובר חשמלי משפחתי · עד 465 ק״מ (HALO) · 272 כ״ס · החל מ-₪159,900*), all texts and
+  numbers supplied by the owner; fine print: licence fees 2,450 ₪ first year (PRO). Click -> short form (name, phone, cookie consent)
+  -> cccLead {src:'promo', req:true, car:'Lynk & Co 02 PRO'}; X closes and enters the site. Layout rules: .pa-* in index.html
+  (wide screens: text on the sky, car in the lower 56%; portrait: car at the bottom, wider than the screen).
+
 ## Deal terms (owner, 2026-10-21)
 
 - `site/terms.js` is the single source of deal terms for every page (cards, car page, calculator, personal area). Change numbers there only.
