@@ -51,6 +51,16 @@ try {
   }
 } catch (e) {}
 
+// 2026-11-01: a price change (+3,000) was live for a few minutes and moved saved cart keys up by 3,000; undo it once for those browsers.
+try {
+  if (localStorage.getItem('ccc_px3000') && !localStorage.getItem('ccc_px3000_undo')) {
+    const cart = JSON.parse(localStorage.getItem('ccc_cart') || '[]');
+    if (Array.isArray(cart) && cart.length) localStorage.setItem('ccc_cart', JSON.stringify(cart.map(k => { const p = String(k).split('|'); const n = +p[p.length - 1];
+      if (p.length >= 4 && n > 3000) { p[p.length - 1] = String(n - 3000); return p.join('|'); } return k; })));
+    localStorage.setItem('ccc_px3000_undo', '1');
+  }
+} catch (e) {}
+
 // Purchase process stages (owner's list, 2026-10-25). The team sets the real stage per request in the leads center
 // (stored in Firestore progress/<customerUid>, writable only by the team); the customer sees it in the personal area.
 // A request with no stage set yet is at stage 2 ("waiting for review"): stage 1 (received) is true the moment it is saved.

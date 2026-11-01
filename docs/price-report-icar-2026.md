@@ -470,3 +470,4 @@
 | Lynk & Co 02 PRO (חשמלי) | ₪162,000 | ₪7,900 (set by the owner for this car, instead of the tier) | נמסר ע"י הבעלים |
 Also supplied by the owner: 272 hp (shown on the card). The year-end ad on the entry screen uses the owner's promo price "החל מ-₪159,900",
 licence fees 2,450 ₪ in the first year (PRO) and a 465 km range for the HALO version (not shown for PRO in the catalog).
+Update the same day (owner): the +3,000 was cancelled, prices are back to what they were. Instead the "לא כולל אגרת רישוי" line was removed.
