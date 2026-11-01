@@ -248,7 +248,7 @@ window.cccLead = async function(info){
   // e-mail the owner about a new request (only after it was saved; never blocks or fails the customer's request)
   try { const N = window.cccFb && window.cccFb.NOTIFY;
     if (ok && info.req && N && N.publicKey && N.serviceId && N.templateId){
-      const T = {form: 'טופס יצירת קשר', car: 'עמוד רכב', cart: 'סל', loan: 'בקשת מימון (רכישה זריזה)'};
+      const T = {promo: 'מודעת Lynk & Co 02 PRO (מסך הכניסה)', form: 'טופס יצירת קשר', car: 'עמוד רכב', cart: 'סל', loan: 'בקשת מימון (רכישה זריזה)'};
       fetch('https://api.emailjs.com/api/v1.0/email/send', {method: 'POST', headers: {'Content-Type': 'application/json'}, keepalive: true,
         body: JSON.stringify({service_id: N.serviceId, template_id: N.templateId, user_id: N.publicKey, template_params: {
           name: String(info.name || '').slice(0,60), phone: String(info.phone || '').slice(0,20), car: String(info.car || '').slice(0,300),
