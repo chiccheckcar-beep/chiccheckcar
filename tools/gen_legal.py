@@ -57,35 +57,35 @@ TPL = '''<!doctype html>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&family=Unbounded:wght@600;700&display=swap">
 <style>
-:root{--s-ink:#1f1519;--s-mut:#6a5a60;--s-acc:#7a2a4a;--mut:#6a5a60;--line:rgba(31,21,25,.1);--txt:#1f1519}
+:root{--s-ink:#181818;--s-mut:#5f5f5f;--s-acc:#464646;--mut:#5f5f5f;--line:rgba(24,24,24,.1);--txt:#181818}
 *{box-sizing:border-box}
-body{margin:0;font-family:Heebo,system-ui,"Segoe UI",Arial,sans-serif;color:var(--s-ink);background:linear-gradient(180deg,#efe9e8,#d9d0cf);background-attachment:fixed;min-height:100vh}
+body{margin:0;font-family:Heebo,system-ui,"Segoe UI",Arial,sans-serif;color:var(--s-ink);background:linear-gradient(180deg,#ebebeb,#d3d3d3);background-attachment:fixed;min-height:100vh}
 .wrap{width:min(860px,100% - 32px);margin:0 auto;padding:22px 0 40px}
 .top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}
 .top img{height:40px;width:auto}
-.back{display:inline-flex;align-items:center;gap:8px;background:#1d1b19;color:#fff;text-decoration:none;font-size:15px;font-weight:700;padding:11px 22px;border-radius:999px;box-shadow:0 8px 22px rgba(0,0,0,.18);border:0;cursor:pointer;font-family:inherit}
+.back{display:inline-flex;align-items:center;gap:8px;background:#1b1b1b;color:#ffffff;text-decoration:none;font-size:15px;font-weight:700;padding:11px 22px;border-radius:999px;box-shadow:0 8px 22px rgba(0,0,0,.18);border:0;cursor:pointer;font-family:inherit}
 .back:hover{transform:translateY(-1px)}
-.doc{background:#fff;border-radius:22px;box-shadow:0 14px 34px rgba(31,21,25,.12);padding:26px 30px 30px}
+.doc{background:#ffffff;border-radius:22px;box-shadow:0 14px 34px rgba(24,24,24,.12);padding:26px 30px 30px}
 h1{margin:0 0 4px;font-size:clamp(24px,4vw,32px);font-weight:800}
 .legal-body{font-size:15px;line-height:1.75}
 .legal-body h3{font-size:16px;margin:22px 0 6px}
-.legal-body p,.legal-body li{color:#2b2926;max-width:72ch}
+.legal-body p,.legal-body li{color:#292929;max-width:72ch}
 .legal-body ul{padding-inline-start:20px;margin:6px 0}
 .legal-body .upd{color:var(--mut);font-size:13px;margin-top:4px}
 .legal-body a{color:var(--s-acc)}
 .legal-tbl{overflow-x:auto;margin:8px 0}
 .legal-tbl table{border-collapse:collapse;font-size:13.5px;min-width:520px;width:100%}
-.legal-tbl th,.legal-tbl td{border-bottom:1px solid #eee7dd;padding:8px 10px;text-align:right;vertical-align:top}
+.legal-tbl th,.legal-tbl td{border-bottom:1px solid #e8e8e8;padding:8px 10px;text-align:right;vertical-align:top}
 .legal-tbl th{color:var(--mut);font-weight:600}
-.legal-tbl code{direction:ltr;unicode-bidi:isolate;font-size:12.5px;background:#f4f1ec;padding:1px 6px;border-radius:4px}
-.set-row{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid #eee7dd}
+.legal-tbl code{direction:ltr;unicode-bidi:isolate;font-size:12.5px;background:#f1f1f1;padding:1px 6px;border-radius:4px}
+.set-row{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid #e8e8e8}
 .set-row b{display:block}.set-row span{font-size:13px;color:var(--mut)}
-.set-tag{flex:0 0 auto;font-size:12px;border:1px solid #1d1b19;border-radius:999px;padding:3px 10px;white-space:nowrap}
-.set-btn{margin-top:18px;background:#111;color:#fff;border:0;border-radius:10px;padding:12px 20px;font:inherit;font-weight:700;cursor:pointer}
+.set-tag{flex:0 0 auto;font-size:12px;border:1px solid #1b1b1b;border-radius:999px;padding:3px 10px;white-space:nowrap}
+.set-btn{margin-top:18px;background:#111111;color:#ffffff;border:0;border-radius:10px;padding:12px 20px;font:inherit;font-weight:700;cursor:pointer}
 .set-msg{font-size:13px;color:var(--mut);margin-top:10px}
 .docnav{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
-.docnav a{font-size:13.5px;font-weight:600;color:var(--s-ink);text-decoration:none;background:#f4e9ee;border-radius:999px;padding:7px 14px}
-.docnav a[aria-current]{background:var(--s-ink);color:#fff}
+.docnav a{font-size:13.5px;font-weight:600;color:var(--s-ink);text-decoration:none;background:#ededed;border-radius:999px;padding:7px 14px}
+.docnav a[aria-current]{background:var(--s-ink);color:#ffffff}
 @media (max-width:600px){.wrap{padding-top:14px}.doc{padding:20px 18px 24px;border-radius:18px}.top img{height:32px}}
 </style>
 </head>

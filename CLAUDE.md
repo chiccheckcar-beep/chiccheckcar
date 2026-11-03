@@ -195,4 +195,7 @@ Still open:
 
 - Real car photos (owner to supply), business details for the footer (name, company no., address),
   WhatsApp number 972545762802 (confirmed by the owner 2026-10-25), accessibility-coordinator details in the accessibility statement.
-- Design: studio theme — ink #1f1519, accent #7a2a4a, soft pink #f4e9ee, bg #efe9e8→#d9d0cf, fonts Heebo + Unbounded.
+- Design (owner, 2026-11-03: match the black-and-white intro video): monochrome studio theme — every former bordeaux / pink / warm
+  tone was turned into the grey of the same brightness: ink #181818, accent #464646 (was #7a2a4a), soft #ededed (was #f4e9ee),
+  bg #ebebeb→#d3d3d3, muted #5f5f5f. Kept in colour on purpose: WhatsApp green, error reds, lead-status colours in the leads center,
+  car photos and the ad photo. Fonts Heebo + Unbounded.

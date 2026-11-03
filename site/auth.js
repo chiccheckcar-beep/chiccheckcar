@@ -65,43 +65,43 @@
   }
 
   const css = `
-.au{position:fixed;inset:0;z-index:380;display:grid;place-items:center;padding:16px;font-family:"Heebo",system-ui,"Segoe UI",Arial,sans-serif;color:#1f1519}
+.au{position:fixed;inset:0;z-index:380;display:grid;place-items:center;padding:16px;font-family:"Heebo",system-ui,"Segoe UI",Arial,sans-serif;color:#181818}
 .au[hidden]{display:none}
-.au-bg{position:absolute;inset:0;background:rgba(20,12,16,.5);backdrop-filter:blur(4px)}
-.au-card{position:relative;width:min(480px,100%);max-height:94vh;overflow:auto;background:#fbf9f8;border-radius:24px;padding:22px 20px 20px;box-shadow:0 30px 70px -20px rgba(0,0,0,.5);animation:auIn .3s cubic-bezier(.2,.9,.3,1.1)}
+.au-bg{position:absolute;inset:0;background:rgba(15,15,15,.5);backdrop-filter:blur(4px)}
+.au-card{position:relative;width:min(480px,100%);max-height:94vh;overflow:auto;background:#f9f9f9;border-radius:24px;padding:22px 20px 20px;box-shadow:0 30px 70px -20px rgba(0,0,0,.5);animation:auIn .3s cubic-bezier(.2,.9,.3,1.1)}
 @keyframes auIn{from{transform:translateY(14px);opacity:0}}
 @media (prefers-reduced-motion:reduce){.au-card{animation:none}}
-.au-x{position:absolute;top:12px;left:12px;width:36px;height:36px;border-radius:50%;border:0;background:#f1ecec;color:#6a5a60;font-size:20px;cursor:pointer}
-.au-logo{display:block;height:44px;aspect-ratio:600/316;margin:0 auto 6px;background:#7a2a4a;-webkit-mask:var(--logo-m,url(logo-wide.png)) center/contain no-repeat;mask:var(--logo-m,url(logo-wide.png)) center/contain no-repeat}
+.au-x{position:absolute;top:12px;left:12px;width:36px;height:36px;border-radius:50%;border:0;background:#ededed;color:#5f5f5f;font-size:20px;cursor:pointer}
+.au-logo{display:block;height:44px;aspect-ratio:600/316;margin:0 auto 6px;background:#464646;-webkit-mask:var(--logo-m,url(logo-wide.png)) center/contain no-repeat;mask:var(--logo-m,url(logo-wide.png)) center/contain no-repeat}
 .au h2{margin:4px 0 2px;text-align:center;font-size:22px;font-weight:800;letter-spacing:-.01em}
 .au h2::before{display:none}
-.au-sub{margin:0 0 12px;text-align:center;color:#6a5a60;font-size:14px;line-height:1.5}
-.au-tabs{display:grid;grid-template-columns:1fr 1fr;background:#f1ecec;border-radius:12px;padding:4px;gap:4px;margin-bottom:12px}
-.au-tabs button{border:0;background:transparent;border-radius:9px;padding:9px;font:inherit;font-size:14px;font-weight:700;color:#6a5a60;cursor:pointer}
-.au-tabs button.on{background:#fff;color:#7a2a4a;box-shadow:0 1px 3px rgba(31,21,25,.12)}
+.au-sub{margin:0 0 12px;text-align:center;color:#5f5f5f;font-size:14px;line-height:1.5}
+.au-tabs{display:grid;grid-template-columns:1fr 1fr;background:#ededed;border-radius:12px;padding:4px;gap:4px;margin-bottom:12px}
+.au-tabs button{border:0;background:transparent;border-radius:9px;padding:9px;font:inherit;font-size:14px;font-weight:700;color:#5f5f5f;cursor:pointer}
+.au-tabs button.on{background:#ffffff;color:#464646;box-shadow:0 1px 3px rgba(24,24,24,.12)}
 .au form{display:flex;flex-direction:column;gap:10px}
 .au form[hidden]{display:none}
-.au-sec{font-size:12px;font-weight:800;color:#7a2a4a;letter-spacing:.06em;margin:6px 0 -2px}
+.au-sec{font-size:12px;font-weight:800;color:#464646;letter-spacing:.06em;margin:6px 0 -2px}
 .au label{display:flex;flex-direction:column;gap:5px;font-size:13px;font-weight:700}
-.au label small{font-weight:400;color:#6a5a60}
-.au input:not([type=checkbox]){font:inherit;font-size:16px;padding:11px 13px;border:1.5px solid rgba(31,21,25,.14) !important;border-radius:13px !important;background:#fff !important;color:#1f1519 !important;width:100%;box-sizing:border-box;box-shadow:none !important;height:auto !important}
-.au input:focus{outline:none;border-color:#7a2a4a !important;box-shadow:0 0 0 3px rgba(122,42,74,.14) !important}
+.au label small{font-weight:400;color:#5f5f5f}
+.au input:not([type=checkbox]){font:inherit;font-size:16px;padding:11px 13px;border:1.5px solid rgba(24,24,24,.14) !important;border-radius:13px !important;background:#ffffff !important;color:#181818 !important;width:100%;box-sizing:border-box;box-shadow:none !important;height:auto !important}
+.au input:focus{outline:none;border-color:#464646 !important;box-shadow:0 0 0 3px rgba(70,70,70,.14) !important}
 .au .bad{border-color:#c0392b !important}
 .au-e{margin:-4px 0 0;color:#b3261e;font-size:12px;font-weight:600}
 .au-e:empty{display:none}
 .au-two{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:start}
 @media (max-width:420px){.au-two{grid-template-columns:1fr}}
-.au-ck{flex-direction:row !important;align-items:flex-start;gap:8px !important;font-weight:400 !important;color:#6a5a60;font-size:12.5px !important;line-height:1.5}
-.au-ck input{width:19px;height:19px;accent-color:#7a2a4a;flex:none;margin-top:1px}
-.au-ck a,.au-link{color:#7a2a4a}
+.au-ck{flex-direction:row !important;align-items:flex-start;gap:8px !important;font-weight:400 !important;color:#5f5f5f;font-size:12.5px !important;line-height:1.5}
+.au-ck input{width:19px;height:19px;accent-color:#464646;flex:none;margin-top:1px}
+.au-ck a,.au-link{color:#464646}
 .au-link{border:0;background:none;padding:0;font:inherit;font-size:13px;text-decoration:underline;cursor:pointer;align-self:center}
 .au-err{margin:0;color:#b3261e;font-size:13px;font-weight:600}
 .au-err:empty{display:none}
 .au-ok{margin:0;padding:10px 12px;border-radius:10px;background:#e7f6ee;color:#156b43;font-size:13.5px}
 .au-ok:empty{display:none}
-.au-go{margin-top:4px;border:0;border-radius:999px;padding:14px;background:#7a2a4a;color:#fff;font:inherit;font-size:16px;font-weight:800;cursor:pointer;box-shadow:0 12px 26px -12px rgba(122,42,74,.7)}
+.au-go{margin-top:4px;border:0;border-radius:999px;padding:14px;background:#464646;color:#ffffff;font:inherit;font-size:16px;font-weight:800;cursor:pointer;box-shadow:0 12px 26px -12px rgba(70,70,70,.7)}
 .au-go:disabled{opacity:.6}
-.au-note{margin:10px 0 0;text-align:center;font-size:12px;color:#6a5a60;line-height:1.5}`;
+.au-note{margin:10px 0 0;text-align:center;font-size:12px;color:#5f5f5f;line-height:1.5}`;
   const st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
 
   const F = (id, label, attrs, hint) => `<label>${hint ? `<span>${label} <small>${hint}</small></span>` : label}<input id="${id}" ${attrs}></label><p class="au-e" data-e="${id}"></p>`;
