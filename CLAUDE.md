@@ -17,7 +17,9 @@ site/
   me.html        Customer personal area: cart / my requests / my details. GENERATED — do not hand-edit.
   auth.js        Customer account: registration, sign-in, password reset (ID number + date of birth), shared by all pages.
   loan.js        "רכישה זריזה" 5-step financing-eligibility wizard (amount, personal, income, trade-in, summary).
-  kframes/       156 intro frames (k001–k156.jpg) scrubbed by scroll.
+  kframes/       156 portrait intro frames (k001–k156.jpg, 576x1024) scrubbed by scroll — phones / portrait screens.
+  kframes-d/     156 landscape intro frames (1280x720) — computers / wide screens. Both cut from the owner's videos (2026-11-03,
+                 Porsche 911 GT3 RS); index.html picks the set by screen shape (pickSet) and switches on resize.
   logo.png, logo-wide.png, car-sample.png (placeholder: covered car — used when a model has no photo).
 tools/
   gen_car.py     python3 tools/gen_car.py site   -> rebuilds site/car.html from CARS in index.html + tools/specs/specs.json

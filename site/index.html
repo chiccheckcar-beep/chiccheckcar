@@ -2642,14 +2642,19 @@ render();
   const KLOGO = new Image(); KLOGO.src = 'logo-wide.png';
   let KW = null, KB = null;   // tinted copies of the logo: white and page colour
   KLOGO.onload = () => { const mk = col => { const c = document.createElement('canvas'); c.width = KLOGO.naturalWidth; c.height = KLOGO.naturalHeight; const g = c.getContext('2d'); g.drawImage(KLOGO,0,0); g.globalCompositeOperation = 'source-in'; g.fillStyle = col; g.fillRect(0,0,c.width,c.height); return c; }; KW = mk('#ffffff'); KB = mk('#ebe4e3'); draw(cur); };
-  const N = 156, F = new Array(N);
-  (function(){
+  // two cuts of the intro video (owner, 2026-11-03): landscape frames for computers / wide screens, portrait frames for phones
+  const N = 156; let F = new Array(N), SET = '', gen = 0;
+  const pickSet = () => innerWidth > innerHeight * 1.05 ? 'kframes-d/' : 'kframes/';
+  function loadFrames(){
+    SET = pickSet(); F = new Array(N); const my = ++gen;
     const order = []; for (const s of [12,6,3,1]) for (let i = 0; i < N; i += s) if (!order.includes(i)) order.push(i);
     let n = 0; const pump = () => { if (n >= order.length) return; const i = order[n++], im = new Image(); im.decoding = 'async';
-      im.onload = () => { F[i] = im; if (i === 0 || Math.abs(i - Math.round(cur*(N-1))) < 3) draw(cur); pump(); }; im.onerror = pump;
-      im.src = 'kframes/k' + String(i+1).padStart(3,'0') + '.jpg'; };
+      im.onload = () => { if (my !== gen) return; F[i] = im; if (i === 0 || Math.abs(i - Math.round(cur*(N-1))) < 3) draw(cur); pump(); }; im.onerror = () => { if (my === gen) pump(); };
+      im.src = SET + 'k' + String(i+1).padStart(3,'0') + '.jpg'; };
     for (let k = 0; k < 6; k++) pump();
-  })();
+  }
+  loadFrames();
+  addEventListener('resize', () => { if (pickSet() !== SET) loadFrames(); });
   const near = i => { for (let d = 0; d < N; d++){ if (F[i-d]) return i-d; if (F[i+d]) return i+d; } return -1; };
 
   let W = 0, H = 0, dpr = 1, cur = 0, target = 0, raf = 0;
