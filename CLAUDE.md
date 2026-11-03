@@ -127,8 +127,13 @@ Still open:
 ## Deal terms (owner, 2026-10-21)
 
 - `site/terms.js` is the single source of deal terms for every page (cards, car page, calculator, personal area). Change numbers there only.
-- Finance: 5.9% annual nominal, 60 payments, 50% balloon, full car price financed (Spitzer). The monthly payment is always labelled "משוער".
-  Never show 3.9% anywhere.
+- Finance (owner, 2026-11-03, replaces 5.9%): 3.9% annual nominal, 60 payments, 50% balloon, full car price financed (Spitzer) —
+  this is what cards / car-page price box / personal area show. The monthly payment is always labelled "משוער".
+- Calculator (owner, 2026-11-03, "exactly like the picture" from cmotors): site/calc.js, one component on the home page (#finance,
+  model select) and every car page: trim buttons with prices, route with balloon 50% / without, 60 / 100 months, down payment slider
+  0-50% of the price that LOWERS the financed amount (CCC_TERMS.loan), result card with WhatsApp offer (+ cccLead src 'finance')
+  and "בדיקת זכאות למימון" (loan.js). Default = balloon, 60 months, no down payment = the card's monthly. Fuel-savings / km part of
+  the picture left out: no verified fuel and electricity prices. CSS classes use the ccl- prefix (cc-in is taken by the reveal animation).
 - Down payment is paid ON TOP of the car price. Tiers: <=200k 14,900 (owner, 2026-11-01; was 9,900); <=300k 14,900 (EV 16,900); <=400k 16,900 (EV 19,000);
   >400k, commercial (cat 'מסחרי') and Toyota Land Cruiser 24,900. Only fuel 'חשמלי' counts as EV (hybrids/PHEV = non-EV).
 - Required disclaimer: "המקדמה משולמת בנוסף למחיר הרכב. תנאי העסקה כפופים לאישור מימון ולהסכם העסקה."

@@ -2,7 +2,7 @@
    Owner's rules, 2026-10-21. Change the numbers here only. */
 (function(){
   const T = {
-    rate: 5.9,      // annual nominal interest, %
+    rate: 3.9,      // annual nominal interest, % (owner, 2026-11-03: 3.9 for the whole site; was 5.9)
     months: 60,     // number of monthly payments
     balloon: 50     // balloon at the end, % of the car price
   };
@@ -35,9 +35,17 @@
     const total = pay * n + B;
     return {price, monthly: pay, balloon: B, months: n, rate: T.rate, total, interest: Math.max(0, total - price)};
   }
-  window.CCC_TERMS = Object.assign({}, T, {TIERS, TOP, isEV, isCommercial, isLandCruiser, downOf, quote,
+  // Calculator (calc.js): any down payment (lowers the financed amount), 60 / 100 months, with a 50%-of-price balloon or without.
+  // The balloon never exceeds the financed amount.
+  function loan({price, down = 0, months = T.months, balloon = true}){
+    price = Math.max(0, +price || 0); down = Math.min(Math.max(0, +down || 0), price);
+    const financed = price - down, r = T.rate / 100 / 12, n = months, B = balloon ? Math.min(price * T.balloon / 100, financed) : 0;
+    const pay = financed > 0 ? (r === 0 ? (financed - B) / n : (financed - B / Math.pow(1 + r, n)) * r / (1 - Math.pow(1 + r, -n))) : 0;
+    return {price, down, financed, balloon: B, months: n, rate: T.rate, monthly: pay, total: pay * n + B};
+  }
+  window.CCC_TERMS = Object.assign({}, T, {TIERS, TOP, isEV, isCommercial, isLandCruiser, downOf, quote, loan,
     monthlyOf: price => quote(price).monthly,
-    method: 'ריבית שנתית נומינלית 5.9% (0.4917% לחודש), 60 תשלומים חודשיים שווים לפי לוח שפיצר, על מלוא מחיר הרכב. בלון של 50% ממחיר הרכב משולם עם התשלום האחרון. המקדמה משולמת בנוסף ואינה מקטינה את סכום המימון. לא כולל עמלות, ביטוח ואגרות.'});
+    method: 'ריבית שנתית נומינלית 3.9% (0.325% לחודש), 60 תשלומים חודשיים שווים לפי לוח שפיצר, על מלוא מחיר הרכב. בלון של 50% ממחיר הרכב משולם עם התשלום האחרון. המקדמה משולמת בנוסף ואינה מקטינה את סכום המימון. לא כולל עמלות, ביטוח ואגרות.'});
 })();
 
 // 2026-10-25: catalog prices were rounded up to the next 500. Saved carts store "maker|model|trim|price" keys,

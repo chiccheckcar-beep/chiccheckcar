@@ -315,10 +315,10 @@ function checkCatalog(onlyDups){
 // ---------- 3. finance ----------
 function refDown(c){ if (c && +c.down > 0) return +c.down; const p = +c.price; const com = c.cat === 'מסחרי' || /מסחרי/.test(c.model || ''); const lc = c.maker === 'טויוטה' && /לנד\s*קרוזר|land\s*cruiser/i.test(c.model || '');
   if (com || lc || p > 400000) return 24900; const ev = c.fuel === 'חשמלי'; if (p <= 200000) return 14900; if (p <= 300000) return ev ? 16900 : 14900; return ev ? 19000 : 16900; }
-function refMonthly(P){ const r = 0.059 / 12, n = 60, B = P * 0.5; return (P - B / Math.pow(1 + r, n)) * r / (1 - Math.pow(1 + r, -n)); }
+function refMonthly(P){ const r = 0.039 / 12, n = 60, B = P * 0.5; return (P - B / Math.pow(1 + r, n)) * r / (1 - Math.pow(1 + r, -n)); }
 function checkFinance(){
   if (!T){ add('finance', 'fin-terms', 'קובץ תנאי העסקה', 'fail', 'terms.js לא נטען.'); return; }
-  add('finance', 'fin-terms', 'תנאי העסקה', (T.rate === 5.9 && T.months === 60 && T.balloon === 50) ? 'pass' : 'fail', `ריבית ${T.rate}% · ${T.months} תשלומים · בלון ${T.balloon}% (לפי terms.js).`);
+  add('finance', 'fin-terms', 'תנאי העסקה', (T.rate === 3.9 && T.months === 60 && T.balloon === 50) ? 'pass' : 'fail', `ריבית ${T.rate}% · ${T.months} תשלומים · בלון ${T.balloon}% (לפי terms.js).`);
   const bad = []; D.cars.forEach((c, i) => { const d1 = T.downOf(c), d2 = refDown(c), m1 = T.monthlyOf(c.price), m2 = refMonthly(c.price);
     if (d1 !== d2 || Math.abs(m1 - m2) > 0.5) bad.push([i, fullName(c), nis(c.price), nis(d1) + ' / ' + nis(d2), Math.ceil(m1) + ' / ' + Math.ceil(m2)]); });
   add('finance', 'fin-cars', 'מקדמה והחזר חודשי לכל רכב', bad.length ? 'fail' : 'pass', bad.length ? `${bad.length} רכבים עם חישוב שונה מהחישוב הבלתי תלוי.` : `${D.cars.length} רכבים נבדקו מול חישוב בלתי תלוי של מדרגות המקדמה ונוסחת שפיצר עם בלון. הכול תואם.`,
@@ -326,8 +326,8 @@ function checkFinance(){
   const edges = [[200000,'',14900],[200001,'',14900],[200001,'חשמלי',16900],[300000,'',14900],[300001,'',16900],[300001,'חשמלי',19000],[400000,'חשמלי',19000],[400001,'',24900]];
   const eb = edges.filter(([p, f, d]) => T.downOf({price: p, fuel: f, model: '', maker: ''}) !== d);
   add('finance', 'fin-edges', 'גבולות מדרגות המקדמה', eb.length ? 'fail' : 'pass', eb.length ? `${eb.length} מחירי גבול מקבלים מקדמה שגויה.` : '8 מחירי גבול (200,000 / 300,000 / 400,000 ± 1) מקבלים את המקדמה הנכונה.');
-  const has39 = /3[.,]9\s*%/.test(D.html);
-  add('finance', 'fin-39', 'הריבית 3.9% לא מופיעה באתר', has39 ? 'fail' : 'pass', has39 ? 'נמצא "3.9%" בדף הבית.' : 'לא נמצא "3.9%" בדף הבית.');
+  const has59 = /5[.,]9\s*%/.test(D.html);   // the rate is 3.9% since 2026-11-03 (owner); an old 5.9% must not remain
+  add('finance', 'fin-39', 'לא נשארה באתר ריבית ישנה (5.9%)', has59 ? 'fail' : 'pass', has59 ? 'נמצא "5.9%" בדף הבית.' : 'לא נמצא "5.9%" בדף הבית.');
   const disc = D.html.includes('המקדמה משולמת בנוסף למחיר הרכב. תנאי העסקה כפופים לאישור מימון ולהסכם העסקה.');
   add('finance', 'fin-disc', 'הסתייגות המקדמה מוצגת', disc ? 'pass' : 'warn', disc ? 'נוסח ההסתייגות המחייב מופיע בדף הבית.' : 'נוסח ההסתייגות לא נמצא בדף הבית.');
 }
@@ -388,11 +388,14 @@ async function checkFlows(){
   setF();
   // 7. finance calculator
   const sample = [0, D.cars.findIndex(c => c.fuel === 'חשמלי' && c.price > 200000), D.cars.findIndex(c => c.price > 400000), D.cars.findIndex(c => c.cat === 'מסחרי')].filter(i => i >= 0);
-  const calc = sample.map(i => { const s = d.getElementById('finCar'); s.value = String(i); s.dispatchEvent(new w.Event('change')); const c = D.cars[i];
-    const got = {down: d.getElementById('finDownOut').textContent.replace(/\D/g, ''), mon: d.getElementById('finMonthly').textContent.replace(/\D/g, '')};
-    return [fullName(c), nis(c.price), got.down + ' / ' + T.downOf(c), got.mon + ' / ' + Math.ceil(T.monthlyOf(c.price)), (+got.down === T.downOf(c) && Math.abs(+got.mon - Math.ceil(T.monthlyOf(c.price))) <= 1) ? '✓' : '✕']; });
+  // the calculator (calc.js) picks a model, opens on its cheapest trim with a 50% balloon, 60 months and no down payment = the card's monthly
+  const G = w.GROUPS || [];
+  const calc = sample.map(i => { const s = d.getElementById('finCar'), g = G.findIndex(ix => ix.includes(i)); s.value = String(g); s.dispatchEvent(new w.Event('change'));
+    const btn = d.querySelector('#finCalc [data-cc-trim="' + i + '"]'); if (btn) btn.click(); const c = D.cars[i];
+    const mon = (d.getElementById('ccMonthly') || {}).textContent || ''; const got = mon.replace(/\D/g, ''), want = Math.ceil(T.monthlyOf(c.price));
+    return [fullName(c), nis(c.price), '—', got + ' / ' + want, Math.abs(+got - want) <= 1 ? '✓' : '✕']; });
   const cBad = calc.filter(r => r[4] !== '✓');
-  F(7, 'חישוב מימון', cBad.length ? 'fail' : 'pass', `מחשבון המימון נבדק עם ${calc.length} רכבים (רגיל, חשמלי מעל 200 אלף, מעל 400 אלף, מסחרי). ${cBad.length ? cBad.length + ' לא תואמים.' : 'המקדמה וההחזר החודשי תואמים את החישוב.'}`, {rows: calc, cols: ['רכב','מחיר','מקדמה (מחשבון / צפוי)','חודשי (מחשבון / צפוי)','']});
+  F(7, 'חישוב מימון', cBad.length ? 'fail' : 'pass', `מחשבון המימון נבדק עם ${calc.length} רכבים (רגיל, חשמלי מעל 200 אלף, מעל 400 אלף, מסחרי). ${cBad.length ? cBad.length + ' לא תואמים.' : 'ההחזר החודשי במחשבון תואם את החישוב ואת הכרטיס.'}`, {rows: calc, cols: ['רכב','מחיר','מקדמה (מחשבון / צפוי)','חודשי (מחשבון / צפוי)','']});
   // 8. lead form (cccLead is stubbed: nothing is sent)
   const form = d.getElementById('leadForm'); d.getElementById('fName').value = ''; d.getElementById('fPhone').value = '';
   const blocks = !form.checkValidity();
