@@ -130,7 +130,8 @@ Still open:
 - Finance (owner, 2026-11-03, replaces 5.9%): 3.9% annual nominal, 60 payments, 50% balloon, full car price financed (Spitzer) —
   this is what cards / car-page price box / personal area show. The monthly payment is always labelled "משוער".
 - Calculator (owner, 2026-11-03, "exactly like the picture" from cmotors): site/calc.js, one component on the home page (#finance,
-  model select) and every car page: trim buttons with prices, route with balloon 50% / without, 60 / 100 months, down payment slider
+  model select) and every car page: trim buttons with prices, route: בלון 50% / רגיל (no balloon) / עסקת מזומן (cash: shows the
+  price only, no term / down payment / eligibility button), 60 / 100 months, down payment slider
   0-50% of the price that LOWERS the financed amount (CCC_TERMS.loan), result card with WhatsApp offer (+ cccLead src 'finance')
   and "בדיקת זכאות למימון" (loan.js). Default = balloon, 60 months, no down payment = the card's monthly. Fuel-savings / km part of
   the picture left out: no verified fuel and electricity prices. CSS classes use the ccl- prefix (cc-in is taken by the reveal animation).
