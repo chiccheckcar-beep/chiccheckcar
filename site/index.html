@@ -113,6 +113,8 @@ body .sticky{position:fixed !important;left:20px;right:auto;bottom:calc(20px + e
 html{scroll-behavior:smooth}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 #catalog,#form{scroll-margin-top:20px}
+#catBg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;visibility:hidden}
+#catalog{position:relative}#catalog>.wrap{position:relative;z-index:1}
 .fab-wa{width:54px;height:54px;padding:0;justify-content:center}
 .fab-wa span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .fab-wa svg{width:26px;height:26px}
@@ -2733,6 +2735,28 @@ render();
   addEventListener('resize', () => { size(); onScroll(); });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => draw(cur));
   size(); cur = target = progress(); draw(cur);
+
+  // The footage keeps playing behind the catalog cards (owner, 2026-11-03): a fixed layer clipped to the catalog's visible area,
+  // advancing with the scroll through the catalog, with a light wash so the filters and counters stay readable.
+  const catSec = document.getElementById('catalog');
+  if (catSec){
+    const bg = document.createElement('canvas'); bg.id = 'catBg'; bg.setAttribute('aria-hidden', 'true'); document.body.appendChild(bg);
+    const bx = bg.getContext('2d'); let braf = 0;
+    function bgDraw(){
+      braf = 0; const r = catSec.getBoundingClientRect(), vw = innerWidth, vh = innerHeight;
+      const top = Math.max(0, r.top), bot = Math.min(vh, r.bottom);
+      if (bot <= top){ bg.style.visibility = 'hidden'; return; }
+      bg.style.visibility = 'visible'; bg.style.clipPath = 'inset(' + top + 'px 0 ' + (vh - bot) + 'px 0)';
+      const d = Math.min(devicePixelRatio || 1, 2);
+      if (bg.width !== Math.round(vw*d) || bg.height !== Math.round(vh*d)){ bg.width = Math.round(vw*d); bg.height = Math.round(vh*d); }
+      const p = reduce ? 0 : clamp((vh - r.top) / (r.height + vh), 0, 1), i = near(Math.round(p*(N-1)));
+      bx.setTransform(d,0,0,d,0,0); bx.fillStyle = '#d3d3d3'; bx.fillRect(0,0,vw,vh);
+      if (i >= 0){ const im = F[i], s = Math.max(vw/im.naturalWidth, vh/im.naturalHeight), w = im.naturalWidth*s, h = im.naturalHeight*s; bx.drawImage(im, (vw-w)/2, (vh-h)/2, w, h); }
+      bx.fillStyle = 'rgba(236,236,236,.5)'; bx.fillRect(0,0,vw,vh);
+    }
+    const bgReq = () => { if (!braf) braf = requestAnimationFrame(bgDraw); };
+    addEventListener('scroll', bgReq, {passive:true}); addEventListener('resize', bgReq); setTimeout(bgReq, 800); bgReq();
+  }
 })();
 </script>
 <div class="legal" id="legal-privacy" hidden role="dialog" aria-modal="true" aria-labelledby="lgPrivT">

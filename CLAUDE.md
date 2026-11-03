@@ -20,6 +20,8 @@ site/
   kframes/       156 portrait intro frames (k001–k156.jpg, 576x1024) scrubbed by scroll — phones / portrait screens.
   kframes-d/     156 landscape intro frames (1280x720) — computers / wide screens. Both cut from the owner's videos (2026-11-03,
                  Porsche 911 GT3 RS); index.html picks the set by screen shape (pickSet) and switches on resize.
+                 The same frames keep playing behind the catalog cards (owner, 2026-11-03): #catBg, a fixed canvas clipped to
+                 #catalog's visible area, advanced by scroll through the catalog, with a light wash (rgba 236,.5).
   logo.png, logo-wide.png, car-sample.png (placeholder: covered car — used when a model has no photo).
 tools/
   gen_car.py     python3 tools/gen_car.py site   -> rebuilds site/car.html from CARS in index.html + tools/specs/specs.json
