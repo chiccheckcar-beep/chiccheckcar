@@ -100,6 +100,12 @@ Still open:
 - Licence-plate lookup (loan.js step 4, `plateLookup`) calls data.gov.il resource 053cea08-09bc-40ec-8f7a-156f0677aff3
   directly from the browser and fills make/model + first-registration year. Not yet verified against the live API from the live site.
 
+## Maintenance switch (owner, 2026-11-09: "לעצור את האתר")
+
+- site/maint.js (loaded first on index.html, car pages, me.html; added by gen_car.py / gen_me.py): `window.CCC_MAINT = true` shows
+  visitors the black "האתר בשדרוג" page (#maint in index.html: WhatsApp / phone / e-mail) and sends car pages + me.html to index.html.
+  index.html#admin (leads center) and audit.html keep working; legal pages stay open. Set it to false to bring the site back.
+
 ## Owner's rules (keep them)
 
 - "המחיר, המלאי והפרטים העסקיים נלקחים רק מהאקסל שלי. מידע טכני בלבד מותר להשלים מהאינטרנט."

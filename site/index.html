@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="he" dir="rtl">
 <head>
+<script src="maint.js"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>צ'יק צ'אק רכב | Chick Chack Car - רכישת רכב באונליין יבואן ו0 קילומטר</title>
@@ -1150,6 +1151,24 @@ body:has(.adm:not([hidden])) .me-fab,body:has(#gate:not([hidden])) .me-fab{displ
 </style>
 </head>
 <body>
+<div id="maint" role="main" aria-labelledby="maintT">
+  <img src="logo.png" alt="Chick Chack Car" class="mt-logo">
+  <h1 id="maintT">האתר בשדרוג</h1>
+  <p>אנחנו משפרים את האתר ונחזור בקרוב. בינתיים אפשר לדבר איתנו:</p>
+  <a class="mt-wa" href="https://wa.me/972545762802" target="_blank" rel="noopener">שליחת הודעה בוואטסאפ</a>
+  <p class="mt-c"><a href="tel:0545762802" dir="ltr">054-576-2802</a> · <a href="mailto:chiccheckcar@gmail.com">chiccheckcar@gmail.com</a></p>
+</div>
+<style>
+#maint{display:none}
+html.maint body>*:not(#maint){display:none !important}
+html.maint,html.maint body{overflow:hidden !important;height:100%}
+html.maint #maint{display:flex;position:fixed;inset:0;z-index:9999;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px;text-align:center;background:#000;color:#fff;font-family:Heebo,system-ui,"Segoe UI",Arial,sans-serif}
+#maint .mt-logo{height:130px;width:auto;filter:invert(1);margin-bottom:6px}
+#maint h1{margin:0;font-size:clamp(28px,5vw,44px);font-weight:300}
+#maint p{margin:0;color:#cfcfcf;font-size:16px;max-width:34ch;line-height:1.7}
+#maint .mt-wa{display:inline-block;margin-top:8px;background:#25d366;color:#fff;text-decoration:none;font-weight:800;font-size:17px;padding:14px 30px;border-radius:999px}
+#maint .mt-c a{color:#fff}
+</style>
 <a class="skip" href="#catalog">דלגו לתוכן הראשי</a>
 
 <div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gateTitle">

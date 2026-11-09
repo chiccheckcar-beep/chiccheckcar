@@ -14,6 +14,7 @@ logo_m = re.search(r':root\{--logo-m:url\("([^"]+)"\)\}', idx).group(1)
 page = r'''<!doctype html>
 <html lang="he" dir="rtl">
 <head>
+<script src="maint.js"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>האזור האישי · Chick Chack Car</title>

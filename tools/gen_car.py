@@ -12,6 +12,7 @@ for i,c in enumerate(cars):
 page = r'''<!doctype html>
 <html lang="he" dir="rtl">
 <head>
+<script src="maint.js"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Chick Chack Car</title>
