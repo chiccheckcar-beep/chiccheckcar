@@ -103,7 +103,7 @@ Still open:
 ## Maintenance switch (owner, 2026-11-09: "לעצור את האתר")
 
 - site/maint.js (loaded first on index.html, car pages, me.html; added by gen_car.py / gen_me.py): `window.CCC_MAINT = true` shows
-  visitors the black "האתר בשדרוג" page (#maint in index.html: WhatsApp / phone / e-mail) and sends car pages + me.html to index.html.
+  visitors the black "האתר כרגע מופסק עקב תקלה טכנית" page (#maint in index.html: WhatsApp / phone / e-mail) and sends car pages + me.html to index.html.
   index.html#admin (leads center) and audit.html keep working; legal pages stay open. Set it to false to bring the site back.
 
 ## Owner's rules (keep them)
